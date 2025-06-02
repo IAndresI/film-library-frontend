@@ -1,0 +1,1 @@
+export { ActorsPage } from "./ui";

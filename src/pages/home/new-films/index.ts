@@ -1,0 +1,1 @@
+export { NewFilmsPage } from "./ui";
