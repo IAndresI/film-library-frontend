@@ -14,15 +14,16 @@ export const AuthLayout = () => {
     data: user,
     isLoading,
     isSuccess,
+    isError,
   } = useQuery(authApi.getAuthQueryOptions());
 
   const locationArr = location.pathname?.split("/") ?? [];
 
   useEffect(() => {
-    if (!isSuccess || (!isSuccess && !user)) {
+    if (isError || (isSuccess && !user)) {
       navigate("/authentication");
     }
-  }, [isSuccess, user, navigate]);
+  }, [isError, isSuccess, user, navigate]);
 
   return (
     <AnimatePresence mode="wait">

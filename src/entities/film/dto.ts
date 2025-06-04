@@ -1,9 +1,9 @@
 import type { IActor } from "../actor/dto";
 
 export interface IGenre {
+  icon: string;
   id: number;
   name: string;
-  image: string;
 }
 
 export interface IFilm {

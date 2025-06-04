@@ -6,19 +6,21 @@ export const filmApi = {
   getAllGenresQueryOptions: () => {
     return queryOptions({
       queryKey: ["genres"],
-      queryFn: apiInstance.get<IGenre[]>("/genre/"),
+      queryFn: apiInstance.get<IGenre[]>("/genres"),
     });
   },
   getAllFilmsQueryOptions: ({ genre }: { genre?: number }) => {
     return queryOptions({
-      queryKey: ["movies", genre],
-      queryFn: apiInstance.get<IFilm[]>(`/movie/`, { params: { genre } }),
+      queryKey: ["films", genre],
+      queryFn: apiInstance.get<IFilm[]>(`/films`, {
+        params: { genreId: genre },
+      }),
     });
   },
   getFilmQueryOptions: (id: number) => {
     return queryOptions({
-      queryKey: ["movie", id],
-      queryFn: apiInstance.get<IFilm>(`/movie/${id}/`),
+      queryKey: ["films", id],
+      queryFn: apiInstance.get<IFilm>(`/films/${id}/`),
     });
   },
 };

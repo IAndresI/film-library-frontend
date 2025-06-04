@@ -20,6 +20,8 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50",
         link: "text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50",
+        rainbow:
+          "rainbow-button text-white transition-all duration-[2000ms] font-semibold uppercase",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -46,13 +48,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size }), className)}
         ref={ref}
         {...props}
       />
     );
   },
 );
+
 Button.displayName = "Button";
 
 export { Button, buttonVariants };

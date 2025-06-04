@@ -18,9 +18,9 @@ const tempFilms: IFilm[] = [
     description: "sd",
     image: "https://placehold.jp/250x333.png",
     genres: [
-      { id: 2, name: "Thriller", image: "https://placehold.jp/250x333.png" },
-      { id: 3, name: "Historical", image: "https://placehold.jp/250x333.png" },
-      { id: 4, name: "Horror", image: "https://placehold.jp/250x333.png" },
+      { id: 2, name: "Thriller", icon: "https://placehold.jp/250x333.png" },
+      { id: 3, name: "Historical", icon: "https://placehold.jp/250x333.png" },
+      { id: 4, name: "Horror", icon: "https://placehold.jp/250x333.png" },
     ],
     release_date: "2023-10-10",
     created_at: "2024-05-05",
@@ -42,8 +42,8 @@ const tempFilms: IFilm[] = [
     description: "boys",
     image: "https://placehold.jp/250x333.png",
     genres: [
-      { id: 7, name: "Dramma", image: "https://placehold.jp/250x333.png" },
-      { id: 8, name: "Comedy", image: "https://placehold.jp/250x333.png" },
+      { id: 7, name: "Dramma", icon: "https://placehold.jp/250x333.png" },
+      { id: 8, name: "Comedy", icon: "https://placehold.jp/250x333.png" },
     ],
     release_date: "2020-08-23",
     created_at: "2023-11-16",

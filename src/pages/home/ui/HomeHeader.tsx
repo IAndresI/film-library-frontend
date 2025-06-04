@@ -19,6 +19,9 @@ import { ModeToggle } from "@/shared/components/ModeToggle";
 import { SidebarTrigger } from "@/shared/ui/sidebar";
 import { useUser } from "@/app/providers";
 import { authApi } from "@/features/auth/api";
+import { SvgLogout } from "@/shared/ui/svg/SvgLogout";
+import { SubscriptionStatus } from "@/entities/subscription/dto";
+import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
 const isAdmin = true;
 
 export const HomeHeader = () => {
@@ -100,15 +103,30 @@ export const HomeHeader = () => {
         </Drawer>
         <ModeToggle />
 
-        <div className="ml-auto flex h-full w-fit items-center gap-3 border-l px-5">
-          <div>{user.name}</div>
+        {(!user.subscription ||
+          user.subscription.status === SubscriptionStatus.EXPIRED) && (
+          <Button asChild variant="rainbow">
+            <Link to="/premium">Premium</Link>
+          </Button>
+        )}
+
+        <div className="ml-auto flex h-full w-fit items-center gap-3 border-l pl-5">
+          <div className="relative">
+            {user.name}
+            {user.subscription &&
+              user.subscription.status === SubscriptionStatus.ACTIVE && (
+                <div className="absolute bottom-1/2 -left-[15px] -rotate-45">
+                  <SvgCrown className="h-5 w-5" gradient />
+                </div>
+              )}
+          </div>
         </div>
         <Button
           variant="outline"
           className="h-full rounded-none border-0 border-l-1"
           onClick={authApi.logout}
         >
-          Logout
+          <SvgLogout className="min-h-[30px] min-w-[20px]" />
         </Button>
       </div>
     </header>

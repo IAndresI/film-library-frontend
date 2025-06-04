@@ -17,6 +17,7 @@ import {
 import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
 import { useQuery } from "@tanstack/react-query";
 import { filmApi } from "@/entities/film/api/filmApi";
+import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
 
 // const genres = [
 //   {
@@ -73,19 +74,24 @@ const library = [
   //   icon: <SvgFire className="w-4 h-4 mr-2" />,
   // },
   {
-    label: "Favorites",
+    label: "Избранное",
     link: "/favorites",
     icon: <BookmarkIcon className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Actors",
+    label: "Актеры",
     link: "/actors",
     icon: <SvgActor className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Your reviews",
+    label: "Мои отзывы",
     link: "/reviews",
     icon: <SvgReview className="mr-2 h-4 w-4" />,
+  },
+  {
+    label: "Premium",
+    link: "/premium",
+    icon: <SvgCrown gradient className="mr-2 h-4 w-4" />,
   },
 ];
 
@@ -105,7 +111,7 @@ export function HomeSidebar() {
         </SidebarHeader>
         <SidebarGroup>
           <SidebarGroupLabel className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            Library
+            Библиотека
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -132,7 +138,7 @@ export function HomeSidebar() {
         </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            Films
+            Жанры
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -148,8 +154,8 @@ export function HomeSidebar() {
                         `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? "bg-accent text-accent-foreground" : ""}`
                       }
                     >
-                      <img className="mr-2 h-4 w-4" src={genre.image} />
-                      {genre.name}
+                      <span className="mr-2">{genre.icon}</span>
+                      <span>{genre.name}</span>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

@@ -7,25 +7,7 @@ import {
   type PaginationState,
   type SortingState,
 } from "@tanstack/react-table";
-import type { IUser } from "@/entities/user/dto";
 import { usersTableColumns } from "@/entities/user/ui/users-table-columns";
-
-const tempFilms: IUser[] = [
-  {
-    id: "1",
-    name: "Andre Spez",
-    email: "andrei200277@gmail.com",
-    created_at: "2024-01-12",
-    avatar: "https://placehold.jp/250x333.png",
-  },
-  {
-    id: "1",
-    name: "Spez Alex",
-    email: "alex@gmail.com",
-    created_at: "2023-10-10",
-    avatar: "https://placehold.jp/250x333.png",
-  },
-];
 
 export const AdminUsersPage = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -58,7 +40,7 @@ export const AdminUsersPage = () => {
           pagination={pagination}
           onPaginationChange={setPagination}
           columns={usersTableColumns}
-          data={tempFilms}
+          data={[]}
         />
       </div>
     </motion.section>
