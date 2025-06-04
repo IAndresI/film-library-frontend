@@ -1,4 +1,4 @@
-import { AuthLayout } from "../pages/authentication/ui/AuthLayout.tsx";
+import { AuthLayout } from "../features/auth/ui/AuthLayout.tsx";
 import { AdminLayout } from "../pages/admin/ui/AdminLayout.tsx";
 import { createBrowserRouter } from "react-router-dom";
 import { AuthenticationPage } from "@/pages/authentication";
@@ -8,13 +8,13 @@ import { HomeLayout } from "@/pages/home/ui/HomeLayout.tsx";
 
 export const router = createBrowserRouter([
   {
+    path: "authentication",
+    element: <AuthenticationPage />,
+  },
+  {
     path: "*",
     element: <AuthLayout />,
     children: [
-      {
-        path: "authentication",
-        element: <AuthenticationPage />,
-      },
       {
         element: <AdminLayout />,
         path: "admin/*",

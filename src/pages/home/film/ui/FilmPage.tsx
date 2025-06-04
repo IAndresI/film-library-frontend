@@ -29,13 +29,13 @@ import { filmApi } from "@/entities/film/api/filmApi";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
 import { Badge } from "@/shared/ui/badge";
 import { reviewApi } from "@/entities/review/api/reviewApi";
-import { useUser } from "@clerk/clerk-react";
 import type { IAllReviews } from "@/entities/review/dto";
 import { userApi } from "@/entities/user/api/userApi";
+import { useUser } from "@/app/providers";
 
 export const FilmPage = () => {
   const { id } = useParams();
-  const { user } = useUser();
+  const user = useUser();
   const queryClient = useQueryClient();
 
   const [reviewRating, setReviewRating] = useState(0);

@@ -1,11 +1,11 @@
-import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import { Button } from "../../../shared/ui/button";
 import { ModeToggle } from "@/shared/components/ModeToggle";
 import { SidebarTrigger } from "@/shared/ui/sidebar";
+import { useUser } from "@/app/providers";
 
 export const AdminHeader = () => {
-  const { user } = useUser();
+  const user = useUser();
 
   return (
     <header className="flex h-[56px] justify-between">
@@ -17,12 +17,11 @@ export const AdminHeader = () => {
           <Link to="/">Home</Link>
         </Button>
         <ModeToggle />
-        <SignedIn>
+        {user && (
           <div className="ml-auto flex h-full w-fit items-center gap-3 border-l px-5">
-            <UserButton />
-            <div>{`${user?.firstName} ${user?.lastName}`}</div>
+            <div>{user?.name}</div>
           </div>
-        </SignedIn>
+        )}
       </div>
     </header>
   );

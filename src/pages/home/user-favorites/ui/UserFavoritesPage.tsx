@@ -7,11 +7,11 @@ import { Button } from "@/shared/ui/button";
 import { BookmarkFilledIcon } from "@radix-ui/react-icons";
 import { userApi } from "@/entities/user/api/userApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useUser } from "@clerk/clerk-react";
 import { FilmSkeleton } from "@/entities/film/ui/FilmSkeleton";
+import { useUser } from "@/app/providers";
 
 export const UserFavoritesPage = () => {
-  const { user } = useUser();
+  const user = useUser();
   const queryClient = useQueryClient();
   const { isLoading: isUserFavoritesLoading, data: userFavorites } = useQuery({
     ...userApi.getAllUserFavoritesQueryOptions(user!.id),
@@ -67,7 +67,7 @@ export const UserFavoritesPage = () => {
                           })
                         : undefined
                     }
-                    className="absolute right-2 top-2 z-10 h-10 w-10 p-0"
+                    className="absolute top-2 right-2 z-10 h-10 w-10 p-0"
                     variant="outline"
                   >
                     <BookmarkFilledIcon className={`h-5 w-5`} />

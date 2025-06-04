@@ -152,7 +152,7 @@ const VideoControls = () => {
         onDoubleClick={handleDoubleClick}
       >
         <PlayIcon
-          className={`media-playing:hidden h-20 w-20 rounded-md ring-sky-400 transition-opacity duration-300 outline-none ring-inset group-hover:bg-white/20 data-[focus]:ring-4`}
+          className={`media-playing:hidden h-20 w-20 cursor-pointer rounded-md ring-sky-400 transition duration-300 outline-none ring-inset group-hover:bg-white/20 hover:scale-110 data-[focus]:ring-4`}
         />
       </button>
 

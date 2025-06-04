@@ -1,13 +1,13 @@
 import { Separator } from "@/shared/ui/separator";
 import { motion } from "framer-motion";
-import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
 import { UserReviewSkeleton } from "@/entities/review/ui/UserReviewSkeleton";
 import { reviewApi } from "@/entities/review/api/reviewApi";
 import { UserReviewCard } from "@/pages/home/user-reviews/ui/UserReviewCard";
+import { useUser } from "@/app/providers";
 
 export const UserReviewsPage = () => {
-  const { user } = useUser();
+  const user = useUser();
 
   const { isLoading, data } = useQuery(reviewApi.getAllReviewsQueryOptions());
 

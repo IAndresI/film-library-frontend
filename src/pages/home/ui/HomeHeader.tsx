@@ -1,4 +1,3 @@
-import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 import {
   Link,
   useLocation,
@@ -18,10 +17,12 @@ import {
 } from "@/shared/ui/drawer";
 import { ModeToggle } from "@/shared/components/ModeToggle";
 import { SidebarTrigger } from "@/shared/ui/sidebar";
+import { useUser } from "@/app/providers";
+import { authApi } from "@/features/auth/api";
 const isAdmin = true;
 
 export const HomeHeader = () => {
-  const { user } = useUser();
+  const user = useUser();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -98,12 +99,17 @@ export const HomeHeader = () => {
           </DrawerContent>
         </Drawer>
         <ModeToggle />
-        <SignedIn>
-          <div className="ml-auto flex h-full w-fit items-center gap-3 border-l px-5">
-            <UserButton />
-            <div>{`${user?.firstName} ${user?.lastName}`}</div>
-          </div>
-        </SignedIn>
+
+        <div className="ml-auto flex h-full w-fit items-center gap-3 border-l px-5">
+          <div>{user.name}</div>
+        </div>
+        <Button
+          variant="outline"
+          className="h-full rounded-none border-0 border-l-1"
+          onClick={authApi.logout}
+        >
+          Logout
+        </Button>
       </div>
     </header>
   );

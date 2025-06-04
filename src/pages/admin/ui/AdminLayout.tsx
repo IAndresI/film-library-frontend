@@ -1,22 +1,17 @@
-import { useUser } from "@clerk/clerk-react";
-import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AdminHeader } from "./AdminHeader";
 import { AdminSidebar } from "./AdminSidebar";
 import { motion } from "framer-motion";
 import { SidebarProvider } from "../../../shared/ui/sidebar";
-
-const isAdmin = true;
+import { useUser } from "@/app/providers";
 
 export const AdminLayout = () => {
-  const { isSignedIn, isLoaded } = useUser();
+  const user = useUser();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAdmin && isLoaded) {
-      navigate("/");
-    }
-  }, [isSignedIn, isLoaded, isAdmin]);
+  if (!user) {
+    navigate("/");
+  }
 
   return (
     <motion.div
