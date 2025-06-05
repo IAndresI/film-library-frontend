@@ -49,7 +49,7 @@ export function FilmCard({
           </Link>
 
           <p className="text-muted-foreground text-xs">
-            {new Date(film.release_date).getFullYear()},{" "}
+            {new Date(film.releaseDate || "").getFullYear()},{" "}
             <ul className="inline">
               {film.genres.map((genre, i, arr) => (
                 <Link

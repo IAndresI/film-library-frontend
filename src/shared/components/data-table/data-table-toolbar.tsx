@@ -37,24 +37,31 @@ export const statuses = [
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  searchField?: string;
 }
 
 export function DataTableToolbar<TData>({
   table,
+  searchField,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Search..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
+        {searchField && (
+          <Input
+            placeholder="Поиск..."
+            value={
+              (table.getColumn(searchField)?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn(searchField)?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+        )}
+
         {table.getColumn("genres") && (
           <DataTableFacetedFilter
             column={table.getColumn("genres")}

@@ -14,7 +14,9 @@ interface IUserReviewCardProps {
 export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
   const queryClient = useQueryClient();
 
-  const { data: film } = useQuery(filmApi.getFilmQueryOptions(review.movie));
+  const { data: film } = useQuery(
+    filmApi.getFilmByIdQueryOptions(review.movie),
+  );
   const { mutate: deleteReviewMutate, isPending: isDeletingReview } =
     useMutation({
       mutationFn: reviewApi.deleteReview,

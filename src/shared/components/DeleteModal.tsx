@@ -22,7 +22,7 @@ export const DeleteModal = ({
     <Dialog>
       <DialogTrigger asChild>
         <Button className="w-full justify-start" variant="ghost">
-          Delete
+          Удалить
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -32,9 +32,9 @@ export const DeleteModal = ({
         </DialogHeader>
         <DialogFooter>
           <Button onClick={onDelete} type="submit">
-            Delete
+            Удалить
           </Button>
-          <Button type="submit">Close</Button>
+          <Button type="submit">Закрыть</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

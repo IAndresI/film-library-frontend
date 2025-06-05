@@ -51,7 +51,7 @@ export const HomeHeader = () => {
       <div className="flex items-center gap-5">
         {isAdmin && (
           <Button variant="secondary" asChild>
-            <Link to="/admin">Admin Panel</Link>
+            <Link to="/admin">Панель администратора</Link>
           </Button>
         )}
         <Drawer
@@ -62,14 +62,14 @@ export const HomeHeader = () => {
           <DrawerTrigger asChild>
             <Button className="flex items-center gap-2 px-5" variant="default">
               <MagnifyingGlassIcon className="h-5 w-5" />
-              Search
+              Поиск
             </Button>
           </DrawerTrigger>
           <DrawerContent className="rounded-none">
             <div className="mx-auto w-full max-w-sm py-5">
               <DrawerHeader>
                 <DrawerTitle className="text-center text-3xl">
-                  Search
+                  Поиск
                 </DrawerTitle>
               </DrawerHeader>
 

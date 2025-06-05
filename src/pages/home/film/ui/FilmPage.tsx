@@ -45,7 +45,7 @@ export const FilmPage = () => {
   const [isInFavorite, setIsInFavorite] = useState(false);
 
   const { isLoading: isFilmLoading, data: film } = useQuery({
-    ...filmApi.getFilmQueryOptions(+id!),
+    ...filmApi.getFilmByIdQueryOptions(+id!),
     enabled: !!id,
   });
 
@@ -53,7 +53,7 @@ export const FilmPage = () => {
     reviewApi.getAllReviewsQueryOptions(),
   );
   const { isLoading: isUserFavoritesLoading, data: userFavorites } = useQuery({
-    ...userApi.getAllUserFavoritesQueryOptions(user!.id),
+    ...userApi.getAllUserFavoritesQueryOptions(String(user!.id)),
     enabled: !!user?.id,
   });
 
@@ -105,7 +105,7 @@ export const FilmPage = () => {
   useEffect(() => {
     if (reviews && user) {
       const userReview = reviews.find(
-        (review) => review.movie === film?.id && user.id === review.user,
+        (review) => review.movie === film?.id && +user.id === +review.user,
       );
       if (userReview) {
         setUserReview(userReview);
@@ -130,7 +130,7 @@ export const FilmPage = () => {
     } else {
       if (user && film) {
         createReviewMutate({
-          user: user.id,
+          user: String(user.id),
           movie: film.id,
           text: reviewText,
           rating: reviewRating,
@@ -179,7 +179,7 @@ export const FilmPage = () => {
                     </h1>
                   </div>
                   <div className="text-muted-foreground">
-                    {new Date(film.release_date).getFullYear()} |{" "}
+                    {new Date(film.releaseDate || "").getFullYear()} |{" "}
                     {film.genres.map((genre) => (
                       <Badge key={genre.id}>{genre.name}</Badge>
                     ))}
@@ -210,7 +210,7 @@ export const FilmPage = () => {
                       </DialogHeader>
                       <iframe
                         className="h-full w-full"
-                        src={film.trailer_link}
+                        src={film.trailerUrl}
                         frameBorder="0"
                         allow="clipboard-write; autoplay"
                         allowFullScreen
@@ -221,11 +221,11 @@ export const FilmPage = () => {
                     onClick={() =>
                       isInFavorite
                         ? removeUserFavoritesMutate({
-                            userId: user.id,
+                            userId: String(user.id),
                             filmId: film.id,
                           })
                         : addUserFavoritesMutate({
-                            userId: user.id,
+                            userId: String(user.id),
                             filmId: film.id,
                           })
                     }

@@ -1,7 +1,7 @@
 import type { ISubscription } from "../subscription/dto";
 
 export interface IUser {
-  id: string;
+  id: number;
   avatar: string;
   name: string;
   email: string;

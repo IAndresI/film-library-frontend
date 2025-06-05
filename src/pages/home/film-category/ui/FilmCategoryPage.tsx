@@ -11,9 +11,7 @@ export const FilmCategoryPage = () => {
   const { categoryId } = useParams();
 
   const { data } = useQuery(
-    filmApi.getAllFilmsQueryOptions({
-      genre: categoryId ? +categoryId : undefined,
-    }),
+    filmApi.getAvailableFilmsQueryOptions(categoryId ? +categoryId : undefined),
   );
 
   const currentGenre = data

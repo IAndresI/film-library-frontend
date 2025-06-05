@@ -10,14 +10,17 @@ import { VideoPlayer } from "@/shared/components/VideoPlayer";
 
 export const HomeMainPage = () => {
   const { isLoading, data } = useQuery(
-    filmApi.getAllFilmsQueryOptions({ genre: undefined }),
+    filmApi.getAvailableFilmsQueryOptions(undefined),
   );
 
-  const bestFilms = data?.sort((a, b) => a.rating - b.rating).slice(0, 6);
+  const bestFilms = data
+    ?.sort((a, b) => (a.rating || 0) - (b.rating || 0))
+    .slice(0, 6);
   const newFilms = data
     ?.sort(
       (a, b) =>
-        Number(new Date(a.release_date)) - Number(new Date(b.release_date)),
+        Number(new Date(a.releaseDate || "")) -
+        Number(new Date(b.releaseDate || "")),
     )
     .slice(0, 6);
 

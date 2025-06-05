@@ -14,7 +14,7 @@ export const UserFavoritesPage = () => {
   const user = useUser();
   const queryClient = useQueryClient();
   const { isLoading: isUserFavoritesLoading, data: userFavorites } = useQuery({
-    ...userApi.getAllUserFavoritesQueryOptions(user!.id),
+    ...userApi.getAllUserFavoritesQueryOptions(String(user!.id)),
     enabled: !!user?.id,
   });
 
@@ -62,7 +62,7 @@ export const UserFavoritesPage = () => {
                     onClick={() =>
                       user
                         ? removeUserFavoritesMutate({
-                            userId: user.id,
+                            userId: String(user.id),
                             filmId: film.id,
                           })
                         : undefined

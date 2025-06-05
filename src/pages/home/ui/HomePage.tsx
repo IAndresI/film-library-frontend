@@ -10,6 +10,7 @@ import { ActorPage } from "@/pages/home/actor/ui/ActorPage";
 import { UserReviewsPage } from "@/pages/home/user-reviews/ui/UserReviewsPage";
 import { SearchPage } from "@/pages/home/search/ui/SearchPage";
 import { PremiumPage } from "../premium";
+import { ProfilePage } from "@/pages/profile";
 
 export const HomePage = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ export const HomePage = () => {
         <Route element={<UserReviewsPage />} path="/reviews" />
         <Route element={<SearchPage />} path="/search" />
         <Route element={<PremiumPage />} path="/premium" />
+        <Route element={<ProfilePage />} path="/profile/*" />
         <Route
           element={<FilmCategoryPage />}
           path="/films/genres/:categoryId"

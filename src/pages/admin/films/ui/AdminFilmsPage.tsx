@@ -1,7 +1,6 @@
 import { filmsTableColumns } from "@/entities/film/ui/films-table-columns";
 import { DataTable } from "@/shared/components/data-table/data-table";
 import { Separator } from "@/shared/ui/separator";
-import type { IFilm } from "@/entities/film/dto";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
@@ -9,56 +8,10 @@ import {
   type PaginationState,
   type SortingState,
 } from "@tanstack/react-table";
-
-const tempFilms: IFilm[] = [
-  {
-    id: 1,
-    name: "Oppenghamer",
-    rating: 9.5,
-    description: "sd",
-    image: "https://placehold.jp/250x333.png",
-    genres: [
-      { id: 2, name: "Thriller", icon: "https://placehold.jp/250x333.png" },
-      { id: 3, name: "Historical", icon: "https://placehold.jp/250x333.png" },
-      { id: 4, name: "Horror", icon: "https://placehold.jp/250x333.png" },
-    ],
-    release_date: "2023-10-10",
-    created_at: "2024-05-05",
-    actors: [
-      {
-        id: 5,
-        name: "Keanu reavse",
-        image: "https://placehold.jp/250x333.png",
-        description: "sdfasda",
-        birthday: "1986-05-05",
-      },
-    ],
-    trailer_link: "https://placehold.jp/250x333.png",
-  },
-  {
-    id: 6,
-    name: "Bad Boys",
-    rating: 8.5,
-    description: "boys",
-    image: "https://placehold.jp/250x333.png",
-    genres: [
-      { id: 7, name: "Dramma", icon: "https://placehold.jp/250x333.png" },
-      { id: 8, name: "Comedy", icon: "https://placehold.jp/250x333.png" },
-    ],
-    release_date: "2020-08-23",
-    created_at: "2023-11-16",
-    actors: [
-      {
-        id: 9,
-        name: "Keanu reavse",
-        image: "https://placehold.jp/250x333.png",
-        description: "sdfasda",
-        birthday: "1986-05-05",
-      },
-    ],
-    trailer_link: "https://placehold.jp/250x333.png",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { filmApi } from "@/entities/film/api/filmApi";
+import { Button } from "@/shared/ui/button";
+import { Link } from "react-router-dom";
 
 export const AdminFilmsPage = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -67,6 +20,9 @@ export const AdminFilmsPage = () => {
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const { data: films } = useQuery(filmApi.getAllFilmsQueryOptions());
+
   return (
     <motion.section
       className="col-span-3 lg:col-span-4"
@@ -78,12 +34,16 @@ export const AdminFilmsPage = () => {
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">Films</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Фильмы</h2>
           </div>
+          <Button asChild>
+            <Link to="/admin/films/adding">Добавить фильм</Link>
+          </Button>
         </div>
         <Separator className="my-4" />
 
         <DataTable
+          searchField="name"
           sorting={sorting}
           onSortingChange={setSorting}
           columnFilters={columnFilters}
@@ -91,7 +51,7 @@ export const AdminFilmsPage = () => {
           pagination={pagination}
           onPaginationChange={setPagination}
           columns={filmsTableColumns}
-          data={tempFilms}
+          data={films || []}
         />
       </div>
     </motion.section>

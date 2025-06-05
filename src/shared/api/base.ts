@@ -73,6 +73,15 @@ export const apiInstance = {
     }
   },
 
+  patch: async <T>(url: string, data?: unknown, init?: AxiosRequestConfig) => {
+    try {
+      const response = await $axios.patch<T>(url, data, { ...init });
+      return response.data;
+    } catch (error) {
+      return handleError(error);
+    }
+  },
+
   delete: async <T>(url: string, init?: AxiosRequestConfig) => {
     try {
       const response = await $axios.delete<T>(url, { ...init });

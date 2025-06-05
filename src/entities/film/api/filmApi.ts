@@ -9,18 +9,32 @@ export const filmApi = {
       queryFn: apiInstance.get<IGenre[]>("/genres"),
     });
   },
-  getAllFilmsQueryOptions: ({ genre }: { genre?: number }) => {
+  getAvailableFilmsQueryOptions: (genre?: number) => {
     return queryOptions({
-      queryKey: ["films", genre],
+      queryKey: ["films", "list", genre],
       queryFn: apiInstance.get<IFilm[]>(`/films`, {
         params: { genreId: genre },
       }),
     });
   },
-  getFilmQueryOptions: (id: number) => {
+  getAllFilmsQueryOptions: (genre?: number) => {
+    return queryOptions({
+      queryKey: ["films", "list", "admin", genre],
+      queryFn: apiInstance.get<IFilm[]>(`/films/admin/all`, {
+        params: { genreId: genre },
+      }),
+    });
+  },
+  getFilmByIdQueryOptions: (id: number) => {
     return queryOptions({
       queryKey: ["films", id],
-      queryFn: apiInstance.get<IFilm>(`/films/${id}/`),
+      queryFn: apiInstance.get<IFilm>(`/films/${id}`),
+    });
+  },
+  getFilmByIdAdminQueryOptions: (id: number) => {
+    return queryOptions({
+      queryKey: ["films", "admin", id],
+      queryFn: apiInstance.get<IFilm>(`/films/admin/${id}`),
     });
   },
 };

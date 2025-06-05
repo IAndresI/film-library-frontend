@@ -127,7 +127,7 @@ export const FilmEditModal = ({ film }: { film: IFilm }) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="w-full justify-start" variant="ghost">
-          Edit
+          Редактировать
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[85svh] overflow-auto sm:max-w-[850px]">

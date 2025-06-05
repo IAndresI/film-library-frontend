@@ -18,54 +18,7 @@ import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
 import { useQuery } from "@tanstack/react-query";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-
-// const genres = [
-//   {
-//     label: "Home",
-//     link: "/",
-//     icon: <HomeIcon className="w-4 h-4 mr-2" />,
-//   },
-//   {
-//     label: "Comedy",
-//     link: "/films/genres/1",
-//     icon: <SvgComedy className="w-4 h-4 mr-2" />,
-//   },
-//   {
-//     label: "Family friendly",
-//     link: "/films/genres/2",
-//     icon: <SvgFamily className="w-4 h-4 mr-2" />,
-//   },
-//   {
-//     label: "Horror",
-//     link: "/films/genres/3",
-//     icon: <SvgHorror className="w-4 h-4 mr-2" />,
-//   },
-//   {
-//     label: "Fantasy",
-//     link: "/films/genres/4",
-//     icon: <SvgFantasy className="w-4 h-4 mr-2" />,
-//   },
-//   {
-//     label: "Thrillers",
-//     link: "/films/genres/5",
-//     icon: <SvgThriller className="w-4 h-4 mr-2" />,
-//   },
-//   {
-//     label: "Action",
-//     link: "/films/genres/6",
-//     icon: <SvgAction className="w-4 h-4 mr-2" />,
-//   },
-//   {
-//     label: "Melodramas",
-//     link: "/films/genres/7",
-//     icon: <SvgDrama className="w-4 h-4 mr-2" />,
-//   },
-//   {
-//     label: "Adventures",
-//     link: "/films/genres/8",
-//     icon: <SvgAdventure className="w-4 h-4 mr-2" />,
-//   },
-// ];
+import { SvgUser } from "@/shared/ui/svg/SvgUser";
 
 const library = [
   // {
@@ -87,6 +40,11 @@ const library = [
     label: "Мои отзывы",
     link: "/reviews",
     icon: <SvgReview className="mr-2 h-4 w-4" />,
+  },
+  {
+    label: "Профиль",
+    link: "/profile",
+    icon: <SvgUser className="mr-2 h-4 w-4" />,
   },
   {
     label: "Premium",
@@ -118,7 +76,7 @@ export function HomeSidebar() {
               {library.map((lib) => (
                 <SidebarMenuItem key={lib.label}>
                   <SidebarMenuButton
-                    isActive={location.pathname === lib.link}
+                    isActive={location.pathname.includes(lib.link)}
                     asChild
                   >
                     <NavLink

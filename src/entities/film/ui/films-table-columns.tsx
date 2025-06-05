@@ -45,21 +45,21 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
       );
     },
   },
-  {
-    accessorKey: "description",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Description" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <p className="max-w-[500px] truncate font-medium">
-            {row.getValue("description")}
-          </p>
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "description",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Description" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="flex space-x-2">
+  //         <p className="max-w-[300px] truncate font-medium">
+  //           {row.getValue("description")}
+  //         </p>
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "genres",
     enableSorting: false,
@@ -84,13 +84,13 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
     },
   },
   {
-    accessorKey: "release_date",
+    accessorKey: "releaseDate",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Release date" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center">{row.getValue("release_date")}</div>
+        <div className="flex items-center">{row.getValue("releaseDate")}</div>
       );
     },
   },
@@ -109,8 +109,8 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
       <DataTableRowActions
         deleteModal={
           <DeleteModal
-            title="Deleting film"
-            description="Are you sure want to delete this film?"
+            title="Удаление фильма"
+            description="Вы уверены, что хотите удалить этот фильм?"
             onDelete={() => {
               console.log("deleted");
             }}

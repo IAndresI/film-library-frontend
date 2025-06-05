@@ -14,7 +14,7 @@ export const AdminHeader = () => {
       </div>
       <div className="flex items-center gap-5">
         <Button variant="secondary" asChild>
-          <Link to="/">Home</Link>
+          <Link to="/">Пользовательский режим</Link>
         </Button>
         <ModeToggle />
         {user && (

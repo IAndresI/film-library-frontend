@@ -11,7 +11,7 @@ export const UserReviewsPage = () => {
 
   const { isLoading, data } = useQuery(reviewApi.getAllReviewsQueryOptions());
 
-  const userReviews = data?.filter((review) => review.user === user?.id);
+  const userReviews = data?.filter((review) => +review.user === user?.id);
 
   return (
     <motion.section

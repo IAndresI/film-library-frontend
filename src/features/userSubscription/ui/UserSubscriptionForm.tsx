@@ -31,6 +31,7 @@ export function UserSubscriptionForm({
       setSelectedPlan(subscriptionPlans[0]);
     }
   }, [subscriptionPlans]);
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-4">
@@ -65,7 +66,7 @@ export function UserSubscriptionForm({
               onClick={() => {
                 createPayment({
                   planId: selectedPlan.id,
-                  redirectUrl: window.location.href,
+                  redirectUrl: window.location.origin + "/profile/history",
                 });
               }}
             >

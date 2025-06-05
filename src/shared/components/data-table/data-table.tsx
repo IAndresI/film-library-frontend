@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -35,6 +35,7 @@ interface DataTableProps<TData, TValue> {
   onColumnFiltersChange: OnChangeFn<ColumnFiltersState>;
   sorting: SortingState;
   onSortingChange: OnChangeFn<SortingState>;
+  searchField?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -46,6 +47,7 @@ export function DataTable<TData, TValue>({
   onColumnFiltersChange,
   sorting,
   onSortingChange,
+  searchField,
 }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
@@ -73,13 +75,13 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  useEffect(() => {
-    console.log(columnFilters, sorting, pagination);
-  }, [columnFilters, sorting, pagination]);
+  // useEffect(() => {
+  //   console.log(columnFilters, sorting, pagination);
+  // }, [columnFilters, sorting, pagination]);
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} searchField={searchField} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

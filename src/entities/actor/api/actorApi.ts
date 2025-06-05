@@ -6,13 +6,13 @@ export const actorApi = {
   getAllActorsQueryOptions: () => {
     return queryOptions({
       queryKey: ["actors"],
-      queryFn: apiInstance.get<IActor[]>("/actor/"),
+      queryFn: apiInstance.get<IActor[]>("/actors"),
     });
   },
   getActorQueryOptions: (id: number) => {
     return queryOptions({
-      queryKey: ["actor", id],
-      queryFn: apiInstance.get<IActorWithMovies>(`/actor/${id}/`),
+      queryKey: ["actors", id],
+      queryFn: apiInstance.get<IActorWithMovies>(`/actors/${id}`),
     });
   },
 };

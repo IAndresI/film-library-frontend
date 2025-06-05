@@ -3,16 +3,18 @@ import type { IFilm } from "../film/dto";
 export interface IActor {
   id: number;
   name: string;
-  image: string;
-  birthday: string;
-  description: string;
+  image?: string;
+  birthday?: string;
+  description?: string;
+  role?: string;
 }
 
 export interface IActorWithMovies {
   id: number;
   name: string;
-  image: string;
-  birthday: string;
-  description: string;
+  image?: string;
+  birthday?: string;
+  description?: string;
+  role?: string;
   movies: IFilm[];
 }

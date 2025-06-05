@@ -9,7 +9,6 @@ import { router } from "./router.tsx";
 import { queryClient } from "@/shared/api/query-client.ts";
 
 import "./index.css";
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

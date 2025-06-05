@@ -21,7 +21,7 @@ export const PremiumPage = () => {
       <div className="flex flex-col items-center justify-center gap-4 px-5 pt-20 pb-12">
         <h1 className="text-[60px] font-extrabold uppercase">
           {haveSubscription && "Вы уже"}{" "}
-          <span className="text-rainbow">Premium</span>
+          <span className="rainbow-text">Premium</span>
         </h1>
         {!haveSubscription && (
           <h2 className="text-2xl font-semibold">
