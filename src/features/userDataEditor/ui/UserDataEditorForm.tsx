@@ -16,11 +16,33 @@ import {
   FormMessage,
   Form,
 } from "@/shared/ui/form";
+import { ImageInput } from "@/shared/ui/image-input";
+import { getImageUrl } from "@/shared/lib/utils";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Имя обязательно" }).min(3, {
     message: "Имя должно быть не менее 3 символов",
   }),
+  avatar: z
+    .union([
+      z.instanceof(File, { message: "Выберите файл изображения" }),
+      z.string().url("Неверный формат URL изображения"),
+    ])
+    .refine((value) => {
+      if (typeof value === "string") return true;
+      return value.size <= 5 * 1024 * 1024;
+    }, "Размер файла не должен превышать 5MB")
+    .refine((value) => {
+      if (typeof value === "string") return true;
+      return [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+        "image/gif",
+      ].includes(value.type);
+    }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF")
+    .optional(),
 });
 
 export function UserDataEditorForm({
@@ -30,17 +52,25 @@ export function UserDataEditorForm({
 }: { userData: IUser } & React.HTMLAttributes<HTMLFormElement>) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: userData.name,
-    },
   });
   const { editUserData, isLoading } = useEditUserData();
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    editUserData({
-      name: data.name,
-      id: userData.id,
+  React.useEffect(() => {
+    form.reset({
+      name: userData.name,
+      avatar: getImageUrl(userData.avatar),
     });
+  }, [userData.avatar]);
+
+  const onSubmit = ({ avatar, ...data }: z.infer<typeof formSchema>) => {
+    const editData =
+      typeof avatar === "undefined"
+        ? { ...data, avatar: null, id: userData.id }
+        : typeof avatar === "string"
+          ? { ...data, id: userData.id }
+          : { ...data, avatar, id: userData.id };
+
+    editUserData(editData as Parameters<typeof editUserData>[0]);
   };
 
   return (
@@ -64,6 +94,27 @@ export function UserDataEditorForm({
                   <FormMessage />
                 </FormItem>
               )}
+            />
+            <FormField
+              control={form.control}
+              name="avatar"
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Аватар</FormLabel>
+                    <FormControl>
+                      <ImageInput
+                        value={typeof value === "string" ? null : value || null}
+                        onChange={onChange}
+                        existingImageUrl={
+                          typeof value === "string" ? value : undefined
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
             <Button
               className="w-full capitalize"

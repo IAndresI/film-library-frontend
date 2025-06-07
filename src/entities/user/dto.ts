@@ -7,4 +7,5 @@ export interface IUser {
   email: string;
   created_at: string;
   subscription: ISubscription;
+  isAdmin: boolean;
 }

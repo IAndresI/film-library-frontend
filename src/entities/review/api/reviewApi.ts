@@ -9,6 +9,12 @@ export const reviewApi = {
       queryFn: apiInstance.get<IReview[]>(`/reviews`),
     });
   },
+  getAllReviewsOnApproveQueryOptions: () => {
+    return queryOptions({
+      queryKey: ["reviews", "pending"],
+      queryFn: apiInstance.get<IReview[]>(`/reviews/pending`),
+    });
+  },
   createReview: (review: Omit<IAllReviews, "id">) =>
     apiInstance.post<IReview>(`/reviews`, review),
   editReview: (review: Partial<IAllReviews>) =>

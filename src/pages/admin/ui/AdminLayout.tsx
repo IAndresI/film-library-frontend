@@ -9,7 +9,7 @@ export const AdminLayout = () => {
   const user = useUser();
   const navigate = useNavigate();
 
-  if (!user) {
+  if (!user || !user.isAdmin) {
     navigate("/");
   }
 

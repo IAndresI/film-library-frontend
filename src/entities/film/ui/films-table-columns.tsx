@@ -20,7 +20,7 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {
     accessorKey: "image",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Image" />
+      <DataTableColumnHeader column={column} title="Изображение" />
     ),
     cell: ({ row }) => {
       return (
@@ -37,7 +37,7 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Название" />
     ),
     cell: ({ row }) => {
       return (
@@ -53,7 +53,7 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
     accessorKey: "genres",
     enableSorting: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Genres" />
+      <DataTableColumnHeader column={column} title="Жанры" />
     ),
     cell: ({ row }) => {
       const genres = row.getValue("genres") as IGenre[];
@@ -75,7 +75,7 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {
     accessorKey: "releaseDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Release date" />
+      <DataTableColumnHeader column={column} title="Дата выхода" />
     ),
     cell: ({ row }) => {
       return (
@@ -86,10 +86,12 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {
     accessorKey: "rating",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Rating" />
+      <DataTableColumnHeader column={column} title="Рейтинг" />
     ),
     cell: ({ row }) => {
-      return <div className="flex items-center">{row.getValue("rating")}</div>;
+      return (
+        <div className="flex items-center">{row.getValue("rating") || "-"}</div>
+      );
     },
   },
   {

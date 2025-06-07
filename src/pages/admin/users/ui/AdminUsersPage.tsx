@@ -8,6 +8,8 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import { usersTableColumns } from "@/entities/user/ui/users-table-columns";
+import { useQuery } from "@tanstack/react-query";
+import { userApi } from "@/entities/user/api/userApi";
 
 export const AdminUsersPage = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -16,6 +18,9 @@ export const AdminUsersPage = () => {
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const { data: users } = useQuery(userApi.getAllUsersQueryOptions());
+
   return (
     <motion.section
       className="col-span-3 lg:col-span-4"
@@ -27,7 +32,9 @@ export const AdminUsersPage = () => {
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">Users</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Пользователи
+            </h2>
           </div>
         </div>
         <Separator className="my-4" />
@@ -40,7 +47,7 @@ export const AdminUsersPage = () => {
           pagination={pagination}
           onPaginationChange={setPagination}
           columns={usersTableColumns}
-          data={[]}
+          data={users || []}
         />
       </div>
     </motion.section>

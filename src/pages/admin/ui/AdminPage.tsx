@@ -7,6 +7,7 @@ import { AdminFilmEditorPage } from "../films/ui/AdminFilmEditorPage";
 import { AdminReviewsPage } from "../reviews/ui/AdminReviewsPage";
 import { AdminActorsPage } from "../actors/ui/AdminActorsPage";
 import { AdminActorEditorPage } from "../actors/ui/AdminActorEditorPage";
+import { AdminUserInfoPage } from "../users/ui/AdminUserInfoPage";
 
 export const AdminPage = () => {
   const location = useLocation();
@@ -19,7 +20,12 @@ export const AdminPage = () => {
         <Route element={<AdminFilmEditorPage />} path="/films/adding" />
         <Route element={<AdminFilmEditorPage />} path="/films/:id" />
         <Route element={<AdminUsersPage />} path="/users" />
+        <Route element={<AdminUserInfoPage />} path="/users/:id" />
         <Route element={<AdminReviewsPage />} path="/reviews" />
+        <Route
+          element={<AdminReviewsPage isOnApprove />}
+          path="/reviews/on-approve"
+        />
         <Route element={<AdminActorsPage />} path="/actors" />
         <Route element={<AdminActorEditorPage />} path="/actors/adding" />
         <Route element={<AdminActorEditorPage />} path="/actors/:id" />

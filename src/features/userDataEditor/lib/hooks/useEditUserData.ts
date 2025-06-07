@@ -22,13 +22,9 @@ export const useEditUserData = (props?: {
   } = useMutation({
     mutationFn: userDataEditorApi.editUserData,
     onSuccess: (data, variables, context) => {
-      const currentUser = queryClient.getQueryData<IUser>(["user"]);
-      if (currentUser && data) {
-        queryClient.setQueryData(["user"], {
-          ...currentUser,
-          ...data,
-        });
-      }
+      queryClient.invalidateQueries({
+        queryKey: ["users", variables.id],
+      });
       onSuccess?.(data, variables, context);
     },
   });

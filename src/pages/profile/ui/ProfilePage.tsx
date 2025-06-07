@@ -37,6 +37,10 @@ export const ProfilePage = () => {
     user.subscription &&
     user.subscription.status === SubscriptionStatus.EXPIRED;
 
+  const isCancelledSubscription =
+    user.subscription &&
+    user.subscription.status === SubscriptionStatus.CANCELLED;
+
   const isNoSubscription = !user.subscription;
 
   const { data: orders } = useQuery(
@@ -132,6 +136,19 @@ export const ProfilePage = () => {
                   </div>
                   <Button size="lg" className="w-fit" asChild variant="rainbow">
                     <Link to="/premium">Продлить подписку</Link>
+                  </Button>
+                </div>
+              )}
+              {isCancelledSubscription && (
+                <div className="flex flex-col gap-2">
+                  <div>
+                    <div>Ваша подписка отменена:</div>
+                    <span className="text-muted-foreground text-sm">
+                      {user.subscription.name}
+                    </span>
+                  </div>
+                  <Button size="lg" className="w-fit" asChild variant="rainbow">
+                    <Link to="/premium">Оформить подписку</Link>
                   </Button>
                 </div>
               )}

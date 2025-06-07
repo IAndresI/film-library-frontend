@@ -22,7 +22,6 @@ import { authApi } from "@/features/auth/api";
 import { SvgLogout } from "@/shared/ui/svg/SvgLogout";
 import { SubscriptionStatus } from "@/entities/subscription/dto";
 import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-const isAdmin = true;
 
 export const HomeHeader = () => {
   const user = useUser();
@@ -49,7 +48,7 @@ export const HomeHeader = () => {
         <SidebarTrigger className="ml-4" />
       </div>
       <div className="flex items-center gap-5">
-        {isAdmin && (
+        {user.isAdmin && (
           <Button variant="secondary" asChild>
             <Link to="/admin">Панель администратора</Link>
           </Button>
@@ -104,7 +103,8 @@ export const HomeHeader = () => {
         <ModeToggle />
 
         {(!user.subscription ||
-          user.subscription.status === SubscriptionStatus.EXPIRED) && (
+          user.subscription.status === SubscriptionStatus.EXPIRED ||
+          user.subscription.status === SubscriptionStatus.CANCELLED) && (
           <Button asChild variant="rainbow">
             <Link to="/premium">Premium</Link>
           </Button>

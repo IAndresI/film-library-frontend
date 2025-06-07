@@ -1,6 +1,4 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-
-import { BookmarkIcon } from "@radix-ui/react-icons";
 import { SvgFire } from "../../../shared/ui/svg/SvgFire";
 import { SvgActor } from "../../../shared/ui/svg/SvgActor";
 import { SvgReview } from "../../../shared/ui/svg/SvgReview";
@@ -18,8 +16,10 @@ import {
 } from "@/shared/ui/sidebar";
 import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
 import { SvgLoupe } from "@/shared/ui/svg/SvgLoupe";
+import { SvgUndeReview } from "@/shared/ui/svg/SvgUndeReview";
+import { SvgUsers } from "@/shared/ui/svg/SvgUsers";
 
-const films = [
+const links = [
   {
     label: "Обзоры",
     link: "/admin",
@@ -34,7 +34,7 @@ const films = [
   {
     label: "Пользователи",
     link: "/admin/users",
-    icon: <BookmarkIcon className="mr-2 h-4 w-4" />,
+    icon: <SvgUsers className="mr-2 h-4 w-4" />,
   },
   {
     label: "Актеры",
@@ -42,9 +42,16 @@ const films = [
     icon: <SvgActor className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Отзывы",
+    label: "Все отзывы",
     link: "/admin/reviews",
     icon: <SvgReview className="mr-2 h-4 w-4" />,
+    index: true,
+  },
+  {
+    label: "Отзывы на модерации",
+    link: "/admin/reviews/on-approve",
+    icon: <SvgUndeReview className="mr-2 h-4 w-4" />,
+    index: true,
   },
 ];
 
@@ -66,22 +73,22 @@ export function AdminSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {films.map((lib) => (
-                <SidebarMenuItem key={lib.label}>
+              {links.map((link) => (
+                <SidebarMenuItem key={link.label}>
                   <SidebarMenuButton
                     isActive={
-                      lib.index
-                        ? location.pathname === lib.link
-                        : location.pathname.includes(lib.link)
+                      link.index
+                        ? location.pathname === link.link
+                        : location.pathname.includes(link.link)
                     }
                     asChild
                   >
                     <NavLink
-                      to={lib.link}
+                      to={link.link}
                       className="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                     >
-                      {lib.icon}
-                      {lib.label}
+                      {link.icon}
+                      {link.label}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

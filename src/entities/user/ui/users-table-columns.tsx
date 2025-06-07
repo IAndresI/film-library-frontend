@@ -1,6 +1,13 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../../../shared/components/data-table/data-table-column-header";
 import type { IUser } from "@/entities/user/dto";
+import { getImageUrl } from "@/shared/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
+import { formatDate } from "@/shared/lib/helpers";
+import { DataTableRowActions } from "@/shared/components/data-table/data-table-row-actions";
+import { DeleteModal } from "@/shared/components/DeleteModal";
+import { userApi } from "../api/userApi";
+import { SubscriptionStatus } from "@/entities/subscription/dto";
 
 export const usersTableColumns: ColumnDef<IUser>[] = [
   {
@@ -13,54 +20,36 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "googleId",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Google ID" />
-    ),
-    cell: ({ row }) => <div>{row.getValue("googleId")}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "avatar",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Avatar" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <img className="h-10 w-10 rounded" src={row.getValue("avatar")} />
-        </div>
-      );
-    },
-    enableSorting: false,
-  },
-  {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Пользователь" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("name")}
+        <div className="flex items-center space-x-2">
+          <Avatar className="size-10">
+            <AvatarImage src={getImageUrl(row.original.avatar)} />
+            <AvatarFallback className="text-lg uppercase">
+              {row.original.name.slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+          <span className="block truncate font-medium">
+            {row.original.name}
           </span>
         </div>
       );
     },
+    enableSorting: false,
   },
   {
-    accessorKey: "created_at",
+    accessorKey: "createdAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Registred at" />
+      <DataTableColumnHeader column={column} title="Зарегистрирован" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("created_at")}
-          </span>
+          {formatDate(row.getValue("createdAt"))}
         </div>
       );
     },
@@ -80,8 +69,57 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
       );
     },
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => <DataTableRowActions row={row} />,
-  // },
+  {
+    accessorKey: "isAdmin",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Админ" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("isAdmin") ? "Да" : "Нет"}</div>,
+    enableSorting: false,
+  },
+  {
+    accessorKey: "subscription",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Подписка" />
+    ),
+    cell: ({ row }) => {
+      const subscription = row.original.subscription;
+      return (
+        <div>
+          {subscription &&
+            subscription.status === SubscriptionStatus.EXPIRED &&
+            "Истекла"}
+          {subscription &&
+            subscription.status === SubscriptionStatus.ACTIVE &&
+            "Активна"}
+          {subscription &&
+            subscription.status === SubscriptionStatus.CANCELLED &&
+            "Отменена"}
+          {!subscription && "Нет подписки"}
+        </div>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <DataTableRowActions
+        actions={[
+          {
+            title: "Информация",
+            link: `/admin/users/${row.original.id}`,
+          },
+        ]}
+        deleteModal={
+          <DeleteModal
+            title="Удаление пользователя"
+            description={`Вы уверены, что хотите удалить пользователя ${row.original.name}?`}
+            onDelete={() => userApi.deleteUser(row.original.id)}
+            queryKey={["users"]}
+          />
+        }
+        row={row}
+      />
+    ),
+  },
 ];

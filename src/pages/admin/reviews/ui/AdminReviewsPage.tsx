@@ -11,14 +11,22 @@ import { reviewsTableColumns } from "@/entities/review/ui/reviews-table-columns"
 import { useQuery } from "@tanstack/react-query";
 import { reviewApi } from "@/entities/review/api/reviewApi";
 
-export const AdminReviewsPage = () => {
+export const AdminReviewsPage = ({
+  isOnApprove,
+}: {
+  isOnApprove?: boolean;
+}) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const { data: reviews } = useQuery(reviewApi.getAllReviewsQueryOptions());
+  const { data: reviews } = useQuery(
+    isOnApprove
+      ? reviewApi.getAllReviewsOnApproveQueryOptions()
+      : reviewApi.getAllReviewsQueryOptions(),
+  );
   return (
     <motion.section
       className="col-span-3 lg:col-span-4"
@@ -30,7 +38,9 @@ export const AdminReviewsPage = () => {
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">Отзывы</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              {isOnApprove ? "Отзывы на модерации" : "Все отзывы"}
+            </h2>
           </div>
         </div>
         <Separator className="my-4" />
