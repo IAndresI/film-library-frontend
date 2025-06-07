@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { UserReviewSkeleton } from "@/entities/review/ui/UserReviewSkeleton";
 import { reviewApi } from "@/entities/review/api/reviewApi";
-import { UserReviewCard } from "@/pages/home/user-reviews/ui/UserReviewCard";
+// import { UserReviewCard } from "@/pages/home/user-reviews/ui/UserReviewCard";
 import { useUser } from "@/app/providers";
 
 export const UserReviewsPage = () => {
@@ -41,9 +41,9 @@ export const UserReviewsPage = () => {
                     key={`skeleton_${i}`}
                   />
                 ))
-            : userReviews?.map((review, i, arr) => (
+            : userReviews?.map((_, i, arr) => (
                 <>
-                  <UserReviewCard key={review.id} review={review} />
+                  {/* <UserReviewCard key={review.id} review={review} /> */}
                   {i !== arr.length - 1 && <Separator className="mt-5" />}
                 </>
               ))}

@@ -1,4 +1,4 @@
-import type { IActor } from "../actor/dto";
+import type { IFilmActor } from "../actor/dto";
 
 export interface IGenre {
   icon: string;
@@ -18,5 +18,5 @@ export interface IFilm {
   isVisible?: boolean;
   rating?: number;
   genres: IGenre[];
-  actors: IActor[];
+  actors: IFilmActor[];
 }

@@ -37,4 +37,5 @@ export const filmApi = {
       queryFn: apiInstance.get<IFilm>(`/films/admin/${id}`),
     });
   },
+  deleteFilm: (id: number) => apiInstance.delete<IFilm>(`/films/${id}`),
 };

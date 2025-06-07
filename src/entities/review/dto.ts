@@ -3,10 +3,12 @@ import type { IUser } from "../user/dto";
 
 export interface IReview {
   id: number;
-  user: IUser;
-  movie: IFilm;
   rating: number;
   text: string;
+  createdAt: string;
+  isApproved: boolean;
+  user: IUser;
+  film: IFilm;
 }
 
 export interface IAllReviews {

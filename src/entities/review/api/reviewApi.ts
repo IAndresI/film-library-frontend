@@ -6,13 +6,13 @@ export const reviewApi = {
   getAllReviewsQueryOptions: () => {
     return queryOptions({
       queryKey: ["reviews"],
-      queryFn: apiInstance.get<IAllReviews[]>(`/review/`),
+      queryFn: apiInstance.get<IReview[]>(`/reviews`),
     });
   },
   createReview: (review: Omit<IAllReviews, "id">) =>
-    apiInstance.post<IReview>(`/review/`, review),
+    apiInstance.post<IReview>(`/reviews`, review),
   editReview: (review: Partial<IAllReviews>) =>
-    apiInstance.put<IReview>(`/review/${review.id}/edit`, review),
+    apiInstance.put<IReview>(`/reviews/${review.id}/edit`, review),
   deleteReview: (reviewId: number) =>
-    apiInstance.delete<IReview>(`/review/${reviewId}/delete`),
+    apiInstance.delete<IReview>(`/reviews/${reviewId}`),
 };

@@ -10,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import type { JSX } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 interface Task {
   id: string;
@@ -21,16 +23,30 @@ interface Task {
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
-  editModal: JSX.Element;
-  deleteModal: JSX.Element;
+  deleteModal?: JSX.Element;
+  editModal?: JSX.Element;
+  actions?: (
+    | {
+        title: string;
+        link: string;
+      }
+    | JSX.Element
+  )[];
 }
 
 export function DataTableRowActions<TData>({
   row,
   editModal,
   deleteModal,
+  actions,
 }: DataTableRowActionsProps<TData>) {
   const task = row.original as Task;
+
+  const allActions = [
+    ...(editModal ? [editModal] : []),
+    ...(deleteModal ? [deleteModal] : []),
+    ...(actions || []),
+  ];
 
   return (
     <DropdownMenu>
@@ -44,9 +60,25 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent id={task.id} align="end" className="w-[160px]">
-        <DropdownMenuItem asChild>{editModal}</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>{deleteModal}</DropdownMenuItem>
+        {allActions.map((action, i, arr) => {
+          return (
+            <React.Fragment key={`action_${i}_${row.id}`}>
+              {typeof action === "object" && "link" in action ? (
+                <DropdownMenuItem asChild>
+                  <Link
+                    className="cursor-pointer rounded-md px-4"
+                    to={action.link}
+                  >
+                    {action.title}
+                  </Link>
+                </DropdownMenuItem>
+              ) : (
+                action
+              )}
+              {i !== arr.length - 1 && <DropdownMenuSeparator />}
+            </React.Fragment>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );

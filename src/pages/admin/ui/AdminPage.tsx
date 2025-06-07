@@ -4,6 +4,9 @@ import { AdminFilmsPage } from "../films/ui/AdminFilmsPage";
 import { AdminUsersPage } from "../users/ui/AdminUsersPage";
 import { AdminHomePage } from "../home/ui/AdminHomePage";
 import { AdminFilmEditorPage } from "../films/ui/AdminFilmEditorPage";
+import { AdminReviewsPage } from "../reviews/ui/AdminReviewsPage";
+import { AdminActorsPage } from "../actors/ui/AdminActorsPage";
+import { AdminActorEditorPage } from "../actors/ui/AdminActorEditorPage";
 
 export const AdminPage = () => {
   const location = useLocation();
@@ -16,6 +19,10 @@ export const AdminPage = () => {
         <Route element={<AdminFilmEditorPage />} path="/films/adding" />
         <Route element={<AdminFilmEditorPage />} path="/films/:id" />
         <Route element={<AdminUsersPage />} path="/users" />
+        <Route element={<AdminReviewsPage />} path="/reviews" />
+        <Route element={<AdminActorsPage />} path="/actors" />
+        <Route element={<AdminActorEditorPage />} path="/actors/adding" />
+        <Route element={<AdminActorEditorPage />} path="/actors/:id" />
       </Routes>
     </AnimatePresence>
   );

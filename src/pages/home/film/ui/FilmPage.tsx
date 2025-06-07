@@ -29,7 +29,7 @@ import { filmApi } from "@/entities/film/api/filmApi";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
 import { Badge } from "@/shared/ui/badge";
 import { reviewApi } from "@/entities/review/api/reviewApi";
-import type { IAllReviews } from "@/entities/review/dto";
+import type { IReview } from "@/entities/review/dto";
 import { userApi } from "@/entities/user/api/userApi";
 import { useUser } from "@/app/providers";
 
@@ -40,7 +40,7 @@ export const FilmPage = () => {
 
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
-  const [userReview, setUserReview] = useState<IAllReviews>();
+  const [userReview, setUserReview] = useState<IReview>();
 
   const [isInFavorite, setIsInFavorite] = useState(false);
 
@@ -105,7 +105,7 @@ export const FilmPage = () => {
   useEffect(() => {
     if (reviews && user) {
       const userReview = reviews.find(
-        (review) => review.movie === film?.id && +user.id === +review.user,
+        (review) => review.film.id === film?.id && +user.id === +review.user,
       );
       if (userReview) {
         setUserReview(userReview);
@@ -124,8 +124,8 @@ export const FilmPage = () => {
         id: userReview.id,
         text: reviewText,
         rating: reviewRating,
-        movie: userReview.movie,
-        user: userReview.user,
+        // film: userReview.film.id,
+        user: String(userReview.user.id),
       });
     } else {
       if (user && film) {
@@ -143,7 +143,7 @@ export const FilmPage = () => {
     setReviewRating(rate);
   };
 
-  const filmReviews = reviews?.filter((review) => review.movie === film?.id);
+  const filmReviews = reviews?.filter((review) => review.film.id === film?.id);
 
   return (
     <motion.section

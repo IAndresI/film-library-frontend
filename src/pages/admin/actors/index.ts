@@ -1,0 +1,1 @@
+export { AdminActorsPage } from "./ui";

@@ -4,7 +4,8 @@ import { DataTableRowActions } from "../../../shared/components/data-table/data-
 import type { IFilm, IGenre } from "@/entities/film/dto";
 import { Badge } from "@/shared/ui/badge";
 import { DeleteModal } from "@/shared/components/DeleteModal";
-import { FilmEditModal } from "@/pages/admin/films/ui/FilmEditModal";
+import { filmApi } from "../api/filmApi";
+import { getImageUrl } from "@/shared/lib/utils";
 
 export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {
@@ -24,7 +25,10 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          <img className="h-10 w-10 rounded" src={row.getValue("image")} />
+          <img
+            className="h-10 w-10 rounded object-cover"
+            src={getImageUrl(row.getValue("image"))}
+          />
         </div>
       );
     },
@@ -45,21 +49,6 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "description",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Description" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="flex space-x-2">
-  //         <p className="max-w-[300px] truncate font-medium">
-  //           {row.getValue("description")}
-  //         </p>
-  //       </div>
-  //     );
-  //   },
-  // },
   {
     accessorKey: "genres",
     enableSorting: false,
@@ -107,16 +96,20 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
     id: "actions",
     cell: ({ row }) => (
       <DataTableRowActions
+        actions={[
+          {
+            title: "Редактировать",
+            link: `/admin/films/${row.original.id}`,
+          },
+        ]}
         deleteModal={
           <DeleteModal
             title="Удаление фильма"
-            description="Вы уверены, что хотите удалить этот фильм?"
-            onDelete={() => {
-              console.log("deleted");
-            }}
+            description={`Вы уверены, что хотите удалить фильм ${row.original.name}?`}
+            onDelete={() => filmApi.deleteFilm(row.original.id)}
+            queryKey={["films"]}
           />
         }
-        editModal={<FilmEditModal film={row.original} />}
         row={row}
       />
     ),

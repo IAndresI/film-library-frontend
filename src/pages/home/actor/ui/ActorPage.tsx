@@ -63,18 +63,18 @@ export const ActorPage = () => {
           </div>
           <div className="mt-6 space-y-1">
             <h2 className="text-2xl font-semibold tracking-tight">Films</h2>
-            <p className="text-sm text-muted-foreground">
-              {data.movies.length} films
+            <p className="text-muted-foreground text-sm">
+              {data.films.length} films
             </p>
           </div>
           <Separator className="my-4" />
           <div className="relative">
             <ScrollArea>
               <div className="flex space-x-4 pb-4">
-                {data.movies.map((movie) => (
+                {data.films.map((film) => (
                   <FilmCard
-                    key={movie.name}
-                    film={movie}
+                    key={film.name}
+                    film={film}
                     className="w-[150px]"
                     aspectRatio="square"
                     width={150}
