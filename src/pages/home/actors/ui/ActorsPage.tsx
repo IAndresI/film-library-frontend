@@ -8,7 +8,14 @@ import { ActorSkeleton } from "@/entities/actor/ui/ActorSkeleton";
 
 export const ActorsPage = () => {
   const { isLoading, data, isSuccess } = useQuery(
-    actorApi.getAllActorsQueryOptions(),
+    actorApi.getAllActorsQueryOptions({
+      filters: [],
+      sort: [],
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+      },
+    }),
   );
 
   return (
@@ -38,8 +45,8 @@ export const ActorsPage = () => {
                 />
               ))}
           {data &&
-            data.length > 0 &&
-            data.map((actor) => (
+            data.data.length > 0 &&
+            data.data.map((actor) => (
               <ActorCard
                 key={actor.name}
                 actor={actor}
@@ -48,7 +55,7 @@ export const ActorsPage = () => {
                 height={100}
               />
             ))}
-          {isSuccess && data && data.length === 0 && "No Info"}
+          {isSuccess && data && data.data.length === 0 && "No Info"}
         </div>
       </div>
     </motion.section>

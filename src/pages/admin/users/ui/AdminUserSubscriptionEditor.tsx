@@ -58,7 +58,7 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
             <div>Оформлена:</div>
             <div className="flex items-center gap-2">
               <span className="rainbow-text text-xl font-bold">
-                {user.subscription.name}
+                {user.subscription.plan.name}
               </span>
             </div>
           </div>

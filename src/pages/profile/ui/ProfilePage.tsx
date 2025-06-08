@@ -11,13 +11,9 @@ import { Button } from "@/shared/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { DataTable } from "@/shared/components";
 import { ordersTableColumns } from "@/entities/order/ui/orders-table-columns";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { orderApi } from "@/entities/order/api/orderApi";
-import type {
-  ColumnFiltersState,
-  PaginationState,
-  SortingState,
-} from "@tanstack/react-table";
+import type { PaginationState, SortingState } from "@tanstack/react-table";
 import { useState } from "react";
 
 export const ProfilePage = () => {
@@ -27,7 +23,6 @@ export const ProfilePage = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const isActiveSubscription =
@@ -43,9 +38,17 @@ export const ProfilePage = () => {
 
   const isNoSubscription = !user.subscription;
 
-  const { data: orders } = useQuery(
-    orderApi.getAllUserOrdersQueryOptions(user.id),
-  );
+  const params = {
+    filters: [],
+    sort: sorting,
+    pagination: pagination,
+    userId: user.id,
+  };
+
+  const { data: orders } = useQuery({
+    ...orderApi.getAllUserOrdersQueryOptions(params),
+    placeholderData: keepPreviousData,
+  });
 
   return (
     <motion.section
@@ -108,7 +111,7 @@ export const ProfilePage = () => {
                     <div>У вас оформлена:</div>
                     <div className="flex items-center gap-2">
                       <span className="rainbow-text text-xl font-bold">
-                        {user.subscription.name}
+                        {user.subscription.plan.name}
                       </span>
                     </div>
                   </div>
@@ -144,7 +147,7 @@ export const ProfilePage = () => {
                   <div>
                     <div>Ваша подписка отменена:</div>
                     <span className="text-muted-foreground text-sm">
-                      {user.subscription.name}
+                      {user.subscription.plan.name}
                     </span>
                   </div>
                   <Button size="lg" className="w-fit" asChild variant="rainbow">
@@ -169,12 +172,10 @@ export const ProfilePage = () => {
               <DataTable
                 sorting={sorting}
                 onSortingChange={setSorting}
-                columnFilters={columnFilters}
-                onColumnFiltersChange={setColumnFilters}
-                pagination={pagination}
+                pagination={orders?.pagination}
                 onPaginationChange={setPagination}
                 columns={ordersTableColumns}
-                data={orders || []}
+                data={orders?.data || []}
               />
             </TabsContent>
           </Tabs>

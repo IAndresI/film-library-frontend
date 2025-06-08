@@ -19,14 +19,23 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
     cell: ({ row }) => <div className="px-3">{row.getValue("id")}</div>,
     enableSorting: false,
     enableHiding: false,
+    meta: {
+      columnLabel: "ID",
+    },
   },
   {
     accessorKey: "film",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Фильм" />
+    id: "filmId",
+    header: ({ column, table }) => (
+      <DataTableColumnHeader
+        useMetaSortName={true}
+        table={table}
+        column={column}
+        title="Фильм"
+      />
     ),
-    cell: ({ row }) => {
-      const film = row.getValue("film") as IFilm;
+    cell: (row) => {
+      const film = row.getValue() as IFilm;
       return (
         <div className="flex items-center space-x-2">
           <img className="h-10 w-10 rounded" src={film.image} />
@@ -34,7 +43,11 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
         </div>
       );
     },
-    enableSorting: false,
+    meta: {
+      columnLabel: "Фильм",
+      filterField: "filmId",
+      sortField: "filmName",
+    },
   },
   {
     accessorKey: "rating",
@@ -42,16 +55,24 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
       <DataTableColumnHeader column={column} title="Рейтинг" />
     ),
     cell: ({ row }) => <div>{row.getValue("rating")}</div>,
-    enableSorting: false,
-    enableHiding: false,
+
+    meta: {
+      columnLabel: "Рейтинг",
+    },
   },
   {
     accessorKey: "user",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Пользователь" />
+    id: "userId",
+    header: ({ column, table }) => (
+      <DataTableColumnHeader
+        useMetaSortName={true}
+        table={table}
+        column={column}
+        title="Пользователь"
+      />
     ),
-    cell: ({ row }) => {
-      const user = row.getValue("user") as IUser;
+    cell: (row) => {
+      const user = row.getValue() as IUser;
       return (
         <div className="flex items-center space-x-2">
           <Avatar className="size-10">
@@ -64,7 +85,11 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
         </div>
       );
     },
-    enableSorting: false,
+    meta: {
+      columnLabel: "Пользователь",
+      filterField: "userId",
+      sortField: "userName",
+    },
   },
   {
     accessorKey: "createdAt",
@@ -80,21 +105,40 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
         </div>
       );
     },
+    meta: {
+      columnLabel: "Дата создания",
+    },
   },
+  // {
+  //   accessorKey: "text",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Отзыв" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <p className="max-w-[300px] truncate font-medium">
+  //         {row.getValue("text")}
+  //       </p>
+  //     );
+  //   },
+  // },
   {
-    accessorKey: "text",
+    accessorKey: "isApproved",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Отзыв" />
+      <DataTableColumnHeader column={column} title="На модерации" />
     ),
     cell: ({ row }) => {
       return (
-        <p className="max-w-[300px] truncate font-medium">
-          {row.getValue("text")}
+        <p className="truncate font-medium">
+          {row.getValue("isApproved") ? "Нет" : "Да"}
         </p>
       );
     },
+    enableSorting: false,
+    meta: {
+      columnLabel: "На модерации",
+    },
   },
-
   {
     id: "actions",
     cell: ({ row }) => (

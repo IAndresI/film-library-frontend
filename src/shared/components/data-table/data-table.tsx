@@ -25,16 +25,17 @@ import {
 } from "@/shared/ui/table";
 import { DataTablePagination } from "@/shared/components/data-table/data-table-pagination";
 import { DataTableToolbar } from "@/shared/components/data-table/data-table-toolbar";
+import type { IPagination } from "@/shared/model/pagination-response.model";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pagination: PaginationState;
   onPaginationChange: OnChangeFn<PaginationState>;
-  columnFilters: ColumnFiltersState;
-  onColumnFiltersChange: OnChangeFn<ColumnFiltersState>;
   sorting: SortingState;
   onSortingChange: OnChangeFn<SortingState>;
+  columnFilters?: ColumnFiltersState;
+  onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
+  pagination?: IPagination;
   searchField?: string;
 }
 
@@ -57,7 +58,10 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
-      pagination,
+      pagination: {
+        pageIndex: pagination?.pageIndex || 0,
+        pageSize: pagination?.pageSize || 10,
+      },
       columnVisibility,
     },
     manualSorting: true,
@@ -75,13 +79,11 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // useEffect(() => {
-  //   console.log(columnFilters, sorting, pagination);
-  // }, [columnFilters, sorting, pagination]);
-
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} searchField={searchField} />
+      {columnFilters && onColumnFiltersChange && (
+        <DataTableToolbar table={table} searchField={searchField} />
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -125,14 +127,14 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Ничего не найдено
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} pagination={pagination} />
     </div>
   );
 }

@@ -8,25 +8,41 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import { reviewsTableColumns } from "@/entities/review/ui/reviews-table-columns";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { reviewApi } from "@/entities/review/api/reviewApi";
 
 export const AdminReviewsPage = ({
-  isOnApprove,
+  reviewsOnModeration,
 }: {
-  isOnApprove?: boolean;
+  reviewsOnModeration?: boolean;
 }) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const { data: reviews } = useQuery(
-    isOnApprove
-      ? reviewApi.getAllReviewsOnApproveQueryOptions()
-      : reviewApi.getAllReviewsQueryOptions(),
-  );
+  const [columnSorting, setColumnSorting] = useState<SortingState>([]);
+
+  const params = {
+    filters: columnFilters,
+    sort: columnSorting,
+    pagination,
+  };
+
+  const { data: reviews } = useQuery({
+    ...reviewApi.getAllReviewsQueryOptions(params),
+    enabled: !reviewsOnModeration,
+    placeholderData: keepPreviousData,
+  });
+
+  const { data: reviewsOnApprove } = useQuery({
+    ...reviewApi.getAllReviewsOnApproveQueryOptions(params),
+    enabled: reviewsOnModeration,
+    placeholderData: keepPreviousData,
+  });
+
+  const tableData = reviewsOnModeration ? reviewsOnApprove : reviews;
+
   return (
     <motion.section
       className="col-span-3 lg:col-span-4"
@@ -39,22 +55,28 @@ export const AdminReviewsPage = ({
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-2xl font-semibold tracking-tight">
-              {isOnApprove ? "Отзывы на модерации" : "Все отзывы"}
+              {reviewsOnModeration ? "Отзывы на модерации" : "Все отзывы"}
             </h2>
           </div>
         </div>
         <Separator className="my-4" />
 
         <DataTable
-          searchField="text"
-          sorting={sorting}
-          onSortingChange={setSorting}
+          searchField="name"
+          sorting={columnSorting}
+          onSortingChange={setColumnSorting}
           columnFilters={columnFilters}
-          onColumnFiltersChange={setColumnFilters}
-          pagination={pagination}
+          onColumnFiltersChange={(filters) => {
+            setColumnFilters(filters);
+            setPagination((prev) => ({
+              ...prev,
+              pageIndex: 0,
+            }));
+          }}
+          pagination={tableData?.pagination}
           onPaginationChange={setPagination}
           columns={reviewsTableColumns}
-          data={reviews || []}
+          data={tableData?.data || []}
         />
       </div>
     </motion.section>

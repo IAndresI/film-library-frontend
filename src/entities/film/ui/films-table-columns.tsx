@@ -18,35 +18,24 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "image",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Изображение" />
+      <DataTableColumnHeader column={column} title="Фильм" />
     ),
-    cell: ({ row }) => {
+    cell: (row) => {
+      const film = row.row.original as IFilm;
       return (
-        <div className="flex space-x-2">
+        <div className="flex items-center space-x-2">
           <img
             className="h-10 w-10 rounded object-cover"
-            src={getImageUrl(row.getValue("image"))}
+            src={getImageUrl(film.image)}
           />
+          <span className="block truncate font-medium">{film.name}</span>
         </div>
       );
     },
-    enableSorting: false,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Название" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("name")}
-          </span>
-        </div>
-      );
+    meta: {
+      columnLabel: "Фильм",
     },
   },
   {
@@ -71,6 +60,9 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
         row.original.genres.find((el) => +el.id === +genre),
       );
     },
+    meta: {
+      columnLabel: "Жанры",
+    },
   },
   {
     accessorKey: "releaseDate",
@@ -82,6 +74,9 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
         <div className="flex items-center">{row.getValue("releaseDate")}</div>
       );
     },
+    meta: {
+      columnLabel: "Дата выхода",
+    },
   },
   {
     accessorKey: "rating",
@@ -92,6 +87,23 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
       return (
         <div className="flex items-center">{row.getValue("rating") || "-"}</div>
       );
+    },
+    meta: {
+      columnLabel: "Рейтинг",
+    },
+  },
+
+  {
+    accessorKey: "isVisible",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Видимый" />
+    ),
+    cell: ({ row }) => {
+      return <div>{row.getValue("isVisible") ? "Да" : "Нет"}</div>;
+    },
+    enableSorting: false,
+    meta: {
+      columnLabel: "Видимый",
     },
   },
   {

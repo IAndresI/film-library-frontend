@@ -19,7 +19,14 @@ export const AdminFilmEditorPage = () => {
   });
 
   const { data: actors } = useQuery({
-    ...actorApi.getAllActorsQueryOptions(),
+    ...actorApi.getAllActorsQueryOptions({
+      filters: [],
+      sort: [],
+      pagination: {
+        pageIndex: 0,
+        pageSize: 99999,
+      },
+    }),
   });
 
   return (
@@ -42,7 +49,7 @@ export const AdminFilmEditorPage = () => {
         <FilmDataEditorForm
           film={film}
           genres={genres || []}
-          actors={actors || []}
+          actors={actors?.data || []}
         />
       </div>
     </motion.section>

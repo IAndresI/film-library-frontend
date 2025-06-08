@@ -7,7 +7,7 @@ import {
   type PaginationState,
   type SortingState,
 } from "@tanstack/react-table";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { actorsTableColumns } from "@/entities/actor/ui/actors-table-columns";
 import { actorApi } from "@/entities/actor/api/actorApi";
 import { Link } from "react-router-dom";
@@ -19,8 +19,18 @@ export const AdminActorsPage = () => {
     pageSize: 10,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const { data: actors } = useQuery(actorApi.getAllActorsAdminQueryOptions());
+  const [columnSorting, setColumnSorting] = useState<SortingState>([]);
+
+  const params = {
+    filters: columnFilters,
+    sort: columnSorting,
+    pagination,
+  };
+
+  const { data: actors } = useQuery({
+    ...actorApi.getAllActorsAdminQueryOptions(params),
+    placeholderData: keepPreviousData,
+  });
   return (
     <motion.section
       className="col-span-3 lg:col-span-4"
@@ -41,15 +51,15 @@ export const AdminActorsPage = () => {
         <Separator className="my-4" />
 
         <DataTable
-          searchField="name"
-          sorting={sorting}
-          onSortingChange={setSorting}
+          searchField="actorName"
+          sorting={columnSorting}
+          onSortingChange={setColumnSorting}
           columnFilters={columnFilters}
           onColumnFiltersChange={setColumnFilters}
-          pagination={pagination}
+          pagination={actors?.pagination}
           onPaginationChange={setPagination}
           columns={actorsTableColumns}
-          data={actors || []}
+          data={actors?.data || []}
         />
       </div>
     </motion.section>

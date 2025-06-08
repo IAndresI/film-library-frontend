@@ -50,7 +50,14 @@ export const FilmPage = () => {
   });
 
   const { isLoading: isReviewsLoading, data: reviews } = useQuery(
-    reviewApi.getAllReviewsQueryOptions(),
+    reviewApi.getAllReviewsQueryOptions({
+      filters: [],
+      sort: [],
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+      },
+    }),
   );
   const { isLoading: isUserFavoritesLoading, data: userFavorites } = useQuery({
     ...userApi.getAllUserFavoritesQueryOptions(String(user!.id)),
@@ -104,7 +111,7 @@ export const FilmPage = () => {
 
   useEffect(() => {
     if (reviews && user) {
-      const userReview = reviews.find(
+      const userReview = reviews.data.find(
         (review) => review.film.id === film?.id && +user.id === +review.user,
       );
       if (userReview) {
@@ -143,7 +150,9 @@ export const FilmPage = () => {
     setReviewRating(rate);
   };
 
-  const filmReviews = reviews?.filter((review) => review.film.id === film?.id);
+  const filmReviews = reviews?.data?.filter(
+    (review) => review.film.id === film?.id,
+  );
 
   return (
     <motion.section

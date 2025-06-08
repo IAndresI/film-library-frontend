@@ -3,7 +3,7 @@ import { cn } from "@/shared/lib/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { subscriptionApi } from "@/entities/subscription/api";
 import { useEffect, useState } from "react";
-import type { ISubscription } from "@/entities/subscription/dto";
+import type { IPlan } from "@/entities/subscription/dto";
 import { Button } from "@/shared/ui/button";
 import {
   Select,
@@ -18,7 +18,7 @@ export function UserSubscriptionForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const [selectedPlan, setSelectedPlan] = useState<ISubscription>();
+  const [selectedPlan, setSelectedPlan] = useState<IPlan>();
 
   const { data: subscriptionPlans } = useQuery({
     ...subscriptionApi.getAllSubscriptionPlansQueryOptions(),

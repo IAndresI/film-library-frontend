@@ -1,21 +1,23 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../../../shared/components/data-table/data-table-column-header";
-import type { IOrder } from "../dto";
 import { formatDate } from "@/shared/lib/helpers";
-import { OrderStatus } from "@/shared/components/OrderStatus";
 import type { IUser } from "@/entities/user/dto";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import type { IPlan } from "@/entities/subscription/dto";
+import type { IPlan, ISubscription } from "../dto";
+import { SubscriptionStatus } from "@/shared/components/SubscriptionStatus";
 
-export const ordersTableColumns: ColumnDef<IOrder>[] = [
+export const subscriptionsTableColumns: ColumnDef<ISubscription>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
+      <DataTableColumnHeader className="pl-3" column={column} title="ID" />
     ),
-    cell: ({ row }) => <div>{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="px-3">{row.getValue("id")}</div>,
     enableSorting: false,
     enableHiding: false,
+    meta: {
+      columnLabel: "ID",
+    },
   },
   {
     accessorKey: "user",
@@ -74,64 +76,41 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
     },
     enableSorting: false,
   },
+
   {
-    accessorKey: "createdAt",
+    accessorKey: "startedAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата создания" />
+      <DataTableColumnHeader column={column} title="Начало" />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          {formatDate(row.getValue("createdAt"))}
+          <span className="max-w-[500px] truncate font-medium">
+            {formatDate(row.getValue("startedAt"))}
+          </span>
         </div>
       );
     },
     meta: {
-      columnLabel: "Дата создания",
+      columnLabel: "Начало",
     },
   },
   {
-    accessorKey: "amount",
+    accessorKey: "expiresAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Сумма" />
+      <DataTableColumnHeader column={column} title="Конец" />
     ),
     cell: ({ row }) => {
-      return <div className="flex space-x-2">{row.getValue("amount")} ₽</div>;
-    },
-    meta: {
-      columnLabel: "Сумма",
-    },
-  },
-  // {
-  //   accessorKey: "paymentMethod",
-  //   enableSorting: false,
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Метод оплаты" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="flex space-x-2">{row.getValue("paymentMethod")}</div>
-  //     );
-  //   },
-  //   meta: {
-  //     columnLabel: "Метод оплаты",
-  //   },
-  // },
-  {
-    accessorKey: "paidAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата оплаты" />
-    ),
-    cell: ({ row }) => {
-      const paidAt = row.original.paidAt;
       return (
-        <div className="flex items-center">
-          {paidAt ? formatDate(paidAt) : "-"}
+        <div className="flex space-x-2">
+          <span className="max-w-[500px] truncate font-medium">
+            {formatDate(row.getValue("expiresAt"))}
+          </span>
         </div>
       );
     },
     meta: {
-      columnLabel: "Дата оплаты",
+      columnLabel: "Конец",
     },
   },
   {
@@ -140,11 +119,40 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
       <DataTableColumnHeader column={column} title="Статус" />
     ),
     cell: ({ row }) => {
-      return <OrderStatus size="small" status={row.getValue("status")} />;
+      return (
+        <SubscriptionStatus size="small" status={row.getValue("status")} />
+      );
     },
+    enableSorting: false,
     meta: {
       columnLabel: "Статус",
     },
-    enableSorting: false,
   },
+  // {
+  //   accessorKey: "text",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Отзыв" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <p className="max-w-[300px] truncate font-medium">
+  //         {row.getValue("text")}
+  //       </p>
+  //     );
+  //   },
+  // },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => (
+  //     <DataTableRowActions
+  //       editModal={
+  //         <ReviewModerationModal
+  //           id={row.original.id}
+  //           isApproved={row.original.isApproved}
+  //         />
+  //       }
+  //       row={row}
+  //     />
+  //   ),
+  // },
 ];

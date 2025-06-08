@@ -15,7 +15,7 @@ export const FilmCategoryPage = () => {
   );
 
   const currentGenre = data
-    ? data[0]?.genres?.find((genre) => genre.id === Number(categoryId))
+    ? data.data[0]?.genres?.find((genre) => genre.id === Number(categoryId))
     : null;
 
   return (
@@ -37,7 +37,7 @@ export const FilmCategoryPage = () => {
         <Separator className="my-4" />
 
         <div className="grid grid-cols-4 place-items-center gap-4 pb-4 xl:grid-cols-5">
-          {data?.map((film, i) => (
+          {data?.data?.map((film, i) => (
             <FilmCard
               key={`${i}_${film.name}`}
               film={film}

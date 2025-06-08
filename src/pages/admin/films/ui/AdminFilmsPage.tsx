@@ -8,7 +8,7 @@ import {
   type PaginationState,
   type SortingState,
 } from "@tanstack/react-table";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { Button } from "@/shared/ui/button";
 import { Link } from "react-router-dom";
@@ -19,9 +19,18 @@ export const AdminFilmsPage = () => {
     pageSize: 10,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnSorting, setColumnSorting] = useState<SortingState>([]);
 
-  const { data: films } = useQuery(filmApi.getAllFilmsQueryOptions());
+  const params = {
+    filters: columnFilters,
+    sort: columnSorting,
+    pagination,
+  };
+
+  const { data: films } = useQuery({
+    ...filmApi.getAllFilmsQueryOptions(params),
+    placeholderData: keepPreviousData,
+  });
 
   return (
     <motion.section
@@ -44,14 +53,14 @@ export const AdminFilmsPage = () => {
 
         <DataTable
           searchField="name"
-          sorting={sorting}
-          onSortingChange={setSorting}
+          sorting={columnSorting}
+          onSortingChange={setColumnSorting}
           columnFilters={columnFilters}
           onColumnFiltersChange={setColumnFilters}
-          pagination={pagination}
+          pagination={films?.pagination}
           onPaginationChange={setPagination}
           columns={filmsTableColumns}
-          data={films || []}
+          data={films?.data || []}
         />
       </div>
     </motion.section>

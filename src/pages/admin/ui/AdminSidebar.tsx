@@ -15,16 +15,22 @@ import {
   useSidebar,
 } from "@/shared/ui/sidebar";
 import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
-import { SvgLoupe } from "@/shared/ui/svg/SvgLoupe";
 import { SvgUndeReview } from "@/shared/ui/svg/SvgUndeReview";
 import { SvgUsers } from "@/shared/ui/svg/SvgUsers";
+import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
+import { SvgPayment } from "@/shared/ui/svg/SvgPayment";
 
 const links = [
   {
-    label: "Обзоры",
+    label: "Подписки",
     link: "/admin",
-    icon: <SvgLoupe className="mr-2 h-4 w-4" />,
+    icon: <SvgCrown className="mr-2 h-4 w-4" />,
     index: true,
+  },
+  {
+    label: "Заказы",
+    link: "/admin/orders",
+    icon: <SvgPayment className="mr-2 h-4 w-4" />,
   },
   {
     label: "Фильмы",

@@ -1,18 +1,57 @@
 import { apiInstance } from "@/shared/api/base";
 import type { IActor, IActorWithFilms } from "@/entities/actor/dto";
 import { queryOptions } from "@tanstack/react-query";
+import type { IPaginationResponse } from "@/shared/model/pagination-response.model";
+import type {
+  ColumnFiltersState,
+  PaginationState,
+  SortingState,
+} from "@tanstack/react-table";
 
 export const actorApi = {
-  getAllActorsQueryOptions: () => {
+  getAllActorsQueryOptions: ({
+    filters,
+    sort,
+    pagination,
+  }: {
+    filters: ColumnFiltersState;
+    sort: SortingState;
+    pagination: PaginationState;
+  }) => {
     return queryOptions({
-      queryKey: ["actors"],
-      queryFn: apiInstance.get<IActor[]>("/actors"),
+      queryKey: ["actors", filters, sort, pagination],
+      queryFn: apiInstance.get<IPaginationResponse<IActor>>("/actors", {
+        params: {
+          filters,
+          sort,
+          pageIndex: pagination.pageIndex,
+          pageSize: pagination.pageSize,
+        },
+      }),
     });
   },
-  getAllActorsAdminQueryOptions: () => {
+  getAllActorsAdminQueryOptions: ({
+    filters,
+    sort,
+    pagination,
+  }: {
+    filters: ColumnFiltersState;
+    sort: SortingState;
+    pagination: PaginationState;
+  }) => {
     return queryOptions({
-      queryKey: ["actors", "admin"],
-      queryFn: apiInstance.get<IActor[]>("/actors/admin/all"),
+      queryKey: ["actors", "admin", filters, sort, pagination],
+      queryFn: apiInstance.get<IPaginationResponse<IActor>>(
+        "/actors/admin/all",
+        {
+          params: {
+            filters,
+            sort,
+            pageIndex: pagination.pageIndex,
+            pageSize: pagination.pageSize,
+          },
+        },
+      ),
     });
   },
   getActorQueryOptions: (id: number) => {

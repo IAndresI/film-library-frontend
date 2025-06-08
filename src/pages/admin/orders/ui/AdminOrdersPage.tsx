@@ -7,11 +7,11 @@ import {
   type PaginationState,
   type SortingState,
 } from "@tanstack/react-table";
-import { usersTableColumns } from "@/entities/user/ui/users-table-columns";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { userApi } from "@/entities/user/api/userApi";
+import { ordersTableColumns } from "@/entities/order/ui/orders-table-columns";
+import { orderApi } from "@/entities/order/api/orderApi";
 
-export const AdminUsersPage = () => {
+export const AdminOrdersPage = () => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -25,11 +25,10 @@ export const AdminUsersPage = () => {
     pagination,
   };
 
-  const { data: users } = useQuery({
-    ...userApi.getAllUsersQueryOptions(params),
+  const { data: subscriptions } = useQuery({
+    ...orderApi.getAllOrdersQueryOptions(params),
     placeholderData: keepPreviousData,
   });
-
   return (
     <motion.section
       className="col-span-3 lg:col-span-4"
@@ -41,23 +40,20 @@ export const AdminUsersPage = () => {
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Пользователи
-            </h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Заказы</h2>
           </div>
         </div>
         <Separator className="my-4" />
 
         <DataTable
-          searchField="name"
           sorting={columnSorting}
           onSortingChange={setColumnSorting}
           columnFilters={columnFilters}
           onColumnFiltersChange={setColumnFilters}
-          pagination={users?.pagination}
+          pagination={subscriptions?.pagination}
           onPaginationChange={setPagination}
-          columns={usersTableColumns}
-          data={users?.data || []}
+          columns={ordersTableColumns}
+          data={subscriptions?.data || []}
         />
       </div>
     </motion.section>

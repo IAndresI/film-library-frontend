@@ -39,7 +39,9 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
         </div>
       );
     },
-    enableSorting: false,
+    meta: {
+      columnLabel: "Пользователь",
+    },
   },
   {
     accessorKey: "createdAt",
@@ -52,6 +54,9 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
           {formatDate(row.getValue("createdAt"))}
         </div>
       );
+    },
+    meta: {
+      columnLabel: "Зарегистрирован",
     },
   },
   {
@@ -68,6 +73,9 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
         </div>
       );
     },
+    meta: {
+      columnLabel: "Email",
+    },
   },
   {
     accessorKey: "isAdmin",
@@ -76,6 +84,9 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue("isAdmin") ? "Да" : "Нет"}</div>,
     enableSorting: false,
+    meta: {
+      columnLabel: "Админ",
+    },
   },
   {
     accessorKey: "subscription",
@@ -98,6 +109,9 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
           {!subscription && "Нет подписки"}
         </div>
       );
+    },
+    meta: {
+      columnLabel: "Подписка",
     },
   },
   {

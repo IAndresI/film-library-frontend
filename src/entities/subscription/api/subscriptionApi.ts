@@ -1,12 +1,42 @@
 import { apiInstance } from "@/shared/api/base";
 import { queryOptions } from "@tanstack/react-query";
-import type { ISubscription } from "../dto";
+import type { IPlan, ISubscription } from "../dto";
+import type { IPaginationResponse } from "@/shared/model/pagination-response.model";
+import type {
+  ColumnFiltersState,
+  PaginationState,
+  SortingState,
+} from "@tanstack/react-table";
 
 export const subscriptionApi = {
   getAllSubscriptionPlansQueryOptions: () => {
     return queryOptions({
       queryKey: ["subscriptions"],
-      queryFn: apiInstance.get<ISubscription[]>(`/subscriptions/plans`),
+      queryFn: apiInstance.get<IPlan[]>(`/subscriptions/plans`),
+    });
+  },
+  getAllSubscriptionsQueryOptions: ({
+    filters,
+    sort,
+    pagination,
+  }: {
+    filters: ColumnFiltersState;
+    sort: SortingState;
+    pagination: PaginationState;
+  }) => {
+    return queryOptions({
+      queryKey: ["subscriptions", "admin", filters, sort, pagination],
+      queryFn: apiInstance.get<IPaginationResponse<ISubscription>>(
+        `/subscriptions/all`,
+        {
+          params: {
+            filters,
+            sort,
+            pageIndex: pagination.pageIndex,
+            pageSize: pagination.pageSize,
+          },
+        },
+      ),
     });
   },
   invalidateUserSubscription: (userId: number) => {

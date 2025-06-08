@@ -13,10 +13,10 @@ export const HomeMainPage = () => {
     filmApi.getAvailableFilmsQueryOptions(undefined),
   );
 
-  const bestFilms = data
+  const bestFilms = data?.data
     ?.sort((a, b) => (a.rating || 0) - (b.rating || 0))
-    .slice(0, 6);
-  const newFilms = data
+    ?.slice(0, 6);
+  const newFilms = data?.data
     ?.sort(
       (a, b) =>
         Number(new Date(a.releaseDate || "")) -

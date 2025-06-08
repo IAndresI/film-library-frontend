@@ -121,8 +121,6 @@ export const FilmEditModal = ({ film }: { film: IFilm }) => {
     console.log(values);
   }
 
-  console.log(form.getValues());
-
   return (
     <Dialog>
       <DialogTrigger asChild>

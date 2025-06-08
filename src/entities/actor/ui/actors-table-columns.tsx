@@ -38,7 +38,9 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
         </div>
       );
     },
-    enableSorting: false,
+    meta: {
+      columnLabel: "Имя",
+    },
   },
   {
     accessorKey: "birthday",
@@ -52,6 +54,9 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
         </div>
       );
     },
+    meta: {
+      columnLabel: "Дата рождения",
+    },
   },
   {
     accessorKey: "description",
@@ -64,6 +69,22 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
           {row.getValue("description")}
         </p>
       );
+    },
+    meta: {
+      columnLabel: "Описание",
+    },
+  },
+  {
+    accessorKey: "isVisible",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Видимый" />
+    ),
+    cell: ({ row }) => {
+      return <div>{row.getValue("isVisible") ? "Да" : "Нет"}</div>;
+    },
+    enableSorting: false,
+    meta: {
+      columnLabel: "Видимый",
     },
   },
 

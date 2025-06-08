@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import type { Column } from "@tanstack/react-table";
+import type { Column, Table } from "@tanstack/react-table";
 
 import { cn } from "@/shared/lib/utils";
 import { Badge } from "../../ui/badge";
@@ -19,7 +19,9 @@ import { Separator } from "../../ui/separator";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
+  table: Table<TData>;
   title?: string;
+  useMetaFilterName?: boolean;
   options: {
     label: string;
     value: string;
@@ -29,11 +31,40 @@ interface DataTableFacetedFilterProps<TData, TValue> {
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
+  table,
   title,
+  useMetaFilterName = false,
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-  const facets = column?.getFacetedUniqueValues();
-  const selectedValues = new Set(column?.getFilterValue() as string[]);
+  // const facets = column?.getFacetedUniqueValues();
+
+  const filterField = useMetaFilterName
+    ? column?.columnDef.meta?.filterField
+    : undefined;
+  const filterId = filterField || column?.id;
+
+  const selectedValues = useMetaFilterName
+    ? new Set(
+        (table.getState().columnFilters.find((filter) => filter.id === filterId)
+          ?.value as string[]) || [],
+      )
+    : new Set(column?.getFilterValue() as string[]);
+
+  const handleFilterChange = (filterValues: string[]) => {
+    if (useMetaFilterName && filterId) {
+      const columnFilters = table.getState().columnFilters;
+      const existingFilters = columnFilters.filter(
+        (filter) => filter.id !== filterId,
+      );
+      const newFilters = filterValues.length
+        ? [...existingFilters, { id: filterId, value: filterValues }]
+        : existingFilters;
+
+      table.setColumnFilters(newFilters);
+    } else {
+      column?.setFilterValue(filterValues.length ? filterValues : undefined);
+    }
+  };
 
   return (
     <Popover>
@@ -94,9 +125,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                         selectedValues.add(option.value);
                       }
                       const filterValues = Array.from(selectedValues);
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined,
-                      );
+                      handleFilterChange(filterValues);
                     }}
                   >
                     <div
@@ -113,29 +142,29 @@ export function DataTableFacetedFilter<TData, TValue>({
                       <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
                     )}
                     <span>{option.label}</span>
-                    {facets?.get(option.value) && (
+                    {/* {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                         {facets.get(option.value)}
                       </span>
-                    )}
+                    )} */}
                   </CommandItem>
                 );
               })}
             </CommandGroup>
-            {selectedValues.size > 0 && (
-              <>
-                <CommandSeparator />
-                <CommandGroup>
-                  <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
-                    className="justify-center text-center"
-                  >
-                    Clear filters
-                  </CommandItem>
-                </CommandGroup>
-              </>
-            )}
           </CommandList>
+          {selectedValues.size > 0 && (
+            <>
+              <CommandSeparator />
+              <CommandGroup>
+                <CommandItem
+                  onSelect={() => handleFilterChange([])}
+                  className="justify-center text-center"
+                >
+                  Сбросить
+                </CommandItem>
+              </CommandGroup>
+            </>
+          )}
         </Command>
       </PopoverContent>
     </Popover>

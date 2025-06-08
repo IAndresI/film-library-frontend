@@ -9,9 +9,18 @@ import { useUser } from "@/app/providers";
 export const UserReviewsPage = () => {
   const user = useUser();
 
-  const { isLoading, data } = useQuery(reviewApi.getAllReviewsQueryOptions());
+  const { isLoading, data } = useQuery(
+    reviewApi.getAllReviewsQueryOptions({
+      filters: [],
+      sort: [],
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+      },
+    }),
+  );
 
-  const userReviews = data?.filter((review) => +review.user === user?.id);
+  const userReviews = data?.data?.filter((review) => +review.user === user?.id);
 
   return (
     <motion.section

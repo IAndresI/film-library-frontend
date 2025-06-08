@@ -41,8 +41,15 @@ export const AdminUserInfoPage = () => {
     user?.subscription &&
     user?.subscription.status === SubscriptionStatus.ACTIVE;
 
+  const params = {
+    filters: columnFilters,
+    sort: sorting,
+    pagination: pagination,
+    userId: Number(user?.id),
+  };
+
   const { data: orders } = useQuery({
-    ...orderApi.getAllUserOrdersQueryOptions(Number(user?.id)),
+    ...orderApi.getAllUserOrdersQueryOptions(params),
     enabled: !!user?.id,
   });
 
@@ -111,10 +118,10 @@ export const AdminUserInfoPage = () => {
                   onSortingChange={setSorting}
                   columnFilters={columnFilters}
                   onColumnFiltersChange={setColumnFilters}
-                  pagination={pagination}
+                  pagination={orders?.pagination}
                   onPaginationChange={setPagination}
                   columns={ordersTableColumns}
-                  data={orders || []}
+                  data={orders?.data || []}
                 />
               </TabsContent>
             </Tabs>

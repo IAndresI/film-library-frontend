@@ -7,6 +7,7 @@ export interface IActor {
   birthday: string;
   description: string;
   isVisible: boolean;
+  createdAt: string;
 }
 
 export interface IFilmActor extends IActor {

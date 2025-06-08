@@ -1,18 +1,57 @@
 import type { IAllReviews, IReview } from "@/entities/review/dto";
 import { apiInstance } from "@/shared/api/base";
+import type { IPaginationResponse } from "@/shared/model/pagination-response.model";
 import { queryOptions } from "@tanstack/react-query";
+import type {
+  ColumnFiltersState,
+  PaginationState,
+  SortingState,
+} from "@tanstack/react-table";
 
 export const reviewApi = {
-  getAllReviewsQueryOptions: () => {
+  getAllReviewsQueryOptions: ({
+    filters,
+    sort,
+    pagination,
+  }: {
+    filters?: ColumnFiltersState;
+    sort?: SortingState;
+    pagination: PaginationState;
+  }) => {
     return queryOptions({
-      queryKey: ["reviews"],
-      queryFn: apiInstance.get<IReview[]>(`/reviews`),
+      queryKey: ["reviews", filters, sort, pagination],
+      queryFn: apiInstance.get<IPaginationResponse<IReview>>(`/reviews`, {
+        params: {
+          filters,
+          sort,
+          pageIndex: pagination.pageIndex,
+          pageSize: pagination.pageSize,
+        },
+      }),
     });
   },
-  getAllReviewsOnApproveQueryOptions: () => {
+  getAllReviewsOnApproveQueryOptions: ({
+    filters,
+    sort,
+    pagination,
+  }: {
+    filters?: ColumnFiltersState;
+    sort?: SortingState;
+    pagination: PaginationState;
+  }) => {
     return queryOptions({
-      queryKey: ["reviews", "pending"],
-      queryFn: apiInstance.get<IReview[]>(`/reviews/pending`),
+      queryKey: ["reviews", "pending", filters, sort, pagination],
+      queryFn: apiInstance.get<IPaginationResponse<IReview>>(
+        `/reviews/pending`,
+        {
+          params: {
+            filters,
+            sort,
+            pageIndex: pagination.pageIndex,
+            pageSize: pagination.pageSize,
+          },
+        },
+      ),
     });
   },
   createReview: (review: Omit<IAllReviews, "id">) =>
