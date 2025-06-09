@@ -6,6 +6,8 @@ import { OrderStatus } from "@/shared/components/OrderStatus";
 import type { IUser } from "@/entities/user/dto";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import type { IPlan } from "@/entities/subscription/dto";
+import { Link } from "react-router-dom";
+import { getImageUrl } from "@/shared/lib/utils";
 
 export const ordersTableColumns: ColumnDef<IOrder>[] = [
   {
@@ -31,15 +33,18 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
     cell: (row) => {
       const user = row.getValue() as IUser;
       return (
-        <div className="flex items-center space-x-2">
+        <Link
+          to={`/admin/users/${user.id}`}
+          className="flex items-center space-x-2"
+        >
           <Avatar className="size-10">
-            <AvatarImage src={user.avatar} />
+            <AvatarImage src={getImageUrl(user.avatar)} />
             <AvatarFallback className="text-lg uppercase">
               {user.name.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
           <span className="block truncate font-medium">{user.name}</span>
-        </div>
+        </Link>
       );
     },
     meta: {
@@ -82,7 +87,7 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          {formatDate(row.getValue("createdAt"))}
+          {formatDate(row.getValue("createdAt"), true)}
         </div>
       );
     },
@@ -135,12 +140,12 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "orderStatus",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Статус" />
     ),
     cell: ({ row }) => {
-      return <OrderStatus size="small" status={row.getValue("status")} />;
+      return <OrderStatus size="small" status={row.getValue("orderStatus")} />;
     },
     meta: {
       columnLabel: "Статус",

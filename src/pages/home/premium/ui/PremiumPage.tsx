@@ -8,7 +8,8 @@ export const PremiumPage = () => {
   const user = useUser();
 
   const haveSubscription =
-    user.subscription && user.subscription.status === SubscriptionStatus.ACTIVE;
+    user.subscription &&
+    user.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
 
   return (
     <motion.section

@@ -1,4 +1,4 @@
-import type { IAllReviews } from "@/entities/review/dto";
+import type { IReview } from "@/entities/review/dto";
 import { StarFilledIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import { Button } from "../../../../shared/ui/button";
@@ -8,14 +8,14 @@ import { reviewApi } from "@/entities/review/api/reviewApi";
 import { ReviewModal } from "./ReviewModal";
 
 interface IUserReviewCardProps {
-  review: IAllReviews;
+  review: IReview;
 }
 
 export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
   const queryClient = useQueryClient();
 
   const { data: film } = useQuery(
-    filmApi.getFilmByIdQueryOptions(review.movie),
+    filmApi.getFilmByIdQueryOptions(review.film.id),
   );
   const { mutate: deleteReviewMutate, isPending: isDeletingReview } =
     useMutation({

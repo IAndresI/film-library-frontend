@@ -18,6 +18,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AdminUserSubscriptionEditor } from "./AdminUserSubscriptionEditor";
+import { getImageUrl } from "@/shared/lib/utils";
 
 export const AdminUserInfoPage = () => {
   const [activeTab, setActiveTab] = useState<
@@ -39,7 +40,7 @@ export const AdminUserInfoPage = () => {
 
   const isActiveSubscription =
     user?.subscription &&
-    user?.subscription.status === SubscriptionStatus.ACTIVE;
+    user?.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
 
   const params = {
     filters: columnFilters,
@@ -75,7 +76,7 @@ export const AdminUserInfoPage = () => {
             <div className="flex items-center gap-4">
               <div className="relative">
                 <Avatar className="size-20">
-                  <AvatarImage src={user.avatar} />
+                  <AvatarImage src={getImageUrl(user.avatar)} />
                   <AvatarFallback className="text-[35px] uppercase">
                     {user.name.slice(0, 2)}
                   </AvatarFallback>

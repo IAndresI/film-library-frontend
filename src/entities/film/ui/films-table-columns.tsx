@@ -6,6 +6,8 @@ import { Badge } from "@/shared/ui/badge";
 import { DeleteModal } from "@/shared/components/DeleteModal";
 import { filmApi } from "../api/filmApi";
 import { getImageUrl } from "@/shared/lib/utils";
+import { Link } from "react-router-dom";
+import { formatDate } from "@/shared/lib/helpers";
 
 export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {
@@ -25,13 +27,16 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
     cell: (row) => {
       const film = row.row.original as IFilm;
       return (
-        <div className="flex items-center space-x-2">
+        <Link
+          to={`/admin/films/${film.id}`}
+          className="flex items-center space-x-2"
+        >
           <img
             className="h-10 w-10 rounded object-cover"
             src={getImageUrl(film.image)}
           />
           <span className="block truncate font-medium">{film.name}</span>
-        </div>
+        </Link>
       );
     },
     meta: {
@@ -71,7 +76,9 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center">{row.getValue("releaseDate")}</div>
+        <div className="flex items-center">
+          {formatDate(row.getValue("releaseDate"))}
+        </div>
       );
     },
     meta: {

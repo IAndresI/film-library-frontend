@@ -12,8 +12,8 @@ import {
   FullscreenButton,
   useMediaRemote,
   PIPButton,
+  type PlayerSrc,
 } from "@vidstack/react";
-import video from "@assets/video.mp4";
 import {
   FullscreenExitIcon,
   FullscreenIcon,
@@ -27,9 +27,9 @@ import { Volume, Volume1, Volume2, VolumeX } from "lucide-react";
 import { useState, useRef, useCallback } from "react";
 import { cn } from "../lib/utils";
 
-export const VideoPlayer = () => {
+export const VideoPlayer = ({ src }: { src: PlayerSrc }) => {
   return (
-    <MediaPlayer title="Sprite Fight" src={video} storage="vidstack-player">
+    <MediaPlayer title="Sprite Fight" src={src} storage="vidstack-player">
       <MediaProvider />
       <VideoControls />
     </MediaPlayer>
@@ -144,6 +144,7 @@ const VideoControls = () => {
     >
       {/* Клик по видео для воспроизведения/паузы */}
       <button
+        type="button"
         className={cn(
           `group absolute inset-0 bottom-[68px] flex items-center justify-center`,
           shouldShowControls ? "cursor-auto" : "cursor-none",
@@ -235,6 +236,7 @@ const VideoControls = () => {
                   <Menu.Content className="absolute right-full bottom-0 mr-1 min-w-[100px] rounded-lg border border-white/10 bg-black/90 p-1 shadow-xl backdrop-blur-sm">
                     {speedOptions.map((speed) => (
                       <button
+                        type="button"
                         key={speed}
                         onClick={() => handleSpeedChange(speed)}
                         className={`w-full cursor-pointer rounded px-3 py-2 text-left text-sm transition-colors hover:bg-white/10 ${

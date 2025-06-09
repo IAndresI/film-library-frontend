@@ -1,4 +1,4 @@
-import type { IAllReviews, IReview } from "@/entities/review/dto";
+import type { IReview } from "@/entities/review/dto";
 import { apiInstance } from "@/shared/api/base";
 import type { IPaginationResponse } from "@/shared/model/pagination-response.model";
 import { queryOptions } from "@tanstack/react-query";
@@ -30,6 +30,33 @@ export const reviewApi = {
       }),
     });
   },
+  getAllUserReviewsQueryOptions: ({
+    filters,
+    sort,
+    pagination,
+    userId,
+  }: {
+    filters?: ColumnFiltersState;
+    sort?: SortingState;
+    pagination: PaginationState;
+    userId: number;
+  }) => {
+    return queryOptions({
+      queryKey: ["reviews", userId, filters, sort, pagination, userId],
+      queryFn: apiInstance.get<IPaginationResponse<IReview>>(
+        `/reviews/user/${userId}`,
+        {
+          params: {
+            filters,
+            sort,
+            pageIndex: pagination.pageIndex,
+            pageSize: pagination.pageSize,
+            userId,
+          },
+        },
+      ),
+    });
+  },
   getAllReviewsOnApproveQueryOptions: ({
     filters,
     sort,
@@ -54,9 +81,13 @@ export const reviewApi = {
       ),
     });
   },
-  createReview: (review: Omit<IAllReviews, "id">) =>
-    apiInstance.post<IReview>(`/reviews`, review),
-  editReview: (review: Partial<IAllReviews>) =>
+  createReview: (review: {
+    rating: number;
+    text: string;
+    userId: number;
+    filmId: number;
+  }) => apiInstance.post<IReview>(`/reviews`, review),
+  editReview: (review: { id: number; rating: number; text: string }) =>
     apiInstance.put<IReview>(`/reviews/${review.id}/edit`, review),
   deleteReview: (reviewId: number) =>
     apiInstance.delete<IReview>(`/reviews/${reviewId}`),

@@ -62,7 +62,7 @@ export const AdminReviewsPage = ({
         <Separator className="my-4" />
 
         <DataTable
-          searchField="name"
+          searchField="text"
           sorting={columnSorting}
           onSortingChange={setColumnSorting}
           columnFilters={columnFilters}

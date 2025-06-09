@@ -103,24 +103,29 @@ export const HomeHeader = () => {
         <ModeToggle />
 
         {(!user.subscription ||
-          user.subscription.status === SubscriptionStatus.EXPIRED ||
-          user.subscription.status === SubscriptionStatus.CANCELLED) && (
+          user.subscription.subscriptionStatus === SubscriptionStatus.EXPIRED ||
+          user.subscription.subscriptionStatus ===
+            SubscriptionStatus.CANCELLED) && (
           <Button asChild variant="rainbow">
             <Link to="/premium">Premium</Link>
           </Button>
         )}
 
-        <div className="ml-auto flex h-full w-fit items-center gap-3 border-l pl-5">
+        <Link
+          to={`/profile`}
+          className="ml-auto flex h-full w-fit items-center gap-3 border-l pl-5"
+        >
           <div className="relative">
             {user.name}
             {user.subscription &&
-              user.subscription.status === SubscriptionStatus.ACTIVE && (
+              user.subscription.subscriptionStatus ===
+                SubscriptionStatus.ACTIVE && (
                 <div className="absolute bottom-1/2 -left-[15px] -rotate-45">
                   <SvgCrown className="h-5 w-5" gradient />
                 </div>
               )}
           </div>
-        </div>
+        </Link>
         <Button
           variant="outline"
           className="h-full rounded-none border-0 border-l-1"

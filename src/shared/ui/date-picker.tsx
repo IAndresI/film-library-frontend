@@ -30,7 +30,7 @@ export const DatePicker = ({
         >
           <CalendarIcon />
           {date ? (
-            format(date, "PPP")
+            format(date, "PPP", { locale: ru })
           ) : (
             <span>{placeholder || "Выберите дату"}</span>
           )}

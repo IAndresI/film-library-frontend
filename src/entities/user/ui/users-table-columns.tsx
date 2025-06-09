@@ -8,6 +8,7 @@ import { DataTableRowActions } from "@/shared/components/data-table/data-table-r
 import { DeleteModal } from "@/shared/components/DeleteModal";
 import { userApi } from "../api/userApi";
 import { SubscriptionStatus } from "@/entities/subscription/dto";
+import { Link } from "react-router-dom";
 
 export const usersTableColumns: ColumnDef<IUser>[] = [
   {
@@ -26,7 +27,10 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center space-x-2">
+        <Link
+          to={`/admin/users/${row.original.id}`}
+          className="flex items-center space-x-2"
+        >
           <Avatar className="size-10">
             <AvatarImage src={getImageUrl(row.original.avatar)} />
             <AvatarFallback className="text-lg uppercase">
@@ -36,7 +40,7 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
           <span className="block truncate font-medium">
             {row.original.name}
           </span>
-        </div>
+        </Link>
       );
     },
     meta: {
@@ -98,13 +102,13 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
       return (
         <div>
           {subscription &&
-            subscription.status === SubscriptionStatus.EXPIRED &&
+            subscription.subscriptionStatus === SubscriptionStatus.EXPIRED &&
             "Истекла"}
           {subscription &&
-            subscription.status === SubscriptionStatus.ACTIVE &&
+            subscription.subscriptionStatus === SubscriptionStatus.ACTIVE &&
             "Активна"}
           {subscription &&
-            subscription.status === SubscriptionStatus.CANCELLED &&
+            subscription.subscriptionStatus === SubscriptionStatus.CANCELLED &&
             "Отменена"}
           {!subscription && "Нет подписки"}
         </div>

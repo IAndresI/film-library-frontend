@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/helpers";
+import { cn, getImageUrl } from "@/shared/lib/utils";
 import { Link } from "react-router-dom";
 import type { IActor } from "@/entities/actor/dto";
 
@@ -24,7 +24,7 @@ export function ActorCard({
         className="block overflow-hidden rounded-[50%]"
       >
         <img
-          src={actor.image}
+          src={getImageUrl(actor.image)}
           alt={actor.name}
           width={width}
           height={height}

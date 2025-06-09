@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/shared/lib/helpers";
+import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 
 import { useEditFilmData } from "../lib/hooks";

@@ -1,19 +1,19 @@
 import React from "react";
-import { cn } from "@/shared/lib/helpers";
+import { cn } from "@/shared/lib/utils";
 import type { SubscriptionStatus as SubscriptionStatusType } from "@/entities/subscription/dto";
 
 const statuses = {
   active: {
     styles: "bg-green-100 text-green-800 border-green-300",
-    label: "Активен",
+    label: "Активна",
   },
   cancelled: {
     styles: "bg-red-100 text-red-800 border-red-300",
-    label: "Отменен",
+    label: "Отменена",
   },
   expired: {
     styles: "bg-muted text-muted-foreground border-border",
-    label: "Истек",
+    label: "Истекла",
   },
 };
 

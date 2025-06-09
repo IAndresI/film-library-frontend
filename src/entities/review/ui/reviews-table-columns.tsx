@@ -9,6 +9,8 @@ import { DeleteModal } from "@/shared/components/DeleteModal";
 import { DataTableRowActions } from "@/shared/components/data-table/data-table-row-actions";
 import { ReviewModerationModal } from "@/features/reviewModeration/ui/ReviewModerationModal";
 import { reviewApi } from "../api/reviewApi";
+import { Link } from "react-router-dom";
+import { getImageUrl } from "@/shared/lib/utils";
 
 export const reviewsTableColumns: ColumnDef<IReview>[] = [
   {
@@ -37,10 +39,15 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
     cell: (row) => {
       const film = row.getValue() as IFilm;
       return (
-        <div className="flex items-center space-x-2">
-          <img className="h-10 w-10 rounded" src={film.image} />
-          <span className="block truncate font-medium">{film.name}</span>
-        </div>
+        <Link
+          to={`/admin/films/${film.id}`}
+          className="flex items-center space-x-2"
+        >
+          <img className="h-10 w-10 rounded" src={getImageUrl(film.image)} />
+          <span className="block max-w-[150px] truncate font-medium">
+            {film.name}
+          </span>
+        </Link>
       );
     },
     meta: {
@@ -54,7 +61,7 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Рейтинг" />
     ),
-    cell: ({ row }) => <div>{row.getValue("rating")}</div>,
+    cell: ({ row }) => <div>{row.getValue("rating")} / 10</div>,
 
     meta: {
       columnLabel: "Рейтинг",
@@ -74,15 +81,18 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
     cell: (row) => {
       const user = row.getValue() as IUser;
       return (
-        <div className="flex items-center space-x-2">
+        <Link
+          to={`/admin/users/${user.id}`}
+          className="flex items-center space-x-2"
+        >
           <Avatar className="size-10">
-            <AvatarImage src={user.avatar} />
+            <AvatarImage src={getImageUrl(user.avatar)} />
             <AvatarFallback className="text-lg uppercase">
               {user.name.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
           <span className="block truncate font-medium">{user.name}</span>
-        </div>
+        </Link>
       );
     },
     meta: {
@@ -99,9 +109,7 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium">
-            {formatDate(row.getValue("createdAt"))}
-          </span>
+          {formatDate(row.getValue("createdAt"))}
         </div>
       );
     },
@@ -109,19 +117,17 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
       columnLabel: "Дата создания",
     },
   },
-  // {
-  //   accessorKey: "text",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Отзыв" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     return (
-  //       <p className="max-w-[300px] truncate font-medium">
-  //         {row.getValue("text")}
-  //       </p>
-  //     );
-  //   },
-  // },
+  {
+    accessorKey: "text",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Отзыв" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <p className="min-w-[500px] font-medium">{row.getValue("text")}</p>
+      );
+    },
+  },
   {
     accessorKey: "isApproved",
     header: ({ column }) => (

@@ -47,6 +47,31 @@ export const filmEditorApi = {
       },
     });
   },
-  editFilmMedia: ({ id, media }: { id: number; media: FormData }) =>
-    apiInstance.put<IFilm>(`/films/${id}/media`, media),
+  editFilmMedia: ({
+    id,
+    trailerFile,
+    filmFile,
+  }: {
+    id: number;
+    trailerFile?: string | File;
+    filmFile?: string | File;
+  }) => {
+    const formData = new FormData();
+    if (filmFile === undefined) {
+      formData.append("filmFile", "null");
+    } else if (typeof filmFile === "object") {
+      formData.append("filmFile", filmFile);
+    }
+    if (trailerFile === undefined) {
+      formData.append("trailerFile", "null");
+    } else if (typeof trailerFile === "object") {
+      formData.append("trailerFile", trailerFile);
+    }
+
+    return apiInstance.put<IFilm>(`/films/${id}/media`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
 };

@@ -15,13 +15,18 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 
+const invalidateUserSubscriptionQueryOptions = (userId: number) => {
+  queryClient.invalidateQueries({ queryKey: ["users"] });
+  queryClient.invalidateQueries({ queryKey: ["users", userId] });
+};
+
 export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
   const [selectedPlan, setSelectedPlan] = useState<number | undefined>(
     undefined,
   );
   const isActiveSubscription =
     user?.subscription &&
-    user?.subscription.status === SubscriptionStatus.ACTIVE;
+    user?.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
 
   const { data: subscriptionPlans } = useQuery({
     ...subscriptionApi.getAllSubscriptionPlansQueryOptions(),
@@ -33,8 +38,8 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
     error: invalidateUserSubscriptionError,
   } = useMutation({
     mutationFn: subscriptionApi.invalidateUserSubscription,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users", user.id] });
+    onSuccess: (data) => {
+      invalidateUserSubscriptionQueryOptions(data.id);
     },
   });
 
@@ -44,9 +49,8 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
     error: giveUserSubscriptionError,
   } = useMutation({
     mutationFn: subscriptionApi.giveSubscriptionToUser,
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["users", variables.userId] });
+    onSuccess: (data) => {
+      invalidateUserSubscriptionQueryOptions(data.id);
     },
   });
 

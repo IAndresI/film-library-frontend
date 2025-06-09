@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/shared/lib/helpers";
+import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 
 import { useEditActorData, useAddActor } from "../lib/hooks";
@@ -49,7 +49,8 @@ const formSchema = z.object({
         "image/webp",
         "image/gif",
       ].includes(value.type);
-    }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF"),
+    }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF")
+    .optional(),
   birthday: z.date({
     message: "Введите дату рождения актёра",
   }),
@@ -91,16 +92,9 @@ export function ActorDataEditorForm({
     };
 
     if (actor) {
-      // При редактировании передаем картинку только если она новая
-      const editData =
-        typeof data.image === "string"
-          ? { ...baseData, image: undefined, id: actor.id }
-          : { ...baseData, image: data.image, id: actor.id };
-
-      editActor(editData as Parameters<typeof editActor>[0]);
+      editActor({ ...baseData, id: actor.id });
     } else {
-      // При создании картинка обязательна
-      addActor({ ...baseData, image: data.image as File });
+      addActor(baseData);
     }
   };
 
@@ -171,7 +165,7 @@ export function ActorDataEditorForm({
                   <FormLabel>Изображение</FormLabel>
                   <FormControl>
                     <ImageInput
-                      value={typeof value === "string" ? null : value}
+                      value={typeof value === "string" ? null : value || null}
                       onChange={onChange}
                       existingImageUrl={
                         typeof value === "string" ? value : undefined

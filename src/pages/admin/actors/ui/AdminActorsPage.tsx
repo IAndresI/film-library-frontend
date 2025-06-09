@@ -51,7 +51,7 @@ export const AdminActorsPage = () => {
         <Separator className="my-4" />
 
         <DataTable
-          searchField="actorName"
+          searchField="name"
           sorting={columnSorting}
           onSortingChange={setColumnSorting}
           columnFilters={columnFilters}

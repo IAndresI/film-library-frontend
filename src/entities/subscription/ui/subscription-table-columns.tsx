@@ -5,6 +5,8 @@ import type { IUser } from "@/entities/user/dto";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import type { IPlan, ISubscription } from "../dto";
 import { SubscriptionStatus } from "@/shared/components/SubscriptionStatus";
+import { Link } from "react-router-dom";
+import { getImageUrl } from "@/shared/lib/utils";
 
 export const subscriptionsTableColumns: ColumnDef<ISubscription>[] = [
   {
@@ -33,15 +35,18 @@ export const subscriptionsTableColumns: ColumnDef<ISubscription>[] = [
     cell: (row) => {
       const user = row.getValue() as IUser;
       return (
-        <div className="flex items-center space-x-2">
+        <Link
+          to={`/admin/users/${user.id}`}
+          className="flex items-center space-x-2"
+        >
           <Avatar className="size-10">
-            <AvatarImage src={user.avatar} />
+            <AvatarImage src={getImageUrl(user.avatar)} />
             <AvatarFallback className="text-lg uppercase">
               {user.name.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
           <span className="block truncate font-medium">{user.name}</span>
-        </div>
+        </Link>
       );
     },
     meta: {
@@ -114,13 +119,16 @@ export const subscriptionsTableColumns: ColumnDef<ISubscription>[] = [
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "subscriptionStatus",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Статус" />
     ),
     cell: ({ row }) => {
       return (
-        <SubscriptionStatus size="small" status={row.getValue("status")} />
+        <SubscriptionStatus
+          size="small"
+          status={row.getValue("subscriptionStatus")}
+        />
       );
     },
     enableSorting: false,

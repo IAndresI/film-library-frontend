@@ -1,7 +1,9 @@
 import { actorApi } from "@/entities/actor/api/actorApi";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { FilmDataEditorForm } from "@/features/filmEditor/ui";
+import { FilmMediaEditorForm } from "@/features/filmEditor/ui/FilmMediaEditorForm";
 import { Separator } from "@/shared/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
@@ -29,6 +31,10 @@ export const AdminFilmEditorPage = () => {
     }),
   });
 
+  if (!film) {
+    return <div>Фильм не найден</div>;
+  }
+
   return (
     <motion.section
       className="col-span-3 lg:col-span-4"
@@ -46,11 +52,26 @@ export const AdminFilmEditorPage = () => {
           </div>
         </div>
         <Separator className="my-4" />
-        <FilmDataEditorForm
-          film={film}
-          genres={genres || []}
-          actors={actors?.data || []}
-        />
+        <Tabs defaultValue="data">
+          <TabsList className="w-full">
+            <TabsTrigger className="w-full" value="data">
+              Данные
+            </TabsTrigger>
+            <TabsTrigger className="w-full" value="media">
+              Медиа
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="data">
+            <FilmDataEditorForm
+              film={film}
+              genres={genres || []}
+              actors={actors?.data || []}
+            />
+          </TabsContent>
+          <TabsContent value="media">
+            <FilmMediaEditorForm film={film} />
+          </TabsContent>
+        </Tabs>
       </div>
     </motion.section>
   );

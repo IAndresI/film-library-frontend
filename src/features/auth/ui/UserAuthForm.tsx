@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/shared/lib/helpers";
+import { cn } from "@/shared/lib/utils";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import { useState } from "react";

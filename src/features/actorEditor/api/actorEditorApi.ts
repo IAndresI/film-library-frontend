@@ -24,8 +24,10 @@ export const actorEditorApi = {
     formData.append("name", actor.name);
     formData.append("description", actor.description);
     formData.append("birthday", actor.birthday);
-    if (actor.image) {
+    if (typeof actor.image === "object") {
       formData.append("image", actor.image);
+    } else if (actor.image === undefined) {
+      formData.append("image", "null");
     }
     formData.append("isVisible", actor.isVisible.toString());
 

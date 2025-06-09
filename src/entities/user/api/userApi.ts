@@ -34,7 +34,7 @@ export const userApi = {
   getAllUserFavoritesQueryOptions: (userId: string) => {
     return queryOptions({
       queryKey: ["favorites", userId],
-      queryFn: apiInstance.get<IFilm[]>(`/favorite/${userId}/list`),
+      queryFn: apiInstance.get<IFilm[]>(`/users/${userId}/favorites`),
     });
   },
   getUserByIdQueryOptions: (id: number) => {
@@ -44,7 +44,7 @@ export const userApi = {
     });
   },
   addUserFavorites: ({ userId, filmId }: { userId: string; filmId: number }) =>
-    apiInstance.post<IFilm>(`/favorite/${userId}/add`, {
+    apiInstance.post<IFilm>(`/users/${userId}/favorites`, {
       movie_id: filmId,
       user_id: userId,
     }),
@@ -54,6 +54,6 @@ export const userApi = {
   }: {
     userId: string;
     filmId: number;
-  }) => apiInstance.delete<IFilm>(`/favorite/${userId}/remove${filmId}`),
+  }) => apiInstance.delete<IFilm>(`/users/${userId}/favorites/${filmId}`),
   deleteUser: (id: number) => apiInstance.delete(`/users/${id}`),
 };

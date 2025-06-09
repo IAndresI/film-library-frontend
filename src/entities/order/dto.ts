@@ -13,7 +13,7 @@ export interface IOrder {
   expiresAt: string;
   currency: string;
   amount: string;
-  status: OrderStatusType;
+  orderStatus: OrderStatusType;
   paymentMethod: string;
   externalPaymentId: string;
   metadata: unknown;

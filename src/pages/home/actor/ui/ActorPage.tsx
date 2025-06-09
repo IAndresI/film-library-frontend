@@ -9,6 +9,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
+import { getImageUrl } from "@/shared/lib/utils";
 
 export const ActorPage = () => {
   const { id } = useParams();
@@ -32,15 +33,15 @@ export const ActorPage = () => {
           <CustomBreadcrumbs
             className="mb-4"
             crumbs={[
-              { label: "Home", link: "/" },
-              { label: "Actors", link: "/actors" },
+              { label: "Главная", link: "/" },
+              { label: "Актеры", link: "/actors" },
               { label: data.name },
             ]}
           />
           <div className="flex items-center justify-between">
             <div className="flex gap-8">
               <img
-                src={data.image}
+                src={getImageUrl(data.image)}
                 width={100}
                 height={100}
                 className={
@@ -62,9 +63,11 @@ export const ActorPage = () => {
             </div>
           </div>
           <div className="mt-6 space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">Films</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Фильмы с участием {data.name}
+            </h2>
             <p className="text-muted-foreground text-sm">
-              {data.films.length} films
+              {data.films.length} фильмов
             </p>
           </div>
           <Separator className="my-4" />

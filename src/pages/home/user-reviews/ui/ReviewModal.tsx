@@ -1,4 +1,4 @@
-import type { IAllReviews } from "@/entities/review/dto";
+import type { IReview } from "@/entities/review/dto";
 import { type ComponentProps, useState } from "react";
 import {
   Dialog,
@@ -16,7 +16,7 @@ import { reviewApi } from "@/entities/review/api/reviewApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface IReviewModalProps extends ComponentProps<"div"> {
-  review: IAllReviews;
+  review: IReview;
 }
 
 export const ReviewModal = ({ review, ...props }: IReviewModalProps) => {

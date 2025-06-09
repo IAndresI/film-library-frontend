@@ -1,15 +1,12 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { format } from "date-fns";
+import { ru } from "date-fns/locale";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export function formatDate(input: string | number): string {
+export function formatDate(input: string | number, withTime?: boolean): string {
   const date = new Date(input);
-  return date.toLocaleDateString("ru-RU", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
+
+  const formatString = withTime ? "PPP HH:mm:ss" : "PPP";
+
+  return format(date, formatString, {
+    locale: ru,
   });
 }

@@ -6,7 +6,6 @@ import { Separator } from "@/shared/ui/separator";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { VideoPlayer } from "@/shared/components/VideoPlayer";
 
 export const HomeMainPage = () => {
   const { isLoading, data } = useQuery(
@@ -32,15 +31,14 @@ export const HomeMainPage = () => {
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
       key={"home"}
     >
-      <VideoPlayer />
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-2xl font-semibold tracking-tight">
-              Best Films
+              Лучшие фильмы
             </h2>
             <p className="text-muted-foreground text-sm">
-              Best Films in the world
+              Лучшие фильмы в мире
             </p>
           </div>
         </div>
@@ -73,10 +71,10 @@ export const HomeMainPage = () => {
         </div>
         <div className="mt-6 space-y-1">
           <h2 className="text-2xl font-semibold tracking-tight">
-            New Releases
+            Новые релизы
           </h2>
           <p className="text-muted-foreground text-sm">
-            New big releases, from allover the world!
+            Новые большие релизы, со всего мира!
           </p>
         </div>
         <Separator className="my-4" />

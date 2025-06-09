@@ -7,6 +7,7 @@ import { DataTableRowActions } from "@/shared/components/data-table/data-table-r
 import type { IActor } from "../dto";
 import { actorApi } from "../api/actorApi";
 import { getImageUrl } from "@/shared/lib/utils";
+import { Link } from "react-router-dom";
 
 export const actorsTableColumns: ColumnDef<IActor>[] = [
   {
@@ -25,7 +26,10 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center space-x-2">
+        <Link
+          to={`/admin/actors/${row.original.id}`}
+          className="flex items-center space-x-2"
+        >
           <Avatar className="size-10">
             <AvatarImage src={getImageUrl(row.original.image)} />
             <AvatarFallback className="text-lg uppercase">
@@ -35,7 +39,7 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
           <span className="block truncate font-medium">
             {row.original.name}
           </span>
-        </div>
+        </Link>
       );
     },
     meta: {

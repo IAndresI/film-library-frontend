@@ -15,6 +15,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { orderApi } from "@/entities/order/api/orderApi";
 import type { PaginationState, SortingState } from "@tanstack/react-table";
 import { useState } from "react";
+import { getImageUrl } from "@/shared/lib/utils";
 
 export const ProfilePage = () => {
   const user = useUser();
@@ -26,15 +27,16 @@ export const ProfilePage = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const isActiveSubscription =
-    user.subscription && user.subscription.status === SubscriptionStatus.ACTIVE;
+    user.subscription &&
+    user.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
 
   const isExpiredSubscription =
     user.subscription &&
-    user.subscription.status === SubscriptionStatus.EXPIRED;
+    user.subscription.subscriptionStatus === SubscriptionStatus.EXPIRED;
 
   const isCancelledSubscription =
     user.subscription &&
-    user.subscription.status === SubscriptionStatus.CANCELLED;
+    user.subscription.subscriptionStatus === SubscriptionStatus.CANCELLED;
 
   const isNoSubscription = !user.subscription;
 
@@ -70,7 +72,7 @@ export const ProfilePage = () => {
           <div className="flex items-center gap-4">
             <div className="relative">
               <Avatar className="size-20">
-                <AvatarImage src={user.avatar} />
+                <AvatarImage src={getImageUrl(user.avatar)} />
                 <AvatarFallback className="text-[35px] uppercase">
                   {user.name.slice(0, 2)}
                 </AvatarFallback>

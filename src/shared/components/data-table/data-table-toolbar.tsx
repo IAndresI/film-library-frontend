@@ -12,7 +12,18 @@ import { useQuery } from "@tanstack/react-query";
 import { userApi } from "@/entities/user/api/userApi";
 import { subscriptionApi } from "@/entities/subscription/api";
 
-const statuses = [
+const underModerationStatuses = [
+  {
+    value: "false",
+    label: "Да",
+  },
+  {
+    value: "true",
+    label: "Нет",
+  },
+];
+
+const visibilityStatuses = [
   {
     value: "true",
     label: "Да",
@@ -23,7 +34,7 @@ const statuses = [
   },
 ];
 
-const isAdminStatuses = [
+const adminStatuses = [
   {
     value: "true",
     label: "Да",
@@ -37,16 +48,19 @@ const isAdminStatuses = [
 const subscriptionStatuses = [
   {
     value: "active",
-    label: "Активен",
+    label: "Активна",
   },
   {
     value: "expired",
-    label: "Истек",
+    label: "Истекла",
   },
   {
     value: "cancelled",
-    label: "Отменен",
+    label: "Отменена",
   },
+];
+
+const orderStatuses = [
   {
     value: "pending",
     label: "Обрабатывается",
@@ -104,7 +118,8 @@ export function DataTableToolbar<TData>({
   const isAdminColumn = findColumn("isAdmin");
   const isVisibleColumn = findColumn("isVisible");
   const planColumn = findColumn("planId");
-  const statusColumn = findColumn("status");
+  const subscriptionStatusColumn = findColumn("subscriptionStatus");
+  const orderStatusColumn = findColumn("orderStatus");
 
   const { data: genres } = useQuery({
     ...filmApi.getAllGenresQueryOptions(),
@@ -159,83 +174,93 @@ export function DataTableToolbar<TData>({
   }));
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
-        {searchField && (
-          <Input
-            placeholder="Поиск..."
-            value={search}
-            onChange={(event) => setValue(event.target.value)}
-            className="h-8 w-[150px] lg:w-[250px]"
-          />
-        )}
-        {genreColumn && genresOptions && (
-          <DataTableFacetedFilter
-            table={table}
-            column={genreColumn}
-            title="Жанр"
-            useMetaFilterName={true}
-            options={genresOptions}
-          />
-        )}
-        {filmColumn && filmsOptions && (
-          <DataTableFacetedFilter
-            table={table}
-            column={filmColumn}
-            title="Фильм"
-            useMetaFilterName={true}
-            options={filmsOptions}
-          />
-        )}
-        {userColumn && usersOptions && (
-          <DataTableFacetedFilter
-            table={table}
-            column={userColumn}
-            title="Пользователь"
-            useMetaFilterName={true}
-            options={usersOptions}
-          />
-        )}
-        {planColumn && plansOptions && (
-          <DataTableFacetedFilter
-            table={table}
-            column={planColumn}
-            title="План"
-            options={plansOptions}
-          />
-        )}
-        {statusColumn && subscriptionStatuses && (
-          <DataTableFacetedFilter
-            table={table}
-            column={statusColumn}
-            title="Статус"
-            options={subscriptionStatuses}
-          />
-        )}
-        {isApprovedColumn && (
-          <DataTableFacetedFilter
-            table={table}
-            column={isApprovedColumn}
-            title="На модерации"
-            options={statuses}
-          />
-        )}
-        {isAdminColumn && (
-          <DataTableFacetedFilter
-            table={table}
-            column={isAdminColumn}
-            title="Админ"
-            options={isAdminStatuses}
-          />
-        )}
-        {isVisibleColumn && (
-          <DataTableFacetedFilter
-            table={table}
-            column={isVisibleColumn}
-            title="Видимый"
-            options={statuses}
-          />
-        )}
+    <div className="flex justify-between gap-2">
+      <div className="flex flex-1 gap-2">
+        <div className="flex flex-1 flex-wrap items-center gap-2">
+          {searchField && (
+            <Input
+              placeholder="Поиск..."
+              value={search}
+              onChange={(event) => setValue(event.target.value)}
+              className="h-8 w-[150px] lg:w-[250px]"
+            />
+          )}
+          {genreColumn && genresOptions && (
+            <DataTableFacetedFilter
+              table={table}
+              column={genreColumn}
+              title="Жанр"
+              useMetaFilterName={true}
+              options={genresOptions}
+            />
+          )}
+          {filmColumn && filmsOptions && (
+            <DataTableFacetedFilter
+              table={table}
+              column={filmColumn}
+              title="Фильм"
+              useMetaFilterName={true}
+              options={filmsOptions}
+            />
+          )}
+          {userColumn && usersOptions && (
+            <DataTableFacetedFilter
+              table={table}
+              column={userColumn}
+              title="Пользователь"
+              useMetaFilterName={true}
+              options={usersOptions}
+            />
+          )}
+          {planColumn && plansOptions && (
+            <DataTableFacetedFilter
+              table={table}
+              column={planColumn}
+              title="План"
+              options={plansOptions}
+            />
+          )}
+          {subscriptionStatusColumn && subscriptionStatuses && (
+            <DataTableFacetedFilter
+              table={table}
+              column={subscriptionStatusColumn}
+              title="Статус подписки"
+              options={subscriptionStatuses}
+            />
+          )}
+          {orderStatusColumn && orderStatuses && (
+            <DataTableFacetedFilter
+              table={table}
+              column={orderStatusColumn}
+              title="Статус заказа"
+              options={orderStatuses}
+            />
+          )}
+          {isApprovedColumn && (
+            <DataTableFacetedFilter
+              table={table}
+              column={isApprovedColumn}
+              title="На модерации"
+              options={underModerationStatuses}
+            />
+          )}
+          {isAdminColumn && (
+            <DataTableFacetedFilter
+              table={table}
+              column={isAdminColumn}
+              title="Админ"
+              options={adminStatuses}
+            />
+          )}
+          {isVisibleColumn && (
+            <DataTableFacetedFilter
+              table={table}
+              column={isVisibleColumn}
+              title="Видимый"
+              options={visibilityStatuses}
+            />
+          )}
+        </div>
         {isFiltered && (
           <Button
             variant="ghost"

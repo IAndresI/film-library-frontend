@@ -11,7 +11,7 @@ export interface ISubscription {
   userId: number;
   planId: number;
   orderId: number;
-  status: SubscriptionStatus;
+  subscriptionStatus: SubscriptionStatus;
   startedAt: string;
   expiresAt: string;
   autoRenew: boolean;

@@ -1,6 +1,6 @@
 import { StarFilledIcon } from "@radix-ui/react-icons";
 
-import { cn } from "@/shared/lib/helpers";
+import { cn, getImageUrl } from "@/shared/lib/utils";
 
 import { Link } from "react-router-dom";
 import type { IFilm } from "@/entities/film/dto";
@@ -21,13 +21,13 @@ export function FilmCard({
   ...props
 }: FilmCardProps) {
   return (
-    <div className={cn("space-y-3", className)} {...props}>
+    <div className={cn("h-full space-y-3", className)} {...props}>
       <Link
         to={`/film/${film.id}`}
         className="block overflow-hidden rounded-md"
       >
         <img
-          src={film.image}
+          src={getImageUrl(film.image)}
           alt={film.name}
           width={width}
           height={height}
@@ -40,13 +40,21 @@ export function FilmCard({
         />
       </Link>
 
-      <div className="flex h-max justify-between text-sm">
-        <div className="space-y-1">
-          <Link to="/film/1" className="hover:text-primary/50 transition">
-            <h3 className="line-clamp-1 leading-none font-medium">
-              {film.name}
-            </h3>
-          </Link>
+      <div className="flex justify-between text-sm">
+        <div className="w-full">
+          <div className="flex justify-between gap-1 text-sm">
+            <Link
+              to="/film/1"
+              className="hover:text-primary/50 flex items-center overflow-hidden transition"
+            >
+              <h3 className="truncate font-medium">{film.name}</h3>
+            </Link>
+            {film.rating && (
+              <div className="flex h-fit w-8 items-center gap-1">
+                <StarFilledIcon className="text-yellow-500" /> {film.rating}
+              </div>
+            )}
+          </div>
 
           <p className="text-muted-foreground text-xs">
             {new Date(film.releaseDate || "").getFullYear()},{" "}
@@ -61,9 +69,6 @@ export function FilmCard({
               ))}
             </ul>
           </p>
-        </div>
-        <div className="flex h-fit items-center gap-1">
-          <StarFilledIcon className="text-yellow-500" /> {film.rating}
         </div>
       </div>
     </div>

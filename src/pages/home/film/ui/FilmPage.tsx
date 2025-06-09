@@ -32,6 +32,7 @@ import { reviewApi } from "@/entities/review/api/reviewApi";
 import type { IReview } from "@/entities/review/dto";
 import { userApi } from "@/entities/user/api/userApi";
 import { useUser } from "@/app/providers";
+import { getImageUrl } from "@/shared/lib/utils";
 
 export const FilmPage = () => {
   const { id } = useParams();
@@ -131,14 +132,12 @@ export const FilmPage = () => {
         id: userReview.id,
         text: reviewText,
         rating: reviewRating,
-        // film: userReview.film.id,
-        user: String(userReview.user.id),
       });
     } else {
       if (user && film) {
         createReviewMutate({
-          user: String(user.id),
-          movie: film.id,
+          userId: user.id,
+          filmId: film.id,
           text: reviewText,
           rating: reviewRating,
         });
@@ -167,12 +166,12 @@ export const FilmPage = () => {
         <div className="h-full px-4 py-6 lg:px-8">
           <CustomBreadcrumbs
             className="mb-4"
-            crumbs={[{ label: "Home", link: "/" }, { label: film.name }]}
+            crumbs={[{ label: "Главная", link: "/" }, { label: film.name }]}
           />
           <div className="flex items-center justify-between">
             <div className="flex gap-8">
               <img
-                src={film.image}
+                src={getImageUrl(film.image)}
                 width={250}
                 height={330}
                 className={

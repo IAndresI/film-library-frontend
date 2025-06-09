@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/shared/lib/helpers";
+import { cn } from "@/shared/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { subscriptionApi } from "@/entities/subscription/api";
 import { useEffect, useState } from "react";

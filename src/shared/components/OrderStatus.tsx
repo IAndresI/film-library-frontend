@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/shared/lib/helpers";
+import { cn } from "@/shared/lib/utils";
 import type { OrderStatusType } from "@/entities/order/dto";
 
 const statuses = {
