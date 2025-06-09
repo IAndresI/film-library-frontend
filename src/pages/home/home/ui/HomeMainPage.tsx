@@ -9,7 +9,12 @@ import { motion } from "framer-motion";
 
 export const HomeMainPage = () => {
   const { isLoading, data } = useQuery(
-    filmApi.getAvailableFilmsQueryOptions(undefined),
+    filmApi.getAvailableFilmsQueryOptions({
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+      },
+    }),
   );
 
   const bestFilms = data?.data

@@ -10,20 +10,23 @@ import type {
 
 export const actorApi = {
   getAllActorsQueryOptions: ({
-    filters,
-    sort,
+    search,
+    genres,
+    films,
     pagination,
   }: {
-    filters: ColumnFiltersState;
-    sort: SortingState;
+    search?: string;
+    genres?: string[];
+    films?: string[];
     pagination: PaginationState;
   }) => {
     return queryOptions({
-      queryKey: ["actors", filters, sort, pagination],
+      queryKey: ["actors", search, genres, films, pagination],
       queryFn: apiInstance.get<IPaginationResponse<IActor>>("/actors", {
         params: {
-          filters,
-          sort,
+          search,
+          genres,
+          films,
           pageIndex: pagination.pageIndex,
           pageSize: pagination.pageSize,
         },

@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { IFilm, IGenre } from "@/entities/film/dto";
+import type { IFilm } from "@/entities/film/dto";
 import {
   FormControl,
   FormItem,
@@ -26,13 +26,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui/select";
-import type { IActor } from "@/entities/actor/dto";
 import { ImageInput } from "@/shared/ui/image-input";
 import { Switch } from "@/shared/ui/switch";
 import { useAddFilm } from "../lib/hooks/useAddFilm";
 import { useEffect } from "react";
 import { MEDIA_URL } from "@/shared/config";
 import { formatDate } from "date-fns";
+import type { IFilter } from "@/features/filters/dto";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Название фильма обязательно" }).min(2, {
@@ -78,13 +78,13 @@ const formSchema = z.object({
 export function FilmDataEditorForm({
   className,
   film,
-  genres,
-  actors,
+  genresOptions,
+  actorsOptions,
   ...props
 }: {
   film?: IFilm;
-  genres: IGenre[];
-  actors: IActor[];
+  genresOptions: IFilter[];
+  actorsOptions: IFilter[];
 } & React.HTMLAttributes<HTMLFormElement>) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -112,7 +112,7 @@ export function FilmDataEditorForm({
         })),
       });
     }
-  }, [film, genres]);
+  }, [film, genresOptions]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     const baseData = {
@@ -134,16 +134,6 @@ export function FilmDataEditorForm({
       addFilm({ ...baseData, image: data.image as File });
     }
   };
-
-  const genresOptions = genres.map((genre) => ({
-    label: genre.name,
-    value: genre.id.toString(),
-  }));
-
-  const actorsOptions = actors.map((actor) => ({
-    label: actor.name,
-    value: actor.id.toString(),
-  }));
 
   return (
     <Form {...form}>

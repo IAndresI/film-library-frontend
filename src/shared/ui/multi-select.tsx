@@ -185,7 +185,7 @@ export const MultiSelect = React.forwardRef<
                         className={cn("m-1")}
                         style={{ animationDuration: `${animation}s` }}
                       >
-                        {`+ ${selectedValues.length - maxCount + 1} more`}
+                        {`+ ${selectedValues.length - maxCount + 1} ещё`}
                         <XCircle
                           className="ml-2 h-4 w-4 cursor-pointer"
                           onClick={(event) => {
@@ -250,11 +250,11 @@ export const MultiSelect = React.forwardRef<
         >
           <Command className="">
             <CommandInput
-              placeholder="Search..."
+              placeholder="Поиск..."
               onKeyDown={handleInputKeyDown}
             />
             <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandEmpty>Ничего не найдено.</CommandEmpty>
 
               <CommandGroup>
                 {toggleAll && (
@@ -273,7 +273,7 @@ export const MultiSelect = React.forwardRef<
                     >
                       <CheckIcon className="h-4 w-4" />
                     </div>
-                    <span>(Select All)</span>
+                    <span>Выбрать все</span>
                   </CommandItem>
                 )}
 
@@ -312,7 +312,7 @@ export const MultiSelect = React.forwardRef<
                         onSelect={handleClear}
                         className="flex-1 cursor-pointer justify-center"
                       >
-                        Clear
+                        Очистить
                       </CommandItem>
                       <Separator
                         orientation="vertical"
@@ -324,7 +324,7 @@ export const MultiSelect = React.forwardRef<
                     onSelect={() => setIsPopoverOpen(false)}
                     className="max-w-full flex-1 cursor-pointer justify-center"
                   >
-                    Close
+                    Закрыть
                   </CommandItem>
                 </div>
               </CommandGroup>

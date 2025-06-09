@@ -1,7 +1,7 @@
-import { actorApi } from "@/entities/actor/api/actorApi";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { FilmDataEditorForm } from "@/features/filmEditor/ui";
 import { FilmMediaEditorForm } from "@/features/filmEditor/ui/FilmMediaEditorForm";
+import { useGetAllFilters } from "@/features/filters/lib/hooks";
 import { Separator } from "@/shared/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
@@ -16,20 +16,7 @@ export const AdminFilmEditorPage = () => {
     enabled: !!id,
   });
 
-  const { data: genres } = useQuery({
-    ...filmApi.getAllGenresQueryOptions(),
-  });
-
-  const { data: actors } = useQuery({
-    ...actorApi.getAllActorsQueryOptions({
-      filters: [],
-      sort: [],
-      pagination: {
-        pageIndex: 0,
-        pageSize: 99999,
-      },
-    }),
-  });
+  const { filters } = useGetAllFilters(true);
 
   if (!film) {
     return <div>Фильм не найден</div>;
@@ -64,8 +51,8 @@ export const AdminFilmEditorPage = () => {
           <TabsContent value="data">
             <FilmDataEditorForm
               film={film}
-              genres={genres || []}
-              actors={actors?.data || []}
+              genresOptions={filters?.genres || []}
+              actorsOptions={filters?.actors || []}
             />
           </TabsContent>
           <TabsContent value="media">

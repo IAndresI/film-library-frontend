@@ -15,11 +15,27 @@ export const filmApi = {
       queryFn: apiInstance.get<IGenre[]>("/genres"),
     });
   },
-  getAvailableFilmsQueryOptions: (genre?: number) => {
+  getAvailableFilmsQueryOptions: ({
+    pagination,
+    genres,
+    actors,
+    search,
+  }: {
+    pagination: PaginationState;
+    genres?: string[];
+    actors?: string[];
+    search?: string;
+  }) => {
     return queryOptions({
-      queryKey: ["films", "list", genre],
+      queryKey: ["films", "list", genres, actors, search, pagination],
       queryFn: apiInstance.get<IPaginationResponse<IFilm>>(`/films`, {
-        params: { genreId: genre },
+        params: {
+          genres,
+          actors,
+          search,
+          pageIndex: pagination.pageIndex,
+          pageSize: pagination.pageSize,
+        },
       }),
     });
   },

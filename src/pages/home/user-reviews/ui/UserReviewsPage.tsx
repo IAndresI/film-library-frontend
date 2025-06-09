@@ -3,14 +3,13 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { UserReviewSkeleton } from "@/entities/review/ui/UserReviewSkeleton";
 import { reviewApi } from "@/entities/review/api/reviewApi";
-// import { UserReviewCard } from "@/pages/home/user-reviews/ui/UserReviewCard";
 import { useUser } from "@/app/providers";
 import { UserReviewCard } from "./UserReviewCard";
 
 export const UserReviewsPage = () => {
   const user = useUser();
 
-  const { isLoading, data } = useQuery(
+  const { isLoading, data: userReviews } = useQuery(
     reviewApi.getAllUserReviewsQueryOptions({
       filters: [],
       sort: [],
@@ -21,8 +20,6 @@ export const UserReviewsPage = () => {
       userId: user.id,
     }),
   );
-
-  const userReviews = data?.data?.filter((review) => +review.user === user?.id);
 
   return (
     <motion.section
@@ -43,7 +40,7 @@ export const UserReviewsPage = () => {
         <Separator className="my-4" />
 
         <div className="grid gap-5 pb-4">
-          {userReviews?.length === 0 && (
+          {userReviews?.data?.length === 0 && (
             <div className="flex items-center justify-center">
               <p className="text-muted-foreground">У вас пока нет отзывов</p>
             </div>
@@ -57,7 +54,7 @@ export const UserReviewsPage = () => {
                     key={`skeleton_${i}`}
                   />
                 ))
-            : userReviews?.map((review, i, arr) => (
+            : userReviews?.data?.map((review, i, arr) => (
                 <>
                   <UserReviewCard key={review.id} review={review} />
                   {i !== arr.length - 1 && <Separator className="mt-5" />}

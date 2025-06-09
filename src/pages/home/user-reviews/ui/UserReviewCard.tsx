@@ -6,6 +6,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { reviewApi } from "@/entities/review/api/reviewApi";
 import { ReviewModal } from "./ReviewModal";
+import { getImageUrl } from "@/shared/lib/utils";
+import { Badge } from "@/shared/ui/badge";
 
 interface IUserReviewCardProps {
   review: IReview;
@@ -27,12 +29,17 @@ export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
 
   return (
     <div>
-      <div className="mb-3 flex justify-between text-xl font-semibold">
+      <div className="mb-3 flex gap-5 text-xl font-semibold">
         {film?.name}
         <div className="flex items-center gap-1 font-semibold">
           <StarFilledIcon className="h-5 w-5 text-yellow-500" />
           {review.rating}
         </div>
+        {!review.isApproved && (
+          <Badge variant="outline" className="ml-2">
+            Ожидает модерации
+          </Badge>
+        )}
       </div>
       <div className="flex gap-5">
         <div className="flex w-[150px] min-w-[150px] flex-col gap-3">
@@ -41,7 +48,7 @@ export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
             className="block overflow-hidden rounded-md"
           >
             <img
-              src={film?.image}
+              src={getImageUrl(film?.image)}
               alt={"film"}
               width={150}
               height={200}
@@ -58,7 +65,7 @@ export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
                 className="text-xs"
                 variant="secondary"
               >
-                Change
+                Изменить
               </Button>
             </ReviewModal>
 
@@ -68,7 +75,7 @@ export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
               className="text-xs"
               variant="destructive"
             >
-              Delete
+              Удалить
             </Button>
           </div>
         </div>

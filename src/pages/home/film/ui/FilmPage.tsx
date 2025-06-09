@@ -8,7 +8,6 @@ import {
   BookmarkIcon,
   PlayIcon,
   StarFilledIcon,
-  StarIcon,
 } from "@radix-ui/react-icons";
 import {
   Dialog,
@@ -19,31 +18,30 @@ import {
 } from "@/shared/ui/dialog";
 import { ActorCard } from "@/entities/actor/ui/ActorCard";
 import { Button } from "@/shared/ui/button";
-import { Label } from "@/shared/ui/label";
-import { Textarea } from "@/shared/ui/textarea";
-import { useEffect, useState } from "react";
-import { Rating } from "react-simple-star-rating";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
 import { Badge } from "@/shared/ui/badge";
 import { reviewApi } from "@/entities/review/api/reviewApi";
-import type { IReview } from "@/entities/review/dto";
 import { userApi } from "@/entities/user/api/userApi";
 import { useUser } from "@/app/providers";
 import { getImageUrl } from "@/shared/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
+import { ReviewEditorForm } from "@/features/reviewEditor/ui";
 
 export const FilmPage = () => {
   const { id } = useParams();
   const user = useUser();
   const queryClient = useQueryClient();
 
-  const [reviewRating, setReviewRating] = useState(0);
-  const [reviewText, setReviewText] = useState("");
-  const [userReview, setUserReview] = useState<IReview>();
-
-  const [isInFavorite, setIsInFavorite] = useState(false);
+  const { data: isInFavoriteData, isLoading: isInFavoriteLoading } = useQuery({
+    ...userApi.checkFavoriteStatusQueryOptions({
+      userId: user!.id,
+      filmId: +id!,
+    }),
+    enabled: !!user?.id && !!id,
+  });
 
   const { isLoading: isFilmLoading, data: film } = useQuery({
     ...filmApi.getFilmByIdQueryOptions(+id!),
@@ -51,20 +49,22 @@ export const FilmPage = () => {
   });
 
   const { isLoading: isReviewsLoading, data: reviews } = useQuery(
-    reviewApi.getAllReviewsQueryOptions({
-      filters: [],
-      sort: [],
+    reviewApi.getFilmReviewsQueryOptions({
+      filmId: +id!,
       pagination: {
         pageIndex: 0,
         pageSize: 10,
       },
     }),
   );
-  const { isLoading: isUserFavoritesLoading, data: userFavorites } = useQuery({
-    ...userApi.getAllUserFavoritesQueryOptions(String(user!.id)),
-    enabled: !!user?.id,
-  });
 
+  const { data: userReviewData } = useQuery({
+    ...reviewApi.getUserFilmReviewQueryOptions({
+      userId: user!.id,
+      filmId: +id!,
+    }),
+    enabled: !!user?.id && !!id,
+  });
   const { mutate: addUserFavoritesMutate, isPending: isAddingInfavorite } =
     useMutation({
       mutationFn: userApi.addUserFavorites,
@@ -81,77 +81,7 @@ export const FilmPage = () => {
       },
     });
 
-  const { mutate: createReviewMutate, isPending: isCreatingReview } =
-    useMutation({
-      mutationFn: reviewApi.createReview,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["reviews"] });
-      },
-    });
-
-  const { mutate: editReviewMutate, isPending: isEditingReview } = useMutation({
-    mutationFn: reviewApi.editReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reviews"] });
-    },
-  });
-
-  useEffect(() => {
-    if (userFavorites) {
-      const userFavorite = userFavorites.find(
-        (favFilm) => favFilm.id === film?.id,
-      );
-
-      if (userFavorite) {
-        setIsInFavorite(true);
-      } else {
-        setIsInFavorite(false);
-      }
-    }
-  }, [userFavorites, film]);
-
-  useEffect(() => {
-    if (reviews && user) {
-      const userReview = reviews.data.find(
-        (review) => review.film.id === film?.id && +user.id === +review.user,
-      );
-      if (userReview) {
-        setUserReview(userReview);
-        setReviewRating(userReview.rating);
-        setReviewText(userReview.text);
-      } else {
-        setUserReview(undefined);
-      }
-    }
-  }, [reviews, film, user]);
-
-  const onReviewSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (userReview) {
-      editReviewMutate({
-        id: userReview.id,
-        text: reviewText,
-        rating: reviewRating,
-      });
-    } else {
-      if (user && film) {
-        createReviewMutate({
-          userId: user.id,
-          filmId: film.id,
-          text: reviewText,
-          rating: reviewRating,
-        });
-      }
-    }
-  };
-
-  const handleRating = (rate: number) => {
-    setReviewRating(rate);
-  };
-
-  const filmReviews = reviews?.data?.filter(
-    (review) => review.film.id === film?.id,
-  );
+  const isInFavorite = isInFavoriteData?.isFavorite;
 
   return (
     <motion.section
@@ -186,7 +116,7 @@ export const FilmPage = () => {
                       {film.name}
                     </h1>
                   </div>
-                  <div className="text-muted-foreground">
+                  <div className="text-muted-foreground flex flex-wrap gap-1">
                     {new Date(film.releaseDate || "").getFullYear()} |{" "}
                     {film.genres.map((genre) => (
                       <Badge key={genre.id}>{genre.name}</Badge>
@@ -238,7 +168,7 @@ export const FilmPage = () => {
                           })
                     }
                     disabled={
-                      isUserFavoritesLoading ||
+                      isInFavoriteLoading ||
                       isAddingInfavorite ||
                       isRemovingfavorite
                     }
@@ -257,7 +187,7 @@ export const FilmPage = () => {
           </div>
           <Separator className="my-4" />
           <div className="mb-4 space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">Actors</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Актеры</h2>
           </div>
           <div className="relative">
             <ScrollArea>
@@ -279,28 +209,27 @@ export const FilmPage = () => {
           <Separator className="my-4" />
           <div className="mb-4 space-y-1">
             <h2 className="mb-4 text-2xl font-semibold tracking-tight">
-              Reviews
+              Обзоры
             </h2>
             {isReviewsLoading && <SvgSpinner className="mx-auto h-10 w-10" />}
 
-            <div className="grid grid-cols-[1fr,360px]">
-              {filmReviews && filmReviews?.length > 0 ? (
+            <div className="grid grid-cols-[1fr_360px]">
+              {reviews?.data && reviews.data.length > 0 ? (
                 <div className="grid h-fit border-r">
-                  {filmReviews.map((review, i, arr) => (
+                  {reviews.data.map((review, i, arr) => (
                     <div className="grid gap-3" key={review.id}>
                       <div className="flex items-center justify-between">
-                        {/* <div className="flex items-center gap-3">
-                          <img
-                            src={review.user.avatar}
-                            alt={review.user.name}
-                            width={40}
-                            height={40}
-                            className={
-                              "block overflow-hidden rounded-[50%] object-cover"
-                            }
-                          />
+                        <div className="flex items-center gap-3">
+                          <Avatar className="size-10">
+                            <AvatarImage
+                              src={getImageUrl(review.user.avatar)}
+                            />
+                            <AvatarFallback className="text-lg uppercase">
+                              {review.user.name.slice(0, 2)}
+                            </AvatarFallback>
+                          </Avatar>
                           <div className="font-medium">{review.user.name}</div>
-                        </div> */}
+                        </div>
                         <div className="flex items-center gap-1 pr-5 font-semibold">
                           <StarFilledIcon className="h-4 w-4 text-yellow-500" />{" "}
                           {review.rating}
@@ -316,50 +245,30 @@ export const FilmPage = () => {
                   ))}
                 </div>
               ) : (
-                "No reviews"
+                "Нет обзоров"
               )}
               <div className="px-5">
                 <h4 className="mb-4 text-xl font-medium">
-                  {userReview ? "Your review" : "Leave your review"}
+                  {userReviewData ? "Ваш обзор" : "Оставить обзор"}
+                  {userReviewData && !userReviewData.isApproved && (
+                    <Badge variant="outline" className="ml-2">
+                      Ожидает модерации
+                    </Badge>
+                  )}
                 </h4>
-                <form onSubmit={onReviewSubmit} className="grid gap-4">
-                  <div className="flex">
-                    <Rating
-                      emptyIcon={<StarIcon className="inline-block h-8 w-8" />}
-                      fillIcon={
-                        <StarFilledIcon className="inline-block h-8 w-8" />
-                      }
-                      iconsCount={10}
-                      transition
-                      initialValue={reviewRating}
-                      allowFraction
-                      onClick={handleRating}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="review">Description</Label>
-                    <Textarea
-                      className="h-[200px] max-h-[500px]"
-                      id="review"
-                      placeholder="Please enter your review text."
-                      value={reviewText}
-                      onChange={(e) => setReviewText(e.target.value)}
-                    />
-                  </div>
-                  <Button
-                    disabled={isCreatingReview || isEditingReview}
-                    type="submit"
-                    variant="default"
-                  >
-                    {userReview ? "Edit review" : "Submit"}
-                  </Button>
-                </form>
+                <ReviewEditorForm
+                  filmId={film.id}
+                  userId={user.id}
+                  review={userReviewData}
+                />
               </div>
             </div>
           </div>
         </div>
       ) : (
-        "No Info"
+        <div className="col-span-2 flex h-full w-full items-center justify-center lg:col-span-4 xl:col-span-5">
+          <p className="text-muted-foreground">Нет обзоров</p>
+        </div>
       )}
     </motion.section>
   );

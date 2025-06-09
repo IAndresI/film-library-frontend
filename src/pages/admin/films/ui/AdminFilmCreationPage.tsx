@@ -1,25 +1,10 @@
-import { actorApi } from "@/entities/actor/api/actorApi";
-import { filmApi } from "@/entities/film/api/filmApi";
 import { FilmDataEditorForm } from "@/features/filmEditor/ui";
+import { useGetAllFilters } from "@/features/filters/lib/hooks";
 import { Separator } from "@/shared/ui/separator";
-import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 
 export const AdminFilmCreationPage = () => {
-  const { data: genres } = useQuery({
-    ...filmApi.getAllGenresQueryOptions(),
-  });
-
-  const { data: actors } = useQuery({
-    ...actorApi.getAllActorsQueryOptions({
-      filters: [],
-      sort: [],
-      pagination: {
-        pageIndex: 0,
-        pageSize: 99999,
-      },
-    }),
-  });
+  const { filters } = useGetAllFilters(true);
 
   return (
     <motion.section
@@ -38,7 +23,10 @@ export const AdminFilmCreationPage = () => {
           </div>
         </div>
         <Separator className="my-4" />
-        <FilmDataEditorForm genres={genres || []} actors={actors?.data || []} />
+        <FilmDataEditorForm
+          genresOptions={filters?.genres || []}
+          actorsOptions={filters?.actors || []}
+        />
       </div>
     </motion.section>
   );

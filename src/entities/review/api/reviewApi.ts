@@ -30,6 +30,31 @@ export const reviewApi = {
       }),
     });
   },
+  getFilmReviewsQueryOptions: (data: {
+    filmId: number;
+    pagination: PaginationState;
+  }) => {
+    return queryOptions({
+      queryKey: ["reviews", data.filmId, data.pagination],
+      queryFn: apiInstance.get<IPaginationResponse<IReview>>(
+        `/reviews/film/${data.filmId}`,
+        {
+          params: {
+            pageIndex: data.pagination.pageIndex,
+            pageSize: data.pagination.pageSize,
+          },
+        },
+      ),
+    });
+  },
+  getUserFilmReviewQueryOptions: (data: { userId: number; filmId: number }) => {
+    return queryOptions({
+      queryKey: ["reviews", data.userId, data.filmId],
+      queryFn: apiInstance.get<IReview>(
+        `/reviews/user/${data.userId}/film/${data.filmId}`,
+      ),
+    });
+  },
   getAllUserReviewsQueryOptions: ({
     filters,
     sort,
@@ -51,7 +76,6 @@ export const reviewApi = {
             sort,
             pageIndex: pagination.pageIndex,
             pageSize: pagination.pageSize,
-            userId,
           },
         },
       ),
@@ -88,7 +112,7 @@ export const reviewApi = {
     filmId: number;
   }) => apiInstance.post<IReview>(`/reviews`, review),
   editReview: (review: { id: number; rating: number; text: string }) =>
-    apiInstance.put<IReview>(`/reviews/${review.id}/edit`, review),
+    apiInstance.put<IReview>(`/reviews/${review.id}`, review),
   deleteReview: (reviewId: number) =>
     apiInstance.delete<IReview>(`/reviews/${reviewId}`),
 };

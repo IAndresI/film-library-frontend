@@ -16,7 +16,7 @@ export const HomeLayout = () => {
         <HomeSidebar />
         <div className="h-[100svh] w-full overflow-auto">
           <HomeHeader />
-          <main className="bg-background grid flex-1 grid-cols-3 border-t lg:grid-cols-4">
+          <main className="bg-background grid flex-1 grid-cols-3 lg:grid-cols-4">
             <Outlet />
           </main>
         </div>

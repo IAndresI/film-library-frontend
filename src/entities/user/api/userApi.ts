@@ -31,16 +31,48 @@ export const userApi = {
       }),
     });
   },
-  getAllUserFavoritesQueryOptions: (userId: string) => {
+  getAllUserFavoritesQueryOptions: ({
+    userId,
+    genres,
+    actors,
+    search,
+  }: {
+    userId: number;
+    genres?: string[];
+    actors?: string[];
+    search?: string;
+  }) => {
     return queryOptions({
-      queryKey: ["favorites", userId],
-      queryFn: apiInstance.get<IFilm[]>(`/users/${userId}/favorites`),
+      queryKey: ["favorites", userId, genres, actors, search],
+      queryFn: apiInstance.get<IFilm[]>(`/users/${userId}/favorites`, {
+        params: {
+          genres,
+          actors,
+          search,
+        },
+      }),
     });
   },
   getUserByIdQueryOptions: (id: number) => {
     return queryOptions({
       queryKey: ["users", id],
       queryFn: apiInstance.get<IUser>(`/users/${id}`),
+    });
+  },
+  checkFavoriteStatusQueryOptions: ({
+    userId,
+    filmId,
+  }: {
+    userId: number;
+    filmId: number;
+  }) => {
+    return queryOptions({
+      queryKey: ["favorites", userId, filmId],
+      queryFn: apiInstance.get<{
+        isFavorite: boolean;
+        filmId: number;
+        userId: number;
+      }>(`/users/${userId}/favorites/${filmId}`),
     });
   },
   addUserFavorites: ({ userId, filmId }: { userId: string; filmId: number }) =>

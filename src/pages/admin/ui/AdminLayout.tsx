@@ -26,7 +26,7 @@ export const AdminLayout = () => {
         <div className="h-[100svh] w-full overflow-auto">
           <AdminHeader />
 
-          <main className="bg-background grid flex-1 border-t lg:grid-cols-4">
+          <main className="bg-background grid flex-1 lg:grid-cols-4">
             <Outlet />
           </main>
         </div>
