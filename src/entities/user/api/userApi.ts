@@ -45,8 +45,7 @@ export const userApi = {
   },
   addUserFavorites: ({ userId, filmId }: { userId: string; filmId: number }) =>
     apiInstance.post<IFilm>(`/users/${userId}/favorites`, {
-      movie_id: filmId,
-      user_id: userId,
+      filmId,
     }),
   removeUserFavorites: ({
     userId,
