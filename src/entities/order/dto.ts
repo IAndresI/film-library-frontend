@@ -1,3 +1,7 @@
+import type { IFilm } from "../film/dto";
+import type { IPlan } from "../subscription/dto";
+import type { IUser } from "../user/dto";
+
 export enum OrderStatusType {
   PENDING = "pending",
   PAID = "paid",
@@ -5,8 +9,13 @@ export enum OrderStatusType {
   CANCELLED = "cancelled",
 }
 
+export enum OrderType {
+  SUBSCRIPTION = "subscription",
+  FILM = "film",
+}
+
 export interface IOrder {
-  planId: number;
+  user: IUser;
   userId: number;
   id: number;
   createdAt: string;
@@ -17,5 +26,11 @@ export interface IOrder {
   paymentMethod: string;
   externalPaymentId: string;
   metadata: unknown;
+
+  type: OrderType;
+  plan?: IPlan;
+  planId?: number;
+  film?: IFilm;
+  filmId?: number;
   paidAt?: string;
 }

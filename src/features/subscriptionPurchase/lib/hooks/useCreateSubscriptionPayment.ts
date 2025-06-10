@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { userSubscription } from "../../api/userSubscription";
+import { subscriptionPurchaseApi } from "../../api/subscriptionPurchaseApi";
 
-export const useCreatePayment = (props?: {
+export const useCreateSubscriptionPayment = (props?: {
   onSuccess?:
     | ((
         data: {
@@ -23,7 +23,7 @@ export const useCreatePayment = (props?: {
     error,
     ...mutationProps
   } = useMutation({
-    mutationFn: userSubscription.createPayment,
+    mutationFn: subscriptionPurchaseApi.createSubscriptionPayment,
     onSuccess: (data, variables, context) => {
       if (data.paymentUrl) {
         window.location.href = data.paymentUrl;

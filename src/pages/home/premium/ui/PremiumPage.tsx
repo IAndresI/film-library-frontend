@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { SubscriptionStatus } from "@/entities/subscription/dto";
 import { useUser } from "@/app/providers";
 import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-import { UserSubscriptionForm } from "@/features/userSubscription/ui";
+import { UserSubscriptionPaymentForm } from "@/features/subscriptionPurchase/ui";
 
 export const PremiumPage = () => {
   const user = useUser();
@@ -33,7 +33,7 @@ export const PremiumPage = () => {
       {haveSubscription ? (
         <SvgCrown className="mx-auto h-60 w-60" gradient />
       ) : (
-        <UserSubscriptionForm />
+        <UserSubscriptionPaymentForm />
       )}
     </motion.section>
   );

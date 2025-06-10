@@ -18,30 +18,27 @@ import {
 } from "@/shared/ui/dialog";
 import { ActorCard } from "@/entities/actor/ui/ActorCard";
 import { Button } from "@/shared/ui/button";
-import { useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
 import { Badge } from "@/shared/ui/badge";
 import { reviewApi } from "@/entities/review/api/reviewApi";
-import { userApi } from "@/entities/user/api/userApi";
 import { useUser } from "@/app/providers";
 import { getImageUrl } from "@/shared/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import { ReviewEditorForm } from "@/features/reviewEditor/ui";
+import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
+import { SvgFire } from "@/shared/ui/svg/SvgFire";
+import { SubscriptionStatus } from "@/entities/subscription/dto";
+import { useFavoritesActions } from "@/features/favoriteFilmActions/lib/hooks";
+import { UserFilmPaymentForm } from "@/features/filmPurchase/ui";
 
 export const FilmPage = () => {
   const { id } = useParams();
   const user = useUser();
-  const queryClient = useQueryClient();
 
-  const { data: isInFavoriteData, isLoading: isInFavoriteLoading } = useQuery({
-    ...userApi.checkFavoriteStatusQueryOptions({
-      userId: user!.id,
-      filmId: +id!,
-    }),
-    enabled: !!user?.id && !!id,
-  });
+  const { isInFavorite, toggleFavorite } = useFavoritesActions(+id!);
 
   const { isLoading: isFilmLoading, data: film } = useQuery({
     ...filmApi.getFilmByIdQueryOptions(+id!),
@@ -65,23 +62,12 @@ export const FilmPage = () => {
     }),
     enabled: !!user?.id && !!id,
   });
-  const { mutate: addUserFavoritesMutate, isPending: isAddingInfavorite } =
-    useMutation({
-      mutationFn: userApi.addUserFavorites,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["favorites"] });
-      },
-    });
 
-  const { mutate: removeUserFavoritesMutate, isPending: isRemovingfavorite } =
-    useMutation({
-      mutationFn: userApi.removeUserFavorites,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["favorites"] });
-      },
-    });
+  const isSubsciptionActive =
+    user.subscription &&
+    user.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
 
-  const isInFavorite = isInFavoriteData?.isFavorite;
+  const isFilmPurchased = film?.isPurchased;
 
   return (
     <motion.section
@@ -100,14 +86,53 @@ export const FilmPage = () => {
           />
           <div className="flex items-center justify-between">
             <div className="flex gap-8">
-              <img
-                src={getImageUrl(film.image)}
-                width={250}
-                height={330}
-                className={
-                  "aspect-[3/4] h-fit max-w-[330px] min-w-[330px] overflow-hidden rounded-md object-cover transition-all"
-                }
-              />
+              <div className="grid gap-5">
+                <img
+                  src={getImageUrl(film.image)}
+                  width={250}
+                  height={330}
+                  className={
+                    "aspect-[3/4] h-fit max-w-[330px] min-w-[330px] overflow-hidden rounded-md object-cover transition-all"
+                  }
+                />
+                <div className="grid gap-3">
+                  {isFilmPurchased && (
+                    <Button className="h-12 p-0 px-5" variant="rainbow">
+                      <SvgCrown className="mr-2 min-h-[24px] min-w-[24px]" />
+                      Смотреть
+                    </Button>
+                  )}
+
+                  {!isFilmPurchased && film.isPaid && (
+                    <Button className="h-12 p-0 px-5" variant="rainbow">
+                      <SvgCrown className="mr-2 min-h-[24px] min-w-[24px]" />
+                      {isSubsciptionActive
+                        ? "Смотреть"
+                        : "Смотреть вместе с подпиской"}
+                    </Button>
+                  )}
+
+                  {!isFilmPurchased && !film.isPaid && (
+                    <Button className="h-12 p-0 px-5">
+                      <SvgFire className="mr-2 min-h-[24px] min-w-[24px]" />
+                      Смотреть
+                    </Button>
+                  )}
+
+                  {!isFilmPurchased && film.isPaid && film.price && (
+                    <div className="grid gap-3 text-center">
+                      <span className="text-muted-foreground font-bold">
+                        Или
+                      </span>
+                      <UserFilmPaymentForm
+                        filmId={film.id}
+                        userId={user.id}
+                        price={film.price}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
 
               <div className="flex flex-col justify-between">
                 <div className="space-y-3">
@@ -119,15 +144,17 @@ export const FilmPage = () => {
                   <div className="text-muted-foreground flex flex-wrap gap-1">
                     {new Date(film.releaseDate || "").getFullYear()} |{" "}
                     {film.genres.map((genre) => (
-                      <Badge key={genre.id}>{genre.name}</Badge>
+                      <Link to={`/films/genres/${genre.id}`} key={genre.id}>
+                        <Badge key={genre.id}>{genre.name}</Badge>
+                      </Link>
                     ))}
                   </div>
                   <p className="text-muted-foreground">{film.description}</p>
                 </div>
                 <div className="flex gap-5">
                   <div className="flex items-center gap-1 text-5xl font-semibold">
-                    <StarFilledIcon className="h-10 w-10 text-yellow-500" />{" "}
-                    {film.rating}
+                    {film.rating || "-"}{" "}
+                    <StarFilledIcon className="h-10 w-10 text-yellow-500" />
                   </div>
 
                   <Dialog>
@@ -137,7 +164,7 @@ export const FilmPage = () => {
                         variant="outline"
                       >
                         <PlayIcon className="h-5 w-5" />
-                        Trailer
+                        Трейлер
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="flex h-full max-h-[85svh] max-w-[85vw] flex-col">
@@ -155,23 +182,9 @@ export const FilmPage = () => {
                       />
                     </DialogContent>
                   </Dialog>
+
                   <Button
-                    onClick={() =>
-                      isInFavorite
-                        ? removeUserFavoritesMutate({
-                            userId: String(user.id),
-                            filmId: film.id,
-                          })
-                        : addUserFavoritesMutate({
-                            userId: String(user.id),
-                            filmId: film.id,
-                          })
-                    }
-                    disabled={
-                      isInFavoriteLoading ||
-                      isAddingInfavorite ||
-                      isRemovingfavorite
-                    }
+                    onClick={toggleFavorite}
                     className="h-full w-12 p-0 px-5"
                     variant="outline"
                   >

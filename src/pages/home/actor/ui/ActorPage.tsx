@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { getImageUrl } from "@/shared/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 
 export const ActorPage = () => {
   const { id } = useParams();
@@ -40,14 +41,20 @@ export const ActorPage = () => {
           />
           <div className="flex items-center justify-between">
             <div className="flex gap-8">
-              <img
-                src={getImageUrl(data.image)}
-                width={100}
-                height={100}
+              <Avatar
                 className={
                   "h-[150px] min-w-[150px] overflow-hidden rounded-[100%] object-cover transition-all"
                 }
-              />
+                style={{
+                  width: 150,
+                  height: 150,
+                }}
+              >
+                <AvatarImage alt={data.name} src={getImageUrl(data.image)} />
+                <AvatarFallback className="text-center text-[40px] uppercase">
+                  {data.name.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
 
               <div className="flex flex-col justify-between">
                 <div className="space-y-3">

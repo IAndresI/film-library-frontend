@@ -2,9 +2,9 @@ import { Separator } from "@/shared/ui/separator";
 
 import { motion } from "framer-motion";
 import { ActorCard } from "@/entities/actor/ui/ActorCard";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { actorApi } from "@/entities/actor/api/actorApi";
-import { ActorSkeleton } from "@/entities/actor/ui/ActorSkeleton";
+
 import { useDebounce } from "@/shared/lib/hooks/use-debounce";
 import { useState } from "react";
 import { useGetAllFilters } from "@/features/filters/lib/hooks";
@@ -12,6 +12,7 @@ import { MultiSelect } from "@/shared/ui/multi-select";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
 
 export const ActorsPage = () => {
   const [selectedFilms, setSelectedFilms] = useState<string[]>([]);
@@ -20,16 +21,35 @@ export const ActorsPage = () => {
 
   const { filters } = useGetAllFilters();
 
-  const { isLoading, data, isSuccess } = useQuery(
-    actorApi.getAllActorsQueryOptions({
-      search: debouncedSearch,
-      films: selectedFilms,
-      pagination: {
-        pageIndex: 0,
-        pageSize: 10,
-      },
-    }),
-  );
+  const {
+    data: actorsData,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["actors", debouncedSearch, selectedFilms],
+    queryFn: async ({ pageParam = 0, ...meta }) => {
+      const queryOptions = actorApi.getAllActorsQueryOptions({
+        search: debouncedSearch,
+        films: selectedFilms,
+        pagination: {
+          pageIndex: pageParam,
+          pageSize: 10,
+        },
+      });
+      return queryOptions.queryFn!(meta);
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      return lastPage.pagination.hasNextPage
+        ? lastPage.pagination.pageIndex + 1
+        : undefined;
+    },
+    select: (data) => {
+      return data.pages.flatMap((page) => page.data);
+    },
+  });
 
   const isFiltered = selectedFilms.length > 0 || search.length > 0;
 
@@ -84,19 +104,15 @@ export const ActorsPage = () => {
         </div>
         <Separator className="my-4" />
 
+        {isLoading && !actorsData && (
+          <div className="flex justify-center py-8">
+            <SvgSpinner className="h-10 w-10" />
+          </div>
+        )}
+
         <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,150px))] place-items-center justify-between gap-5 pb-4">
-          {isLoading &&
-            new Array(14)
-              .fill(1)
-              .map((_, i) => (
-                <ActorSkeleton
-                  className="h-[150px] w-[150px]"
-                  key={`skeleton_actor_${i}`}
-                />
-              ))}
-          {data &&
-            data.data.length > 0 &&
-            data.data.map((actor) => (
+          {actorsData && actorsData.length > 0 ? (
+            actorsData.map((actor) => (
               <ActorCard
                 key={actor.name}
                 actor={actor}
@@ -104,13 +120,29 @@ export const ActorsPage = () => {
                 width={100}
                 height={100}
               />
-            ))}
-          {isSuccess && data && data.data.length === 0 && (
+            ))
+          ) : !isLoading ? (
             <div className="col-span-2 flex h-full w-full items-center justify-center lg:col-span-4 xl:col-span-5">
               <p className="text-muted-foreground">Ничего не найдено</p>
             </div>
-          )}
+          ) : null}
         </div>
+
+        {hasNextPage && (
+          <div className="flex justify-center pb-4">
+            <Button
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              variant="outline"
+            >
+              {isFetchingNextPage ? (
+                <SvgSpinner className="h-4 w-4" />
+              ) : (
+                "Показать ещё актёров"
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </motion.section>
   );

@@ -7,12 +7,14 @@ export const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000,
       gcTime: 5 * 60 * 1000,
       retry: (failureCount, error) => {
+        // console.log({ ...error });
+
         if (error instanceof CustomApiError && error.code === 401) {
           return false;
         }
 
-        // Для других ошибок - до 3 повторных попыток
-        return failureCount < 2;
+        // Для других ошибок - до 2 повторных попыток
+        return failureCount < 1;
       },
     },
     mutations: {

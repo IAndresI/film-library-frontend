@@ -36,21 +36,28 @@ export const userApi = {
     genres,
     actors,
     search,
+    pagination,
   }: {
     userId: number;
     genres?: string[];
     actors?: string[];
     search?: string;
+    pagination: PaginationState;
   }) => {
     return queryOptions({
-      queryKey: ["favorites", userId, genres, actors, search],
-      queryFn: apiInstance.get<IFilm[]>(`/users/${userId}/favorites`, {
-        params: {
-          genres,
-          actors,
-          search,
+      queryKey: ["favorites", userId, genres, actors, search, pagination],
+      queryFn: apiInstance.get<IPaginationResponse<IFilm>>(
+        `/users/${userId}/favorites`,
+        {
+          params: {
+            genres,
+            actors,
+            search,
+            pageIndex: pagination.pageIndex,
+            pageSize: pagination.pageSize,
+          },
         },
-      }),
+      ),
     });
   },
   getUserByIdQueryOptions: (id: number) => {
@@ -59,32 +66,5 @@ export const userApi = {
       queryFn: apiInstance.get<IUser>(`/users/${id}`),
     });
   },
-  checkFavoriteStatusQueryOptions: ({
-    userId,
-    filmId,
-  }: {
-    userId: number;
-    filmId: number;
-  }) => {
-    return queryOptions({
-      queryKey: ["favorites", userId, filmId],
-      queryFn: apiInstance.get<{
-        isFavorite: boolean;
-        filmId: number;
-        userId: number;
-      }>(`/users/${userId}/favorites/${filmId}`),
-    });
-  },
-  addUserFavorites: ({ userId, filmId }: { userId: string; filmId: number }) =>
-    apiInstance.post<IFilm>(`/users/${userId}/favorites`, {
-      filmId,
-    }),
-  removeUserFavorites: ({
-    userId,
-    filmId,
-  }: {
-    userId: string;
-    filmId: number;
-  }) => apiInstance.delete<IFilm>(`/users/${userId}/favorites/${filmId}`),
   deleteUser: (id: number) => apiInstance.delete(`/users/${id}`),
 };

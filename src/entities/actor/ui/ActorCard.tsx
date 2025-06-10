@@ -1,6 +1,7 @@
 import { cn, getImageUrl } from "@/shared/lib/utils";
 import { Link } from "react-router-dom";
 import type { IActor } from "@/entities/actor/dto";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 
 interface ActorCardProps extends React.HTMLAttributes<HTMLDivElement> {
   actor: IActor;
@@ -12,8 +13,8 @@ interface ActorCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export function ActorCard({
   actor,
   aspectRatio = "portrait",
-  width,
-  height,
+  width = 40,
+  height = 40,
   className,
   ...props
 }: ActorCardProps) {
@@ -21,25 +22,36 @@ export function ActorCard({
     <div className={cn("space-y-3", className)} {...props}>
       <Link
         to={`/actors/${actor.id}`}
-        className="block overflow-hidden rounded-[50%]"
+        className="flex justify-center overflow-hidden rounded-[50%]"
       >
-        <img
-          src={getImageUrl(actor.image)}
-          alt={actor.name}
-          width={width}
-          height={height}
+        <Avatar
           className={cn(
             "h-auto w-auto object-cover transition-all hover:scale-105",
             aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square",
           )}
-        />
+          style={{
+            width: width,
+            height: height,
+          }}
+        >
+          <AvatarImage alt={actor.name} src={getImageUrl(actor.image)} />
+          <AvatarFallback className="text-center text-[40px] uppercase">
+            {actor.name.slice(0, 2)}
+          </AvatarFallback>
+        </Avatar>
       </Link>
 
       <div className="flex h-max justify-between text-sm">
-        <div className="space-y-1">
-          <Link to="/actors/1" className="hover:text-primary/50 transition">
-            <h3 className="leading-none font-medium">{actor.name}</h3>
+        <div className="w-full space-y-1">
+          <Link
+            to="/actors/1"
+            className="hover:text-primary/50 block text-center leading-none font-medium transition"
+          >
+            {actor.name}
           </Link>
+          <p className="text-muted-foreground text-center text-sm">
+            {actor.role}
+          </p>
         </div>
       </div>
     </div>

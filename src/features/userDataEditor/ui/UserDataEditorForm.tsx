@@ -18,6 +18,7 @@ import {
 } from "@/shared/ui/form";
 import { ImageInput } from "@/shared/ui/image-input";
 import { getImageUrl } from "@/shared/lib/utils";
+import { queryClient } from "@/shared/api/query-client";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Имя обязательно" }).min(3, {
@@ -53,7 +54,13 @@ export function UserDataEditorForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const { editUserData, isLoading } = useEditUserData();
+  const { editUserData, isLoading } = useEditUserData({
+    onSuccess: (user) => {
+      if (userData) {
+        queryClient.setQueryData(["user"], user);
+      }
+    },
+  });
 
   React.useEffect(() => {
     form.reset({

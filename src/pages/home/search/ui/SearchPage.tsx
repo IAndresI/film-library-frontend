@@ -8,21 +8,75 @@ import { useEffect, useState } from "react";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { ScrollBar } from "@/shared/ui/scroll-area";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ActorCard } from "@/entities/actor/ui/ActorCard";
-import { searchApi } from "@/features/search/api/searchApi";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
+import { filmApi } from "@/entities/film/api/filmApi";
+import { actorApi } from "@/entities/actor/api/actorApi";
 
 export const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchText, setSearchText] = useState(location.search);
-  const [queryText, setQueryText] = useState(location.search);
+  const [queryText, setQueryText] = useState(searchParams.get("query") || "");
 
-  const { isLoading, data } = useQuery({
-    ...searchApi.search(queryText),
+  const {
+    data: filmsData,
+    isLoading: isFilmsLoading,
+    hasNextPage: hasNextFilmsPage,
+    fetchNextPage: fetchNextFilmsPage,
+    isFetchingNextPage: isFetchingNextFilmsPage,
+  } = useInfiniteQuery({
+    queryKey: ["films", "search", queryText],
+    queryFn: async ({ pageParam = 0, ...meta }) => {
+      const queryOptions = filmApi.getAvailableFilmsQueryOptions({
+        search: queryText,
+        pagination: {
+          pageIndex: pageParam,
+          pageSize: 10,
+        },
+      });
+      return queryOptions.queryFn!(meta);
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      return lastPage.pagination.hasNextPage
+        ? lastPage.pagination.pageIndex + 1
+        : undefined;
+    },
     enabled: queryText.length > 0,
+    select: (data) => {
+      return data.pages.flatMap((page) => page.data);
+    },
+  });
+
+  const {
+    data: actorsData,
+    isLoading: isActorsLoading,
+    hasNextPage: hasNextActorsPage,
+    fetchNextPage: fetchNextActorsPage,
+    isFetchingNextPage: isFetchingNextActorsPage,
+  } = useInfiniteQuery({
+    queryKey: ["actors", "search", queryText],
+    queryFn: async ({ pageParam = 0, ...meta }) => {
+      const queryOptions = actorApi.getAllActorsQueryOptions({
+        search: queryText,
+        pagination: {
+          pageIndex: pageParam,
+          pageSize: 10,
+        },
+      });
+      return queryOptions.queryFn!(meta);
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      return lastPage.pagination.hasNextPage
+        ? lastPage.pagination.pageIndex + 1
+        : undefined;
+    },
+    enabled: queryText.length > 0,
+    select: (data) => {
+      return data.pages.flatMap((page) => page.data);
+    },
   });
 
   useEffect(() => {
@@ -56,10 +110,10 @@ export const SearchPage = () => {
         <div className="mb-2 flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-2xl font-semibold tracking-tight">
-              Search{" "}
+              Поиск{" "}
               {searchParams.get("query") && (
                 <>
-                  for:{" "}
+                  по запросу:{" "}
                   <span className="font-normal">
                     {searchParams.get("query")}
                   </span>
@@ -78,7 +132,7 @@ export const SearchPage = () => {
         >
           <Input
             type="search"
-            placeholder="Enter text..."
+            placeholder="Введите текст..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             autoFocus
@@ -92,66 +146,92 @@ export const SearchPage = () => {
           </Button>
         </form>
         <Separator className="mb-4" />
-        {isLoading && <SvgSpinner className="mx-auto h-10 w-10" />}
-        {queryText.length <= 0 && "Enter search text"}
-        {data &&
-          data.actors.length <= 0 &&
-          data.movies.length <= 0 &&
-          "Nothings found"}
-        {data && queryText.length > 0 && (
+        {(isFilmsLoading || isActorsLoading) && (
+          <SvgSpinner className="mx-auto h-10 w-10" />
+        )}
+        {queryText.length <= 0 && "Начните поиск..."}
+        {filmsData &&
+          filmsData.length <= 0 &&
+          actorsData &&
+          actorsData.length <= 0 && (
+            <div className="col-span-2 flex h-full w-full items-center justify-center lg:col-span-4 xl:col-span-5">
+              <p className="text-muted-foreground">Ничего не найдено</p>
+            </div>
+          )}
+        {queryText.length > 0 && (
           <>
-            {data.actors.length > 0 && (
+            {actorsData && actorsData.length > 0 && (
               <>
                 <div className="mt-6 space-y-1">
                   <h2 className="text-2xl font-semibold tracking-tight">
-                    Actors
+                    Актеры
                   </h2>
                 </div>
                 <Separator className="my-4" />
-                <div className="">
-                  <ScrollArea className="overflow-auto">
-                    <div className="flex space-x-4 pb-4">
-                      {data.actors.map((actor) => (
-                        <ActorCard
-                          key={actor.name}
-                          actor={actor}
-                          className="w-[150px] min-w-[150px]"
-                          aspectRatio="square"
-                          width={100}
-                          height={100}
-                        />
-                      ))}
-                    </div>
-                    <ScrollBar orientation="horizontal" />
-                  </ScrollArea>
+                <div className="flex flex-wrap gap-4 pb-4">
+                  {actorsData.map((actor) => (
+                    <ActorCard
+                      key={actor.name}
+                      actor={actor}
+                      className="w-[150px] min-w-[150px]"
+                      aspectRatio="square"
+                      width={100}
+                      height={100}
+                    />
+                  ))}
                 </div>
+                {hasNextActorsPage && (
+                  <div className="flex justify-center pb-4">
+                    <Button
+                      onClick={() => fetchNextActorsPage()}
+                      disabled={isFetchingNextActorsPage}
+                      variant="outline"
+                    >
+                      {isFetchingNextActorsPage ? (
+                        <SvgSpinner className="h-4 w-4" />
+                      ) : (
+                        "Показать ещё актёров"
+                      )}
+                    </Button>
+                  </div>
+                )}
               </>
             )}
-            {data.movies.length > 0 && (
+            {filmsData && filmsData.length > 0 && (
               <>
                 <div className="mt-6 space-y-1">
                   <h2 className="text-2xl font-semibold tracking-tight">
-                    Films
+                    Фильмы
                   </h2>
                 </div>
                 <Separator className="my-4" />
-                <div className="relative">
-                  <ScrollArea className="overflow-auto">
-                    <div className="flex space-x-4 pb-4">
-                      {data.movies.map((film) => (
-                        <FilmCard
-                          key={film.name}
-                          film={film}
-                          className="w-[150px] min-w-[150px]"
-                          aspectRatio="square"
-                          width={150}
-                          height={150}
-                        />
-                      ))}
-                    </div>
-                    <ScrollBar orientation="horizontal" />
-                  </ScrollArea>
+
+                <div className="flex flex-wrap gap-4 pb-4">
+                  {filmsData.map((film) => (
+                    <FilmCard
+                      key={film.name}
+                      film={film}
+                      className="w-[250px] min-w-[250px]"
+                      width={150}
+                      height={150}
+                    />
+                  ))}
                 </div>
+                {hasNextFilmsPage && (
+                  <div className="flex justify-center pb-4">
+                    <Button
+                      onClick={() => fetchNextFilmsPage()}
+                      disabled={isFetchingNextFilmsPage}
+                      variant="outline"
+                    >
+                      {isFetchingNextFilmsPage ? (
+                        <SvgSpinner className="h-4 w-4" />
+                      ) : (
+                        "Показать ещё фильмов"
+                      )}
+                    </Button>
+                  </div>
+                )}
               </>
             )}
           </>

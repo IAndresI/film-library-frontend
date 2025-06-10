@@ -12,9 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui/select";
-import { useCreatePayment } from "../lib/hooks";
+import { useCreateSubscriptionPayment } from "../lib/hooks";
 
-export function UserSubscriptionForm({
+export function UserSubscriptionPaymentForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
@@ -24,7 +24,7 @@ export function UserSubscriptionForm({
     ...subscriptionApi.getAllSubscriptionPlansQueryOptions(),
   });
 
-  const { createPayment, isLoading } = useCreatePayment();
+  const { createPayment, isLoading } = useCreateSubscriptionPayment();
 
   useEffect(() => {
     if (subscriptionPlans) {

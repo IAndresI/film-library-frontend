@@ -9,14 +9,18 @@ export interface IGenre {
 export interface IFilm {
   id: number;
   name: string;
-  description?: string;
-  image?: string;
-  releaseDate?: string;
-  trailerUrl?: string;
-  filmUrl?: string;
-  createdAt?: string;
-  isVisible?: boolean;
-  rating?: number;
+  description: string;
+  releaseDate: string;
+  createdAt: string;
+  isVisible: boolean;
   genres: IGenre[];
   actors: IFilmActor[];
+  isPaid: boolean;
+  isPurchased: boolean;
+
+  price?: number;
+  image?: string;
+  rating?: number;
+  trailerUrl?: string;
+  filmUrl?: string;
 }

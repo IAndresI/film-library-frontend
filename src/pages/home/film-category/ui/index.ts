@@ -1,1 +1,0 @@
-export { FilmCategoryPage } from "./FilmCategoryPage";

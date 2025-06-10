@@ -1,25 +1,45 @@
 import { Separator } from "@/shared/ui/separator";
 import { motion } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
-import { UserReviewSkeleton } from "@/entities/review/ui/UserReviewSkeleton";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { reviewApi } from "@/entities/review/api/reviewApi";
 import { useUser } from "@/app/providers";
 import { UserReviewCard } from "./UserReviewCard";
+import { Button } from "@/shared/ui/button";
+import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
 
 export const UserReviewsPage = () => {
   const user = useUser();
 
-  const { isLoading, data: userReviews } = useQuery(
-    reviewApi.getAllUserReviewsQueryOptions({
-      filters: [],
-      sort: [],
-      pagination: {
-        pageIndex: 0,
-        pageSize: 10,
-      },
-      userId: user.id,
-    }),
-  );
+  const {
+    data: reviewsData,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["reviews", user.id],
+    queryFn: async ({ pageParam = 0, ...meta }) => {
+      const queryOptions = reviewApi.getAllUserReviewsQueryOptions({
+        filters: [],
+        sort: [],
+        pagination: {
+          pageIndex: pageParam,
+          pageSize: 10,
+        },
+        userId: user.id,
+      });
+      return queryOptions.queryFn!(meta);
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      return lastPage.pagination.hasNextPage
+        ? lastPage.pagination.pageIndex + 1
+        : undefined;
+    },
+    select: (data) => {
+      return data.pages.flatMap((page) => page.data);
+    },
+  });
 
   return (
     <motion.section
@@ -39,28 +59,43 @@ export const UserReviewsPage = () => {
         </div>
         <Separator className="my-4" />
 
+        {isLoading && !reviewsData && (
+          <div className="flex justify-center py-8">
+            <SvgSpinner className="h-10 w-10" />
+          </div>
+        )}
+
         <div className="grid gap-5 pb-4">
-          {userReviews?.data?.length === 0 && (
+          {reviewsData && reviewsData.length === 0 && !isLoading && (
             <div className="flex items-center justify-center">
               <p className="text-muted-foreground">У вас пока нет отзывов</p>
             </div>
           )}
-          {isLoading
-            ? new Array(5)
-                .fill(1)
-                .map((_, i, arr) => (
-                  <UserReviewSkeleton
-                    bottomSeparator={i !== arr.length - 1}
-                    key={`skeleton_${i}`}
-                  />
-                ))
-            : userReviews?.data?.map((review, i, arr) => (
-                <>
-                  <UserReviewCard key={review.id} review={review} />
-                  {i !== arr.length - 1 && <Separator className="mt-5" />}
-                </>
-              ))}
+          {reviewsData &&
+            reviewsData.length > 0 &&
+            reviewsData.map((review, i, arr) => (
+              <>
+                <UserReviewCard key={review.id} review={review} />
+                {i !== arr.length - 1 && <Separator className="mt-5" />}
+              </>
+            ))}
         </div>
+
+        {hasNextPage && (
+          <div className="flex justify-center pb-4">
+            <Button
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              variant="outline"
+            >
+              {isFetchingNextPage ? (
+                <SvgSpinner className="h-4 w-4" />
+              ) : (
+                "Показать ещё отзывов"
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </motion.section>
   );

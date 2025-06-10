@@ -25,6 +25,9 @@ export const useEditUserData = (props?: {
       queryClient.invalidateQueries({
         queryKey: ["users", variables.id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
       onSuccess?.(data, variables, context);
     },
   });

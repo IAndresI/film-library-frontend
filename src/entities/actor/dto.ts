@@ -8,6 +8,7 @@ export interface IActor {
   description: string;
   isVisible: boolean;
   createdAt: string;
+  role: string;
 }
 
 export interface IFilmActor extends IActor {

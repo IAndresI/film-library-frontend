@@ -3,9 +3,7 @@ import { DataTableColumnHeader } from "../../../shared/components/data-table/dat
 import type { IOrder } from "../dto";
 import { formatDate } from "@/shared/lib/helpers";
 import { OrderStatus } from "@/shared/components/OrderStatus";
-import type { IUser } from "@/entities/user/dto";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import type { IPlan } from "@/entities/subscription/dto";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "@/shared/lib/utils";
 
@@ -30,8 +28,8 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
         title="Пользователь"
       />
     ),
-    cell: (row) => {
-      const user = row.getValue() as IUser;
+    cell: ({ row }) => {
+      const user = row.original.user;
       return (
         <Link
           to={`/admin/users/${user.id}`}
@@ -64,18 +62,48 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
         title="План"
       />
     ),
-    cell: (row) => {
-      const plan = row.getValue() as IPlan;
-      return (
+    cell: ({ row }) => {
+      const plan = row.original.plan;
+      return plan ? (
         <div className="flex items-center space-x-2">
           <span className="block truncate font-medium">{plan.name}</span>
         </div>
+      ) : (
+        "-"
       );
     },
     meta: {
       columnLabel: "План",
       filterField: "planId",
       sortField: "planName",
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: "film",
+    id: "filmId",
+    header: ({ column, table }) => (
+      <DataTableColumnHeader
+        useMetaSortName={true}
+        table={table}
+        column={column}
+        title="Фильм"
+      />
+    ),
+    cell: ({ row }) => {
+      const film = row.original.film;
+      return film ? (
+        <div className="flex items-center space-x-2">
+          <span className="block truncate font-medium">{film.name}</span>
+        </div>
+      ) : (
+        "-"
+      );
+    },
+    meta: {
+      columnLabel: "Фильм",
+      filterField: "filmId",
+      sortField: "filmName",
     },
     enableSorting: false,
   },
