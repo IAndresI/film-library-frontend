@@ -33,6 +33,8 @@ import { SvgFire } from "@/shared/ui/svg/SvgFire";
 import { SubscriptionStatus } from "@/entities/subscription/dto";
 import { useFavoritesActions } from "@/features/favoriteFilmActions/lib/hooks";
 import { UserFilmPaymentForm } from "@/features/filmPurchase/ui";
+import { VideoPlayer } from "@/shared/components/VideoPlayer";
+import { getMediaUrl } from "@/entities/film/lib/helpers";
 
 export const FilmPage = () => {
   const { id } = useParams();
@@ -95,41 +97,78 @@ export const FilmPage = () => {
                     "aspect-[3/4] h-fit max-w-[330px] min-w-[330px] overflow-hidden rounded-md object-cover transition-all"
                   }
                 />
-                <div className="grid gap-3">
-                  {isFilmPurchased && (
-                    <Button className="h-12 p-0 px-5" variant="rainbow">
-                      <SvgCrown className="mr-2 min-h-[24px] min-w-[24px]" />
-                      Смотреть
-                    </Button>
-                  )}
+                <div>
+                  {film.filmUrl ? (
+                    <div className="grid gap-3">
+                      {isFilmPurchased && (
+                        <Button
+                          asChild
+                          className="h-12 p-0 px-5"
+                          variant="rainbow"
+                        >
+                          <Link to={`/film/${film.id}/watch`}>
+                            <SvgCrown className="mr-2 min-h-[24px] min-w-[24px]" />
+                            Смотреть
+                          </Link>
+                        </Button>
+                      )}
 
-                  {!isFilmPurchased && film.isPaid && (
-                    <Button className="h-12 p-0 px-5" variant="rainbow">
-                      <SvgCrown className="mr-2 min-h-[24px] min-w-[24px]" />
-                      {isSubsciptionActive
-                        ? "Смотреть"
-                        : "Смотреть вместе с подпиской"}
-                    </Button>
-                  )}
+                      {!isFilmPurchased && film.isPaid && (
+                        <Button
+                          asChild
+                          className="h-12 p-0 px-5"
+                          variant="rainbow"
+                        >
+                          <Link
+                            to={
+                              isSubsciptionActive
+                                ? `/film/${film.id}/watch`
+                                : "/premium"
+                            }
+                          >
+                            <SvgCrown className="mr-2 min-h-[24px] min-w-[24px]" />
+                            {isSubsciptionActive
+                              ? "Смотреть"
+                              : "Смотреть вместе с подпиской"}
+                          </Link>
+                        </Button>
+                      )}
 
-                  {!isFilmPurchased && !film.isPaid && (
-                    <Button className="h-12 p-0 px-5">
-                      <SvgFire className="mr-2 min-h-[24px] min-w-[24px]" />
-                      Смотреть
-                    </Button>
-                  )}
+                      {!isFilmPurchased && !film.isPaid && (
+                        <Button asChild className="h-12 p-0 px-5">
+                          <Link to={`/film/${film.id}/watch`}>
+                            <SvgFire className="mr-2 min-h-[24px] min-w-[24px]" />
+                            Смотреть
+                          </Link>
+                        </Button>
+                      )}
 
-                  {!isFilmPurchased && film.isPaid && film.price && (
-                    <div className="grid gap-3 text-center">
-                      <span className="text-muted-foreground font-bold">
-                        Или
-                      </span>
-                      <UserFilmPaymentForm
-                        filmId={film.id}
-                        userId={user.id}
-                        price={film.price}
-                      />
+                      {!isFilmPurchased && film.isPaid && film.price && (
+                        <div className="grid gap-3 text-center">
+                          <span className="text-muted-foreground font-bold">
+                            Или
+                          </span>
+                          <UserFilmPaymentForm
+                            filmId={film.id}
+                            userId={user.id}
+                            price={film.price}
+                          />
+                        </div>
+                      )}
                     </div>
+                  ) : (
+                    <Button
+                      variant="secondary"
+                      onClick={toggleFavorite}
+                      className="h-12 w-full p-0 px-5"
+                    >
+                      {isInFavorite ? (
+                        <BookmarkFilledIcon className={`h-6 w-6`} />
+                      ) : (
+                        <BookmarkIcon className={`h-6 w-6`} />
+                      )}{" "}
+                      Буду смотреть
+                    </Button>
                   )}
                 </div>
               </div>
@@ -156,32 +195,33 @@ export const FilmPage = () => {
                     {film.rating || "-"}{" "}
                     <StarFilledIcon className="h-10 w-10 text-yellow-500" />
                   </div>
-
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        className="text-md flex h-full w-full max-w-[250px] gap-2"
-                        variant="outline"
-                      >
-                        <PlayIcon className="h-5 w-5" />
-                        Трейлер
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="flex h-full max-h-[85svh] max-w-[85vw] flex-col">
-                      <DialogHeader>
-                        <DialogTitle className="text-center text-3xl">
-                          {film.name}
-                        </DialogTitle>
-                      </DialogHeader>
-                      <iframe
-                        className="h-full w-full"
-                        src={film.trailerUrl}
-                        frameBorder="0"
-                        allow="clipboard-write; autoplay"
-                        allowFullScreen
-                      />
-                    </DialogContent>
-                  </Dialog>
+                  {film.trailerUrl && (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          className="text-md flex h-full w-full max-w-[250px] gap-2"
+                          variant="outline"
+                        >
+                          <PlayIcon className="h-5 w-5" />
+                          Трейлер
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="flex h-fit max-h-[85svh] max-w-[85vw] flex-col">
+                        <DialogHeader>
+                          <DialogTitle className="text-center text-3xl">
+                            {film.name}
+                          </DialogTitle>
+                        </DialogHeader>
+                        <div className="grid h-fit overflow-hidden rounded-lg">
+                          <VideoPlayer
+                            key={film.trailerUrl}
+                            src={getMediaUrl(film.trailerUrl)}
+                            title={`${film.name} - Трейлер`}
+                          />
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
 
                   <Button
                     onClick={toggleFavorite}

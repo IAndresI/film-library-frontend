@@ -22,14 +22,27 @@ import {
   SettingsIcon,
   PictureInPictureIcon,
   PictureInPictureExitIcon,
+  ReplayIcon,
 } from "@vidstack/react/icons";
 import { Volume, Volume1, Volume2, VolumeX } from "lucide-react";
 import { useState, useRef, useCallback } from "react";
 import { cn } from "../lib/utils";
+import { SvgSpinner } from "../ui/svg/SvgSpinner";
 
-export const VideoPlayer = ({ src }: { src: PlayerSrc }) => {
+export const VideoPlayer = ({
+  src,
+  title,
+}: {
+  src: PlayerSrc;
+  title: string;
+}) => {
   return (
-    <MediaPlayer title="Sprite Fight" src={src} storage="vidstack-player">
+    <MediaPlayer
+      streamType="on-demand"
+      title={title}
+      src={src}
+      storage="vidstack-player"
+    >
       <MediaProvider />
       <VideoControls />
     </MediaPlayer>
@@ -133,7 +146,7 @@ const VideoControls = () => {
   return (
     <div
       className={cn(
-        `absolute inset-0 h-full w-full`,
+        `absolute inset-0`,
         shouldShowControls
           ? "cursor-auto opacity-100"
           : "cursor-none opacity-0",
@@ -142,6 +155,10 @@ const VideoControls = () => {
       onMouseEnter={showControlsHandler}
       onMouseLeave={hideControlsHandler}
     >
+      <div className="media-waiting:flex absolute inset-0 bottom-[68px] hidden items-center justify-center">
+        <SvgSpinner className="size-40" />
+      </div>
+
       {/* Клик по видео для воспроизведения/паузы */}
       <button
         type="button"
@@ -153,10 +170,10 @@ const VideoControls = () => {
         onDoubleClick={handleDoubleClick}
       >
         <PlayIcon
-          className={`media-playing:hidden h-20 w-20 cursor-pointer rounded-md ring-sky-400 transition duration-300 outline-none ring-inset group-hover:bg-white/20 hover:scale-110 data-[focus]:ring-4`}
+          className={`media-waiting:hidden media-playing:hidden media-ended:hidden h-20 w-20 cursor-pointer rounded-md ring-sky-400 transition duration-300 outline-none ring-inset group-hover:bg-white/20 hover:scale-110 data-[focus]:ring-4`}
         />
+        <ReplayIcon className="media-waiting:hidden media-ended:block hidden h-20 w-20 cursor-pointer rounded-md ring-sky-400 transition duration-300 outline-none ring-inset group-hover:bg-white/20 hover:scale-110 data-[focus]:ring-4" />
       </button>
-
       {/* Слайдер прогресса видео */}
       <div
         className={`absolute right-4 bottom-14 left-4 transition-opacity duration-300`}
@@ -186,6 +203,7 @@ const VideoControls = () => {
             <PlayButton className="flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/20 transition-colors hover:bg-white/30">
               <PlayIcon className="media-paused:block hidden h-6 w-6" />
               <PauseIcon className="media-playing:block hidden h-6 w-6" />
+              <SvgSpinner className="media-waiting:block hidden size-6" />
             </PlayButton>
 
             <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">

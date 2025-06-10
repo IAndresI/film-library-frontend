@@ -54,7 +54,11 @@ export const VideoInput = ({
               className="relative mx-auto w-full max-w-[500px] overflow-hidden rounded-lg"
               onClick={(e) => e.stopPropagation()}
             >
-              <VideoPlayer key={videoKey} src={videoSrc} />
+              <VideoPlayer
+                title={value?.name || "Видео"}
+                key={videoKey}
+                src={videoSrc}
+              />
             </div>
             <p className="text-muted-foreground text-sm">
               {value ? value.name : `Текущее ${label}`}

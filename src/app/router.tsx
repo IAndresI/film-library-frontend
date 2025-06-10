@@ -5,6 +5,7 @@ import { AuthenticationPage } from "@/pages/authentication";
 import { AdminPage } from "@/pages/admin";
 import { HomePage } from "@/pages/home";
 import { HomeLayout } from "@/pages/home/ui/HomeLayout.tsx";
+import { WatchFilmPage } from "@/pages/watchFilm/ui/WatchFilmPage.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ export const router = createBrowserRouter([
     path: "*",
     element: <AuthLayout />,
     children: [
+      {
+        path: "film/:id/watch",
+        element: <WatchFilmPage />,
+      },
       {
         element: <AdminLayout />,
         path: "admin/*",

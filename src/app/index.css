@@ -310,6 +310,12 @@
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
+
+  .player > div,
+  .player video {
+    height: 100svh !important;
+    width: 100vw !important;
+  }
 }
 
 [data-theme="light"] {

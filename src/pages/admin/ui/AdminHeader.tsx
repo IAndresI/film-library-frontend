@@ -8,7 +8,7 @@ export const AdminHeader = () => {
   const user = useUser();
 
   return (
-    <header className="bg-background sticky top-0 flex h-[56px] justify-between border-b">
+    <header className="bg-background sticky top-0 z-10 flex h-[56px] justify-between border-b">
       <div className="flex items-center">
         <SidebarTrigger className="ml-4" />
       </div>

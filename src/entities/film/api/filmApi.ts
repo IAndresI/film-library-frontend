@@ -72,5 +72,28 @@ export const filmApi = {
       queryFn: apiInstance.get<IFilm>(`/films/admin/${id}`),
     });
   },
+  generateFilmToken: (filmId: number) =>
+    apiInstance.post<{
+      token: string;
+      tokenId: string;
+      streamUrl: string;
+      expiresIn: number;
+      filmName: string;
+      filmId: number;
+    }>(`/videos/stream/token/${filmId}`),
+  refreshFilmToken: ({
+    filmId,
+    tokenId,
+  }: {
+    filmId: number;
+    tokenId: string;
+  }) =>
+    apiInstance.post<{
+      tokenId: string;
+      expiresIn: number;
+      filmName: string;
+      refreshed: boolean;
+      message: string;
+    }>(`/videos/stream/refresh/${filmId}`, { tokenId }),
   deleteFilm: (id: number) => apiInstance.delete<IFilm>(`/films/${id}`),
 };
