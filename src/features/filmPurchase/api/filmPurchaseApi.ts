@@ -4,7 +4,7 @@ export const filmPurchaseApi = {
   createFilmPayment: (data: {
     userId: number;
     filmId: number;
-    redirectUrl: string;
+    redirectUrl?: string;
   }) =>
     apiInstance.post<{
       success: true;

@@ -66,7 +66,6 @@ export function UserSubscriptionPaymentForm({
               onClick={() => {
                 createPayment({
                   planId: selectedPlan.id,
-                  redirectUrl: window.location.origin + "/profile/history",
                 });
               }}
             >

@@ -10,12 +10,12 @@ import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
 import { Button } from "@/shared/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { DataTable } from "@/shared/components";
-import { ordersTableColumns } from "@/entities/order/ui/orders-table-columns";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { orderApi } from "@/entities/order/api/orderApi";
 import type { PaginationState, SortingState } from "@tanstack/react-table";
 import { useState } from "react";
 import { getImageUrl } from "@/shared/lib/utils";
+import { userOrdersTableColumns } from "@/entities/order/ui/user-orders-table-columns";
 
 export const ProfilePage = () => {
   const user = useUser();
@@ -176,7 +176,7 @@ export const ProfilePage = () => {
                 onSortingChange={setSorting}
                 pagination={orders?.pagination}
                 onPaginationChange={setPagination}
-                columns={ordersTableColumns}
+                columns={userOrdersTableColumns}
                 data={orders?.data || []}
               />
             </TabsContent>

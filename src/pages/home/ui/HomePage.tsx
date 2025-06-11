@@ -12,6 +12,7 @@ import { SearchPage } from "@/pages/home/search/ui/SearchPage";
 import { PremiumPage } from "../premium";
 import { ProfilePage } from "@/pages/profile";
 import { MyFilmsPage } from "../myFilms/ui/MyFilmsPage";
+import { OrderPage } from "@/pages/order";
 
 export const HomePage = () => {
   const location = useLocation();
@@ -34,6 +35,7 @@ export const HomePage = () => {
 
         <Route element={<PremiumPage />} path="/premium" />
 
+        <Route element={<OrderPage />} path="/profile/orders/:orderId" />
         <Route element={<ProfilePage />} path="/profile/*" />
 
         <Route element={<FilmPage />} path="/film/:id" />

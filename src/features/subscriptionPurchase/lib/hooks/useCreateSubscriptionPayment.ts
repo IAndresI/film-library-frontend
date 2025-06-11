@@ -10,7 +10,7 @@ export const useCreateSubscriptionPayment = (props?: {
           paymentUrl: string;
           orderId: string;
         },
-        variables: { planId: number; redirectUrl: string },
+        variables: { planId: number; redirectUrl?: string },
         context: unknown,
       ) => Promise<unknown> | unknown)
     | undefined;

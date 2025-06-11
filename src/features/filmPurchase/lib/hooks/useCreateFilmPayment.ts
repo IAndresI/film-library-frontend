@@ -10,7 +10,7 @@ export const useCreateFilmPayment = (props?: {
           paymentUrl: string;
           orderId: string;
         },
-        variables: { userId: number; filmId: number; redirectUrl: string },
+        variables: { userId: number; filmId: number; redirectUrl?: string },
         context: unknown,
       ) => Promise<unknown> | unknown)
     | undefined;

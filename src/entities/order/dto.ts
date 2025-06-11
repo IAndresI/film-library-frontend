@@ -27,7 +27,7 @@ export interface IOrder {
   externalPaymentId: string;
   metadata: unknown;
 
-  type: OrderType;
+  orderType: OrderType;
   plan?: IPlan;
   planId?: number;
   film?: IFilm;

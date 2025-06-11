@@ -45,7 +45,7 @@ export function FilmCard({
             width={width}
             height={height}
             className={cn(
-              "h-auto w-auto object-cover transition-all hover:scale-105",
+              "h-auto w-full object-cover transition-all hover:scale-105",
               aspectRatio === "portrait"
                 ? "aspect-[3/4] max-h-[333px]"
                 : "aspect-square",

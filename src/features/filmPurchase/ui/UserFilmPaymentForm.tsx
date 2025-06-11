@@ -27,7 +27,6 @@ export function UserFilmPaymentForm({
         createFilmPayment({
           userId,
           filmId,
-          redirectUrl: window.location.origin + "/profile/history",
         });
       }}
     >

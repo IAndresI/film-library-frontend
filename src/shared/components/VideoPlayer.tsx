@@ -13,6 +13,7 @@ import {
   useMediaRemote,
   PIPButton,
   type PlayerSrc,
+  Controls,
 } from "@vidstack/react";
 import {
   FullscreenExitIcon,
@@ -24,8 +25,14 @@ import {
   PictureInPictureExitIcon,
   ReplayIcon,
 } from "@vidstack/react/icons";
-import { Volume, Volume1, Volume2, VolumeX } from "lucide-react";
-import { useState, useRef, useCallback } from "react";
+import {
+  Volume,
+  Volume1,
+  Volume2,
+  VolumeX,
+  RotateCcw,
+  RotateCw,
+} from "lucide-react";
 import { cn } from "../lib/utils";
 import { SvgSpinner } from "../ui/svg/SvgSpinner";
 
@@ -44,7 +51,14 @@ export const VideoPlayer = ({
       storage="vidstack-player"
     >
       <MediaProvider />
-      <VideoControls />
+      <Controls.Root
+        className="opacity-0 transition-opacity duration-300 ease-initial data-[visible]:opacity-100"
+        hideOnMouseLeave
+      >
+        <Controls.Group>
+          <VideoControls />
+        </Controls.Group>
+      </Controls.Root>
     </MediaPlayer>
   );
 };
@@ -57,37 +71,10 @@ const VideoControls = () => {
   const playbackRate = useMediaState("playbackRate");
   const paused = useMediaState("paused");
   const fullscreen = useMediaState("fullscreen");
+  const currentTime = useMediaState("currentTime");
   const remote = useMediaRemote();
 
-  const [showControls, setShowControls] = useState(true);
-  const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   const speedOptions = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-
-  const showControlsHandler = useCallback(() => {
-    setShowControls(true);
-
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
-    }
-
-    if (!paused) {
-      hideTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 3000);
-    }
-  }, [paused]);
-
-  const hideControlsHandler = useCallback(() => {
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
-    }
-    if (!paused) {
-      setShowControls(false);
-    }
-  }, [paused]);
-
-  const shouldShowControls = showControls || paused;
 
   const getVolumeIcon = () => {
     if (muted || volume === 0) {
@@ -105,10 +92,17 @@ const VideoControls = () => {
     remote.changePlaybackRate(speed);
   };
 
+  const handleSeekBack = () => {
+    remote.seek(currentTime - 10);
+  };
+
+  const handleSeekForward = () => {
+    remote.seek(currentTime + 10);
+  };
+
   const handlePlayPause = () => {
     if (paused) {
       remote.play();
-      setShowControls(false);
     } else {
       remote.pause();
     }
@@ -144,17 +138,7 @@ const VideoControls = () => {
   };
 
   return (
-    <div
-      className={cn(
-        `absolute inset-0`,
-        shouldShowControls
-          ? "cursor-auto opacity-100"
-          : "cursor-none opacity-0",
-      )}
-      onMouseMove={showControlsHandler}
-      onMouseEnter={showControlsHandler}
-      onMouseLeave={hideControlsHandler}
-    >
+    <div className={cn(`absolute inset-0`)}>
       <div className="media-waiting:flex absolute inset-0 bottom-[68px] hidden items-center justify-center">
         <SvgSpinner className="size-40" />
       </div>
@@ -164,7 +148,6 @@ const VideoControls = () => {
         type="button"
         className={cn(
           `group absolute inset-0 bottom-[68px] flex items-center justify-center`,
-          shouldShowControls ? "cursor-auto" : "cursor-none",
         )}
         onClick={handleSingleClick}
         onDoubleClick={handleDoubleClick}
@@ -206,16 +189,35 @@ const VideoControls = () => {
               <SvgSpinner className="media-waiting:block hidden size-6" />
             </PlayButton>
 
-            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">
-              <Time
-                className="time flex-shrink-0 text-sm text-white"
-                type="current"
-              />
-              <span className="text-sm text-white">/</span>
-              <Time
-                className="time flex-shrink-0 text-sm text-white"
-                type="duration"
-              />
+            <div className="flex items-center gap-2">
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">
+                <Time
+                  className="time flex-shrink-0 text-sm text-white"
+                  type="current"
+                />
+                <span className="text-sm text-white">/</span>
+                <Time
+                  className="time flex-shrink-0 text-sm text-white"
+                  type="duration"
+                />
+              </div>
+
+              {/* Кнопки перемотки */}
+              <button
+                type="button"
+                onClick={handleSeekBack}
+                className="ml-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white/20 transition-colors hover:bg-white/30"
+              >
+                <RotateCcw className="h-4 w-4 text-white" />
+              </button>
+
+              <button
+                type="button"
+                onClick={handleSeekForward}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white/20 transition-colors hover:bg-white/30"
+              >
+                <RotateCw className="h-4 w-4 text-white" />
+              </button>
             </div>
           </div>
 

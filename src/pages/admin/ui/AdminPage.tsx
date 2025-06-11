@@ -10,6 +10,7 @@ import { AdminUserInfoPage } from "../users/ui/AdminUserInfoPage";
 import { AdminSubscriptionsPage } from "../subscriptions/ui/AdminSubscriptionsPage";
 import { AdminOrdersPage } from "../orders/ui/AdminOrdersPage";
 import { AdminFilmEditorPage } from "../films/ui/AdminFilmEditorPage";
+import { OrderPage } from "@/pages/order";
 
 export const AdminPage = () => {
   const location = useLocation();
@@ -33,6 +34,7 @@ export const AdminPage = () => {
         <Route element={<AdminActorEditorPage />} path="/actors/:id" />
         <Route element={<AdminSubscriptionsPage />} path="/" />
         <Route element={<AdminOrdersPage />} path="/orders" />
+        <Route element={<OrderPage isAdmin />} path="/orders/:orderId" />
       </Routes>
     </AnimatePresence>
   );

@@ -56,4 +56,16 @@ export const orderApi = {
       }),
     });
   },
+  getOrderByIdQueryOptions: ({ orderId }: { orderId: number }) => {
+    return queryOptions({
+      queryKey: ["order", orderId],
+      queryFn: apiInstance.get<IOrder>(`/orders/${orderId}`),
+    });
+  },
+  getOrderByIdAdminQueryOptions: ({ orderId }: { orderId: number }) => {
+    return queryOptions({
+      queryKey: ["order", "admin", orderId],
+      queryFn: apiInstance.get<IOrder>(`/orders/admin/${orderId}`),
+    });
+  },
 };
