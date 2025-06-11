@@ -1,12 +1,16 @@
 import { actorApi } from "@/entities/actor/api/actorApi";
 import { ActorDataEditorForm } from "@/features/actorEditor/ui/ActorDataEditorForm";
+import { DeleteModal } from "@/shared/components";
+import { Button } from "@/shared/ui/button";
 import { Separator } from "@/shared/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export const AdminActorEditorPage = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const { data: actor } = useQuery({
     ...actorApi.getActorByIdAdminQueryOptions(+id!),
@@ -28,6 +32,20 @@ export const AdminActorEditorPage = () => {
               {id ? "Редактирование актёра" : "Добавление актёра"}
             </h2>
           </div>
+          {actor && (
+            <DeleteModal
+              title="Удаление актёра"
+              description={`Вы уверены, что хотите удалить актёра ${actor?.name}?`}
+              onDelete={() => actorApi.deleteActor(actor?.id)}
+              onSuccess={() => {
+                navigate("/admin/actors");
+                toast.success(`Актёр "${actor.name}" успешно удален`);
+              }}
+              queryKey={["actors"]}
+            >
+              <Button>Удалить актёра</Button>
+            </DeleteModal>
+          )}
         </div>
         <Separator className="my-4" />
         <ActorDataEditorForm actor={actor} />

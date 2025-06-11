@@ -10,4 +10,6 @@ export interface IEditFilmData {
   genres: string[];
   release_date: string;
   isVisible: boolean;
+  isPaid: boolean;
+  price?: number;
 }

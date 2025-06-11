@@ -21,6 +21,7 @@ import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
 import { SvgUser } from "@/shared/ui/svg/SvgUser";
 import { FilmIcon } from "lucide-react";
 import { ScrollArea } from "@/shared/ui/scroll-area";
+import { SvgFire } from "@/shared/ui/svg/SvgFire";
 
 const library = [
   // {
@@ -47,6 +48,11 @@ const library = [
     label: "Профиль",
     link: "/profile",
     icon: <SvgUser className="mr-2 h-4 w-4" />,
+  },
+  {
+    label: "Мои фильмы",
+    link: "/my-films",
+    icon: <SvgFire className="mr-2 h-4 w-4" />,
   },
   {
     label: "Premium",

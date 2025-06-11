@@ -14,6 +14,7 @@ import {
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 const invalidateUserSubscriptionQueryOptions = (userId: number) => {
   queryClient.invalidateQueries({ queryKey: ["users"] });
@@ -35,24 +36,34 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
   const {
     mutate: invalidateUserSubscription,
     isPending: isInvalidatingSubscription,
-    error: invalidateUserSubscriptionError,
   } = useMutation({
     mutationFn: subscriptionApi.invalidateUserSubscription,
     onSuccess: (data) => {
       invalidateUserSubscriptionQueryOptions(data.id);
+      toast.success(`Подписка пользователя "${user.name}" успешно отозвана`);
+    },
+    onError: (error) => {
+      toast.error("Не удалось отозвать подписку", {
+        description: error.message,
+      });
     },
   });
 
-  const {
-    mutate: giveUserSubscription,
-    isPending: isGivingSubscription,
-    error: giveUserSubscriptionError,
-  } = useMutation({
-    mutationFn: subscriptionApi.giveSubscriptionToUser,
-    onSuccess: (data) => {
-      invalidateUserSubscriptionQueryOptions(data.id);
-    },
-  });
+  const { mutate: giveUserSubscription, isPending: isGivingSubscription } =
+    useMutation({
+      mutationFn: subscriptionApi.giveSubscriptionToUser,
+      onSuccess: (data) => {
+        invalidateUserSubscriptionQueryOptions(data.id);
+        toast.success("Подпсика выдана", {
+          description: `Пользователю "${user.name}" успешно выдана "${data.plan.name}"`,
+        });
+      },
+      onError: (error) => {
+        toast.error("Не удалось выдать подписку", {
+          description: error.message,
+        });
+      },
+    });
 
   return (
     <React.Fragment>
@@ -79,14 +90,7 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
         </div>
       )}
       {!isActiveSubscription && <div>Подписка не оформлена</div>}
-      <div className="mt-2 flex gap-2">
-        {(invalidateUserSubscriptionError || giveUserSubscriptionError) && (
-          <div className="text-sm text-red-500">
-            {invalidateUserSubscriptionError?.message ||
-              giveUserSubscriptionError?.message}
-          </div>
-        )}
-
+      <div className="mt-2 flex w-fit flex-col gap-2">
         {!isActiveSubscription && (
           <div className="flex flex-col gap-2">
             <Select

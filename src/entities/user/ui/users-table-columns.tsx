@@ -9,6 +9,7 @@ import { DeleteModal } from "@/shared/components/DeleteModal";
 import { userApi } from "../api/userApi";
 import { SubscriptionStatus } from "@/entities/subscription/dto";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 export const usersTableColumns: ColumnDef<IUser>[] = [
   {
@@ -133,6 +134,11 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
             title="Удаление пользователя"
             description={`Вы уверены, что хотите удалить пользователя ${row.original.name}?`}
             onDelete={() => userApi.deleteUser(row.original.id)}
+            onSuccess={() => {
+              toast.success(
+                `Пользователь "${row.original.name}" успешно удален`,
+              );
+            }}
             queryKey={["users"]}
           />
         }

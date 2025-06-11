@@ -34,46 +34,71 @@ import { MEDIA_URL } from "@/shared/config";
 import { formatDate } from "date-fns";
 import type { IFilter } from "@/features/filters/dto";
 
-const formSchema = z.object({
-  name: z.string({ required_error: "Название фильма обязательно" }).min(2, {
-    message: "Название фильма должно быть не менее 2 символов",
-  }),
-  description: z.string({ required_error: "Описание обязательно" }).min(20, {
-    message: "Описание должно быть не менее 20 символов",
-  }),
-  image: z
-    .union([
-      z.instanceof(File, { message: "Выберите файл изображения" }),
-      z.string().url("Неверный формат URL изображения"),
-    ])
-    .refine((value) => {
-      if (typeof value === "string") return true;
-      return value.size <= 5 * 1024 * 1024;
-    }, "Размер файла не должен превышать 5MB")
-    .refine((value) => {
-      if (typeof value === "string") return true;
-      return [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
-        "image/gif",
-      ].includes(value.type);
-    }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF"),
-  genres: z.array(z.string(), { message: "Выберите хотя бы один жанр" }).min(1),
-  release_date: z.date({
-    message: "Введите дату выхода фильма",
-  }),
-  actors: z
-    .array(
-      z.object({
-        id: z.number(),
-        role: z.string().optional(),
-      }),
-    )
-    .optional(),
-  isVisible: z.boolean(),
-});
+const formSchema = z
+  .object({
+    name: z.string({ required_error: "Название фильма обязательно" }).min(2, {
+      message: "Название фильма должно быть не менее 2 символов",
+    }),
+    description: z.string({ required_error: "Описание обязательно" }).min(20, {
+      message: "Описание должно быть не менее 20 символов",
+    }),
+    image: z
+      .union([
+        z.instanceof(File, { message: "Выберите файл изображения" }),
+        z.string().url("Неверный формат URL изображения"),
+      ])
+      .refine((value) => {
+        if (typeof value === "string") return true;
+        return value.size <= 5 * 1024 * 1024;
+      }, "Размер файла не должен превышать 5MB")
+      .refine((value) => {
+        if (typeof value === "string") return true;
+        return [
+          "image/jpeg",
+          "image/jpg",
+          "image/png",
+          "image/webp",
+          "image/gif",
+        ].includes(value.type);
+      }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF"),
+    genres: z
+      .array(z.string(), { message: "Выберите хотя бы один жанр" })
+      .min(1),
+    release_date: z.date({
+      message: "Введите дату выхода фильма",
+    }),
+    actors: z
+      .array(
+        z.object({
+          id: z
+            .number({
+              required_error: "Выберите актёра",
+              message: "Выберите актёра",
+            })
+            .min(1, { message: "Выберите актёра" }),
+          role: z.string().optional(),
+        }),
+      )
+      .optional(),
+    isVisible: z.boolean(),
+    isPaid: z.boolean(),
+    price: z.coerce
+      .number()
+      .min(1, { message: "Цена не может быть меньше 1 рубля" })
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.isPaid && (data.price === undefined || data.price <= 0)) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Цена обязательна для платного фильма",
+      path: ["price"],
+    },
+  );
 
 export function FilmDataEditorForm({
   className,
@@ -90,29 +115,40 @@ export function FilmDataEditorForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       isVisible: false,
+      isPaid: false,
     },
   });
   const { addFilm, isLoading } = useAddFilm();
   const { editFilm, isLoading: isLoadingEdit } = useEditFilmData();
 
+  const isPaidValue = form.watch("isPaid");
+
   useEffect(() => {
     if (film) {
       form.reset({
         isVisible: film.isVisible,
-        name: film?.name,
-        description: film?.description,
+        name: film.name,
+        description: film.description,
         image: film?.image ? `${MEDIA_URL}${film.image}` : undefined,
         genres: film.genres.map((genre) => genre.id.toString()),
-        release_date: film?.releaseDate
-          ? new Date(film.releaseDate)
-          : undefined,
-        actors: film?.actors.map((actor) => ({
+        release_date: new Date(film.releaseDate),
+        actors: film.actors.map((actor) => ({
           id: actor.id,
-          role: actor.role,
+          role: actor.role || undefined,
         })),
+        price: film.price,
+        isPaid: film.isPaid,
       });
     }
   }, [film, genresOptions]);
+
+  useEffect(() => {
+    if (!isPaidValue) {
+      form.setValue("price", undefined);
+    } else {
+      form.setValue("price", film?.price);
+    }
+  }, [isPaidValue, form]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     const baseData = {
@@ -205,6 +241,30 @@ export function FilmDataEditorForm({
             />
             <FormField
               control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Цена</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Введите цену..."
+                      type="number"
+                      disabled={!isPaidValue}
+                      {...field}
+                      value={isPaidValue ? field.value || "" : ""}
+                      onChange={(e) => {
+                        if (isPaidValue) {
+                          field.onChange(e);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="isVisible"
               render={({ field }) => (
                 <FormItem className="flex items-end gap-2">
@@ -221,65 +281,96 @@ export function FilmDataEditorForm({
             />
             <FormField
               control={form.control}
+              name="isPaid"
+              render={({ field }) => (
+                <FormItem className="flex items-end gap-2">
+                  <FormLabel>Платный</FormLabel>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="actors"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Актёры</FormLabel>
+                  <FormLabel className="mb-2 block">Актёры</FormLabel>
                   <FormControl>
                     <div className="space-y-2">
                       {field.value?.map((actor, index) => (
-                        <div key={index} className="flex gap-2">
-                          <Select
-                            value={actor.id.toString()}
-                            onValueChange={(value) => {
-                              const newActors = [...(field.value || [])];
-                              newActors[index] = {
-                                ...actor,
-                                id: parseInt(value),
-                              };
-                              field.onChange(newActors);
-                            }}
-                          >
-                            <SelectTrigger className="flex-1">
-                              <SelectValue placeholder="Выберите актёра" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {actorsOptions.map((option) => (
-                                <SelectItem
-                                  key={option.value}
-                                  value={option.value}
-                                >
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <Input
-                            placeholder="Роль"
-                            value={actor.role || ""}
-                            onChange={(e) => {
-                              const newActors = [...(field.value || [])];
-                              newActors[index] = {
-                                ...actor,
-                                role: e.target.value,
-                              };
-                              field.onChange(newActors);
-                            }}
-                            className="flex-1"
+                        <div
+                          key={index}
+                          className="grid grid-cols-2 items-start gap-2"
+                        >
+                          <FormField
+                            control={form.control}
+                            name={`actors.${index}.id`}
+                            render={({ field }) => (
+                              <FormItem className="flex flex-col">
+                                <FormControl>
+                                  <Select
+                                    value={
+                                      field.value && field.value > 0
+                                        ? field.value.toString()
+                                        : ""
+                                    }
+                                    onValueChange={(value) => {
+                                      field.onChange(parseInt(value));
+                                    }}
+                                  >
+                                    <SelectTrigger className="mb-0 max-h-[35px] min-h-[35px] flex-1">
+                                      <SelectValue placeholder="Выберите актёра" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {actorsOptions.map((option) => (
+                                        <SelectItem
+                                          key={option.value}
+                                          value={option.value}
+                                        >
+                                          {option.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
                           />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const newActors =
-                                field.value?.filter((_, i) => i !== index) ||
-                                [];
-                              field.onChange(newActors);
-                            }}
-                          >
-                            Удалить
-                          </Button>
+
+                          <div className="flex gap-2">
+                            <Input
+                              placeholder="Роль"
+                              value={actor.role || ""}
+                              onChange={(e) => {
+                                const newActors = [...(field.value || [])];
+                                newActors[index] = {
+                                  ...actor,
+                                  role: e.target.value,
+                                };
+                                field.onChange(newActors);
+                              }}
+                              className="flex-1"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => {
+                                const newActors =
+                                  field.value?.filter((_, i) => i !== index) ||
+                                  [];
+                                field.onChange(newActors);
+                              }}
+                            >
+                              Удалить
+                            </Button>
+                          </div>
                         </div>
                       ))}
                       <Button
@@ -297,7 +388,6 @@ export function FilmDataEditorForm({
                       </Button>
                     </div>
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -341,7 +431,7 @@ export function FilmDataEditorForm({
           <Button
             className="w-full capitalize"
             type="submit"
-            disabled={isLoading || isLoadingEdit}
+            disabled={isLoading || isLoadingEdit || !form.formState.isDirty}
           >
             {isLoading || isLoadingEdit ? "Сохраняем..." : "Сохранить"}
           </Button>

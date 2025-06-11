@@ -2,15 +2,18 @@ import { filmApi } from "@/entities/film/api/filmApi";
 import { FilmDataEditorForm } from "@/features/filmEditor/ui";
 import { FilmMediaEditorForm } from "@/features/filmEditor/ui/FilmMediaEditorForm";
 import { useGetAllFilters } from "@/features/filters/lib/hooks";
+import { DeleteModal } from "@/shared/components";
+import { Button } from "@/shared/ui/button";
 import { Separator } from "@/shared/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export const AdminFilmEditorPage = () => {
   const { id } = useParams<{ id: string }>();
-
+  const navigate = useNavigate();
   const { data: film } = useQuery({
     ...filmApi.getFilmByIdAdminQueryOptions(+id!),
     enabled: !!id,
@@ -37,6 +40,20 @@ export const AdminFilmEditorPage = () => {
               {id ? "Редактирование фильма" : "Добавление фильма"}
             </h2>
           </div>
+          {film && (
+            <DeleteModal
+              title="Удаление фильма"
+              description={`Вы уверены, что хотите удалить фильм ${film?.name}?`}
+              onDelete={() => filmApi.deleteFilm(film?.id)}
+              onSuccess={() => {
+                navigate("/admin/films");
+                toast.success(`Фильм "${film.name}" успешно удален`);
+              }}
+              queryKey={["films"]}
+            >
+              <Button>Удалить фильм</Button>
+            </DeleteModal>
+          )}
         </div>
         <Separator className="my-4" />
         <Tabs defaultValue="data">

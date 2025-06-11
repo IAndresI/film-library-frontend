@@ -267,7 +267,7 @@ export const FilmPage = () => {
             {isReviewsLoading && <SvgSpinner className="mx-auto h-10 w-10" />}
 
             <div className="grid grid-cols-[1fr_360px]">
-              {reviews?.data && reviews.data.length > 0 ? (
+              {!isReviewsLoading && reviews?.data && reviews.data.length > 0 ? (
                 <div className="grid h-fit border-r">
                   {reviews.data.map((review, i, arr) => (
                     <div className="grid gap-3" key={review.id}>

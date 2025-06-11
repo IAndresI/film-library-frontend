@@ -8,6 +8,7 @@ import { filmApi } from "../api/filmApi";
 import { getImageUrl } from "@/shared/lib/utils";
 import { Link } from "react-router-dom";
 import { formatDate } from "@/shared/lib/helpers";
+import { toast } from "sonner";
 
 export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {
@@ -128,6 +129,9 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
             title="Удаление фильма"
             description={`Вы уверены, что хотите удалить фильм ${row.original.name}?`}
             onDelete={() => filmApi.deleteFilm(row.original.id)}
+            onSuccess={() => {
+              toast.success(`Фильм "${row.original.name}" успешно удален`);
+            }}
             queryKey={["films"]}
           />
         }

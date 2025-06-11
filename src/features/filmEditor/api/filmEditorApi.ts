@@ -17,6 +17,12 @@ export const filmEditorApi = {
     });
     formData.append("image", film.image);
     formData.append("isVisible", film.isVisible.toString());
+    formData.append("isPaid", film.isPaid.toString());
+    if (film.price) {
+      formData.append("price", film.price.toString());
+    } else {
+      formData.append("price", "null");
+    }
 
     return apiInstance.post<IFilm>("/films", formData, {
       headers: {
@@ -40,6 +46,12 @@ export const filmEditorApi = {
       formData.append("image", film.image);
     }
     formData.append("isVisible", film.isVisible.toString());
+    formData.append("isPaid", film.isPaid.toString());
+    if (film.price) {
+      formData.append("price", film.price.toString());
+    } else {
+      formData.append("price", "null");
+    }
 
     return apiInstance.put<IFilm>(`/films/${id}/data`, formData, {
       headers: {

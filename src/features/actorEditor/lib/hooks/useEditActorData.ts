@@ -3,6 +3,7 @@ import { actorEditorApi } from "../../api/actorEditorApi";
 import { queryClient } from "@/shared/api/query-client";
 import type { IActorEditorForm } from "../../model";
 import type { IActor } from "@/entities/actor/dto";
+import { toast } from "sonner";
 
 export const useEditActorData = (props?: {
   onSuccess?:
@@ -26,6 +27,12 @@ export const useEditActorData = (props?: {
       queryClient.invalidateQueries({ queryKey: ["actors"] });
       queryClient.invalidateQueries({ queryKey: ["actors", variables.id] });
       onSuccess?.(data, variables, context);
+      toast.success(`Актёр "${data.name}" успешно обновлен`);
+    },
+    onError: (error) => {
+      toast.error("Не удалось обновить актёра", {
+        description: error.message,
+      });
     },
   });
 

@@ -11,6 +11,7 @@ import { UserReviewsPage } from "@/pages/home/user-reviews/ui/UserReviewsPage";
 import { SearchPage } from "@/pages/home/search/ui/SearchPage";
 import { PremiumPage } from "../premium";
 import { ProfilePage } from "@/pages/profile";
+import { MyFilmsPage } from "../myFilms/ui/MyFilmsPage";
 
 export const HomePage = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ export const HomePage = () => {
         <Route element={<NewFilmsPage />} path="/films/new" />
         <Route element={<FilmsPage />} path="/films" />
         <Route element={<FilmsPage />} path="/films/genres/:categoryId" />
+        <Route element={<MyFilmsPage />} path="/my-films" />
       </Routes>
     </AnimatePresence>
   );

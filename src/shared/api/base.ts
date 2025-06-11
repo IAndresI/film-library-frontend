@@ -3,6 +3,8 @@ import axios, { type AxiosRequestConfig } from "axios";
 import { CustomApiError } from "../model/api-error.model";
 
 const handleError = (error: unknown): never => {
+  console.log(error);
+
   if (axios.isAxiosError(error) && error.response?.data) {
     throw new CustomApiError({
       code: error.response.status,
@@ -36,7 +38,7 @@ $axios.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
     }
-    return Promise.reject(error);
+    return handleError(error);
   },
 );
 

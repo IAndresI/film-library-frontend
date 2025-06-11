@@ -39,6 +39,39 @@ export const filmApi = {
       }),
     });
   },
+  getUserPurchasedFilmsQueryOptions: ({
+    pagination,
+    genres,
+    actors,
+    search,
+  }: {
+    pagination: PaginationState;
+    genres?: string[];
+    actors?: string[];
+    search?: string;
+  }) => {
+    return queryOptions({
+      queryKey: [
+        "films",
+        "list",
+        "user",
+        "purchased",
+        genres,
+        actors,
+        search,
+        pagination,
+      ],
+      queryFn: apiInstance.get<IPaginationResponse<IFilm>>(`/films/purchased`, {
+        params: {
+          genres,
+          actors,
+          search,
+          pageIndex: pagination.pageIndex,
+          pageSize: pagination.pageSize,
+        },
+      }),
+    });
+  },
   getAllFilmsQueryOptions: ({
     filters,
     sort,

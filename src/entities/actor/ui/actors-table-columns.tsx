@@ -8,6 +8,7 @@ import type { IActor } from "../dto";
 import { actorApi } from "../api/actorApi";
 import { getImageUrl } from "@/shared/lib/utils";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 export const actorsTableColumns: ColumnDef<IActor>[] = [
   {
@@ -107,6 +108,9 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
             title="Удаление актёра"
             description={`Вы уверены, что хотите удалить актёра ${row.original.name}?`}
             onDelete={() => actorApi.deleteActor(row.original.id)}
+            onSuccess={() => {
+              toast.success(`Актёр "${row.original.name}" успешно удален`);
+            }}
             queryKey={["actors"]}
           />
         }

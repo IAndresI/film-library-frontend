@@ -196,7 +196,7 @@ export function ActorDataEditorForm({
           <Button
             className="w-full capitalize"
             type="submit"
-            disabled={isLoading || isLoadingEdit}
+            disabled={isLoading || isLoadingEdit || !form.formState.isDirty}
           >
             {isLoading || isLoadingEdit ? "Сохраняем..." : "Сохранить"}
           </Button>

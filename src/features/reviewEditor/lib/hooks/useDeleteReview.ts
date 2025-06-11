@@ -3,6 +3,7 @@ import { queryClient } from "@/shared/api/query-client";
 
 import type { IReview } from "@/entities/review/dto";
 import { reviewEditorApi } from "../../api";
+import { toast } from "sonner";
 
 export const useDeleteReview = (props?: {
   onSuccess?:
@@ -24,7 +25,13 @@ export const useDeleteReview = (props?: {
     mutationFn: reviewEditorApi.deleteReview,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      toast.success("Обзор успешно удален");
       onSuccess?.(data, variables, context);
+    },
+    onError: (error) => {
+      toast.error("Не удалось удалить обзор", {
+        description: error.message,
+      });
     },
   });
 

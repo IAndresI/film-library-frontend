@@ -126,7 +126,7 @@ export function UserDataEditorForm({
             <Button
               className="w-full capitalize"
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !form.formState.isDirty}
             >
               {isLoading ? "Сохраняем..." : "Сохранить"}
             </Button>

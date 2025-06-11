@@ -3,7 +3,7 @@ import { ordersTableColumns } from "@/entities/order/ui/orders-table-columns";
 import { SubscriptionStatus } from "@/entities/subscription/dto";
 import { userApi } from "@/entities/user/api/userApi";
 import { UserDataEditorForm } from "@/features/userDataEditor/ui";
-import { DataTable } from "@/shared/components";
+import { DataTable, DeleteModal } from "@/shared/components";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import { Separator } from "@/shared/ui/separator";
 import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
@@ -16,15 +16,18 @@ import type {
 } from "@tanstack/react-table";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AdminUserSubscriptionEditor } from "./AdminUserSubscriptionEditor";
 import { getImageUrl } from "@/shared/lib/utils";
+import { Button } from "@/shared/ui/button";
+import { toast } from "sonner";
 
 export const AdminUserInfoPage = () => {
   const [activeTab, setActiveTab] = useState<
     "data" | "subscription" | "history"
   >("data");
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const { data: user } = useQuery({
     ...userApi.getUserByIdQueryOptions(+id!),
@@ -69,6 +72,20 @@ export const AdminUserInfoPage = () => {
               Информация о пользователе {user?.name}
             </h2>
           </div>
+          {user && (
+            <DeleteModal
+              title="Удаление пользователя"
+              description={`Вы уверены, что хотите удалить пользователя ${user?.name}?`}
+              onDelete={() => userApi.deleteUser(user?.id)}
+              onSuccess={() => {
+                navigate("/admin/users");
+                toast.success(`Пользователь "${user.name}" успешно удален`);
+              }}
+              queryKey={["users"]}
+            >
+              <Button>Удалить пользователя</Button>
+            </DeleteModal>
+          )}
         </div>
         <Separator className="my-4" />
         {user && (

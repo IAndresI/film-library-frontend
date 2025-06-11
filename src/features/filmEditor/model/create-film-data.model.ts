@@ -9,4 +9,6 @@ export interface ICreateFilmData {
   genres: string[];
   release_date: string;
   isVisible: boolean;
+  isPaid: boolean;
+  price?: number;
 }

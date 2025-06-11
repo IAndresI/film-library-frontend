@@ -9,11 +9,13 @@ import { router } from "./router.tsx";
 import { queryClient } from "@/shared/api/query-client.ts";
 
 import "./index.css";
+import { Toaster } from "@/shared/ui/sonner.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
+        <Toaster />
       </ThemeProvider>
     </QueryClientProvider>
   </StrictMode>,

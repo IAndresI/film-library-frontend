@@ -149,7 +149,7 @@ export function FilmMediaEditorForm({
         <Button
           className="w-full capitalize"
           type="submit"
-          disabled={isLoadingEditMedia}
+          disabled={isLoadingEditMedia || !form.formState.isDirty}
         >
           {isLoadingEditMedia ? "Сохраняем..." : "Сохранить"}
         </Button>

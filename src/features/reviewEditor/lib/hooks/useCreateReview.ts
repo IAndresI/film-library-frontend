@@ -3,6 +3,7 @@ import { queryClient } from "@/shared/api/query-client";
 
 import type { IReview } from "@/entities/review/dto";
 import { reviewEditorApi } from "../../api";
+import { toast } from "sonner";
 
 export const useCreateReview = (props?: {
   onSuccess?:
@@ -29,6 +30,7 @@ export const useCreateReview = (props?: {
     mutationFn: reviewEditorApi.createReview,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      toast.success("Обзор успешно создан");
       onSuccess?.(data, variables, context);
     },
   });

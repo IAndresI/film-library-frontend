@@ -21,10 +21,12 @@ export const DeleteModal = ({
   open,
   setOpen,
   buttonText = "Удалить",
+  onSuccess,
 }: {
   title: string;
   description: string;
   onDelete: () => Promise<unknown>;
+  onSuccess?: () => void;
   queryKey: (string | number)[];
   buttonText?: string;
   children?: React.ReactNode;
@@ -43,6 +45,7 @@ export const DeleteModal = ({
     mutationFn: onDelete,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
+      onSuccess?.();
       setIsModalOpen(false);
     },
     onError: (error) => {
@@ -66,7 +69,7 @@ export const DeleteModal = ({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
           {error && (
-            <p className="text-critic mt-3 text-sm">Ошибка: {error.message}</p>
+            <p className="mt-3 text-sm text-red-500">Ошибка: {error.message}</p>
           )}
         </DialogHeader>
         <DialogFooter>

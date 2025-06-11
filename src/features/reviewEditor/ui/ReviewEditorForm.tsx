@@ -139,7 +139,12 @@ export function ReviewEditorForm({
           />
           <div className="flex items-center gap-2">
             <Button
-              disabled={isLoading || isLoadingEdit || isLoadingDelete}
+              disabled={
+                isLoading ||
+                isLoadingEdit ||
+                isLoadingDelete ||
+                !form.formState.isDirty
+              }
               type="submit"
               variant="default"
               className="w-full"
