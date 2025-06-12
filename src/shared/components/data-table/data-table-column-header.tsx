@@ -56,11 +56,7 @@ export function DataTableColumnHeader<TData, TValue>({
 
   const handleSort = (desc: boolean) => {
     if (useMetaSortName && table && sortId) {
-      const currentSorting = table.getState().sorting;
-      const existingSorting = currentSorting.filter(
-        (sort) => sort.id !== sortId,
-      );
-      const newSorting = [...existingSorting, { id: sortId, desc }];
+      const newSorting = [{ id: sortId, desc }];
       table.setSorting(newSorting);
     } else {
       column.toggleSorting(desc);
@@ -76,9 +72,9 @@ export function DataTableColumnHeader<TData, TValue>({
             className="data-[state=open]:bg-accent -ml-3 h-8"
           >
             <span>{title}</span>
-            {isSorted === "desc" ? (
+            {isSorted === "asc" ? (
               <ArrowDownIcon className="ml-2 h-4 w-4" />
-            ) : isSorted === "asc" ? (
+            ) : isSorted === "desc" ? (
               <ArrowUpIcon className="ml-2 h-4 w-4" />
             ) : (
               <CaretSortIcon className="ml-2 h-4 w-4" />
@@ -88,16 +84,16 @@ export function DataTableColumnHeader<TData, TValue>({
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => handleSort(false)}>
             <ArrowUpIcon className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
-            Asc
+            По убыванию
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleSort(true)}>
             <ArrowDownIcon className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
-            Desc
+            По возрастанию
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
             <EyeNoneIcon className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
-            Hide
+            Скрыть
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

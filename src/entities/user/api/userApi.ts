@@ -37,15 +37,17 @@ export const userApi = {
     actors,
     search,
     pagination,
+    sort,
   }: {
     userId: number;
     genres?: string[];
     actors?: string[];
     search?: string;
     pagination: PaginationState;
+    sort: SortingState;
   }) => {
     return queryOptions({
-      queryKey: ["favorites", userId, genres, actors, search, pagination],
+      queryKey: ["favorites", userId, genres, actors, search, pagination, sort],
       queryFn: apiInstance.get<IPaginationResponse<IFilm>>(
         `/users/${userId}/favorites`,
         {
@@ -55,6 +57,7 @@ export const userApi = {
             search,
             pageIndex: pagination.pageIndex,
             pageSize: pagination.pageSize,
+            sort,
           },
         },
       ),

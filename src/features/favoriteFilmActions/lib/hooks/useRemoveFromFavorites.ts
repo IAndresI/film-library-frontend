@@ -4,8 +4,19 @@ import {
   type MutationFunction,
 } from "@tanstack/react-query";
 import type { IFilm } from "@/entities/film/dto";
+import type { CustomApiError } from "@/shared/model/api-error.model";
 
 export const useRemoveFromFavorites = (props?: {
+  onError?:
+    | ((
+        error: CustomApiError,
+        variables: {
+          userId: number;
+          filmId: number;
+        },
+        context: void | undefined,
+      ) => Promise<unknown> | unknown)
+    | undefined;
   mutationFn:
     | MutationFunction<
         IFilm,
@@ -18,7 +29,7 @@ export const useRemoveFromFavorites = (props?: {
   onSettled?:
     | ((
         data: IFilm | undefined,
-        error: Error | null,
+        error: CustomApiError | null,
         variables: { userId: number; filmId: number },
         context: void | undefined,
       ) => Promise<unknown> | unknown)
@@ -37,7 +48,7 @@ export const useRemoveFromFavorites = (props?: {
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
-  const { onSuccess, onMutate, onSettled, mutationFn } = props || {};
+  const { onSuccess, onMutate, onSettled, mutationFn, onError } = props || {};
   const queryClient = useQueryClient();
   const {
     mutate: removeFromFavorites,
@@ -62,6 +73,9 @@ export const useRemoveFromFavorites = (props?: {
     },
     onSettled: (data, error, variables) => {
       onSettled?.(data, error, variables);
+    },
+    onError: (error, variables, context) => {
+      onError?.(error, variables, context);
     },
     retry: false,
   });

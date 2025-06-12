@@ -3,7 +3,7 @@ import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 
 import { useEditFilmData } from "../lib/hooks";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -114,10 +114,17 @@ export function FilmDataEditorForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isVisible: false,
+      isVisible: true,
       isPaid: false,
+      actors: [],
     },
   });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "actors",
+  });
+
   const { addFilm, isLoading } = useAddFilm();
   const { editFilm, isLoading: isLoadingEdit } = useEditFilmData();
 
@@ -268,7 +275,7 @@ export function FilmDataEditorForm({
               name="isVisible"
               render={({ field }) => (
                 <FormItem className="flex items-end gap-2">
-                  <FormLabel>Видимость</FormLabel>
+                  <FormLabel>Видим для всех</FormLabel>
                   <FormControl>
                     <Switch
                       checked={field.value}
@@ -298,14 +305,14 @@ export function FilmDataEditorForm({
             <FormField
               control={form.control}
               name="actors"
-              render={({ field }) => (
+              render={() => (
                 <FormItem className="col-span-2">
                   <FormLabel className="mb-2 block">Актёры</FormLabel>
                   <FormControl>
                     <div className="space-y-2">
-                      {field.value?.map((actor, index) => (
+                      {fields.map((field, index) => (
                         <div
-                          key={index}
+                          key={field.id}
                           className="grid grid-cols-2 items-start gap-2"
                         >
                           <FormField
@@ -345,28 +352,30 @@ export function FilmDataEditorForm({
                           />
 
                           <div className="flex gap-2">
-                            <Input
-                              placeholder="Роль"
-                              value={actor.role || ""}
-                              onChange={(e) => {
-                                const newActors = [...(field.value || [])];
-                                newActors[index] = {
-                                  ...actor,
-                                  role: e.target.value,
-                                };
-                                field.onChange(newActors);
-                              }}
-                              className="flex-1"
+                            <FormField
+                              control={form.control}
+                              name={`actors.${index}.role`}
+                              render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                  <FormControl>
+                                    <Input
+                                      placeholder="Роль"
+                                      value={field.value || ""}
+                                      onChange={(e) => {
+                                        field.onChange(e.target.value);
+                                      }}
+                                      className="flex-1"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
                             />
+
                             <Button
                               type="button"
                               variant="outline"
-                              onClick={() => {
-                                const newActors =
-                                  field.value?.filter((_, i) => i !== index) ||
-                                  [];
-                                field.onChange(newActors);
-                              }}
+                              onClick={() => remove(index)}
                             >
                               Удалить
                             </Button>
@@ -376,13 +385,7 @@ export function FilmDataEditorForm({
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => {
-                          const newActors = [
-                            ...(field.value || []),
-                            { id: 0, role: "" },
-                          ];
-                          field.onChange(newActors);
-                        }}
+                        onClick={() => append({ id: 0, role: "" })}
                       >
                         Добавить актёра
                       </Button>

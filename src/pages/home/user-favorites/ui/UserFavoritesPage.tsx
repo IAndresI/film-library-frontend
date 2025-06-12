@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/shared/ui/button";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { userApi } from "@/entities/user/api/userApi";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
 import { useUser } from "@/app/providers";
 import { MultiSelect } from "@/shared/ui/multi-select";
@@ -14,6 +14,16 @@ import { useState } from "react";
 import { useGetAllFilters } from "@/features/filters/lib/hooks";
 import { Input } from "@/shared/ui/input";
 import { useDebounce } from "@/shared/lib/hooks/use-debounce";
+import type { SortingState } from "@tanstack/react-table";
+import { FILM_SORT_OPTIONS } from "@/entities/film/constants";
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/ui/select";
+import { cn } from "@/shared/lib/utils";
 
 export const UserFavoritesPage = () => {
   const user = useUser();
@@ -21,6 +31,9 @@ export const UserFavoritesPage = () => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedActors, setSelectedActors] = useState<string[]>([]);
   const [search, setSearch] = useState<string>("");
+  const [sort, setSort] = useState<SortingState>([
+    FILM_SORT_OPTIONS[0].value[0],
+  ]);
   const debouncedSearch = useDebounce(search, 500);
 
   const {
@@ -29,6 +42,7 @@ export const UserFavoritesPage = () => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isFetching,
   } = useInfiniteQuery({
     queryKey: [
       "favorites",
@@ -36,6 +50,7 @@ export const UserFavoritesPage = () => {
       selectedGenres,
       selectedActors,
       debouncedSearch,
+      sort,
     ],
     queryFn: async ({ pageParam = 0, ...meta }) => {
       const queryOptions = userApi.getAllUserFavoritesQueryOptions({
@@ -47,6 +62,7 @@ export const UserFavoritesPage = () => {
           pageIndex: pageParam,
           pageSize: 10,
         },
+        sort,
       });
       return queryOptions.queryFn!(meta);
     },
@@ -60,6 +76,7 @@ export const UserFavoritesPage = () => {
     select: (data) => {
       return data.pages.flatMap((page) => page.data);
     },
+    placeholderData: keepPreviousData,
   });
 
   const { filters } = useGetAllFilters();
@@ -132,6 +149,27 @@ export const UserFavoritesPage = () => {
             modalPopover
             className="min-h-9"
           />
+          <Select
+            value={sort[0]?.id}
+            onValueChange={(value) => {
+              setSort(
+                FILM_SORT_OPTIONS.find(
+                  (option) => option.value[0].id === value,
+                )!.value,
+              );
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Сортировка" />
+            </SelectTrigger>
+            <SelectContent>
+              {FILM_SORT_OPTIONS.map((option) => (
+                <SelectItem key={option.value[0].id} value={option.value[0].id}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <Separator className="my-4" />
 
@@ -141,13 +179,18 @@ export const UserFavoritesPage = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-2 place-items-center gap-4 pb-4 lg:grid-cols-4 xl:grid-cols-5">
+        <div
+          className={cn(
+            "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500",
+            isFetching && !isFetchingNextPage && "opacity-35",
+          )}
+        >
           {favoritesData && favoritesData.length > 0 ? (
             favoritesData.map((film, i) => (
               <FilmCard
                 key={`${i}_${film.name}`}
                 film={film}
-                className="w-[180px] 2xl:w-[200px]"
+                className="w-full"
                 aspectRatio="portrait"
               />
             ))
@@ -162,7 +205,7 @@ export const UserFavoritesPage = () => {
           <div className="flex justify-center pb-4">
             <Button
               onClick={() => fetchNextPage()}
-              disabled={isFetchingNextPage}
+              disabled={isFetchingNextPage || isFetching}
               variant="outline"
             >
               {isFetchingNextPage ? (

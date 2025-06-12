@@ -1,1 +1,0 @@
-export { NewFilmsPage } from "./NewFilmsPage";

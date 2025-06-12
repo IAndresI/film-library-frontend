@@ -2,7 +2,7 @@ import { Separator } from "@/shared/ui/separator";
 
 import { motion } from "framer-motion";
 import { ActorCard } from "@/entities/actor/ui/ActorCard";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { actorApi } from "@/entities/actor/api/actorApi";
 
 import { useDebounce } from "@/shared/lib/hooks/use-debounce";
@@ -13,6 +13,7 @@ import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
+import { cn } from "@/shared/lib/utils";
 
 export const ActorsPage = () => {
   const [selectedFilms, setSelectedFilms] = useState<string[]>([]);
@@ -27,6 +28,7 @@ export const ActorsPage = () => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isFetching,
   } = useInfiniteQuery({
     queryKey: ["actors", debouncedSearch, selectedFilms],
     queryFn: async ({ pageParam = 0, ...meta }) => {
@@ -49,6 +51,7 @@ export const ActorsPage = () => {
     select: (data) => {
       return data.pages.flatMap((page) => page.data);
     },
+    placeholderData: keepPreviousData,
   });
 
   const isFiltered = selectedFilms.length > 0 || search.length > 0;
@@ -110,15 +113,19 @@ export const ActorsPage = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,150px))] place-items-center justify-between gap-5 pb-4">
+        <div
+          className={cn(
+            "grid grid-cols-[repeat(auto-fit,minmax(100px,150px))] place-items-center justify-between gap-5 pb-4 transition-opacity duration-500",
+            isFetching && !isFetchingNextPage && "opacity-35",
+          )}
+        >
           {actorsData && actorsData.length > 0 ? (
             actorsData.map((actor) => (
               <ActorCard
                 key={actor.name}
                 actor={actor}
                 aspectRatio="square"
-                width={100}
-                height={100}
+                className="w-full"
               />
             ))
           ) : !isLoading ? (
@@ -132,7 +139,7 @@ export const ActorsPage = () => {
           <div className="flex justify-center pb-4">
             <Button
               onClick={() => fetchNextPage()}
-              disabled={isFetchingNextPage}
+              disabled={isFetchingNextPage || isFetching}
               variant="outline"
             >
               {isFetchingNextPage ? (

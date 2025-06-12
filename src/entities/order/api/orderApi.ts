@@ -68,4 +68,10 @@ export const orderApi = {
       queryFn: apiInstance.get<IOrder>(`/orders/admin/${orderId}`),
     });
   },
+  checkOrderStatus: (orderId: number) =>
+    apiInstance.post<{
+      success: boolean;
+      message: string;
+      order: IOrder;
+    }>(`/orders/check/${orderId}`),
 };

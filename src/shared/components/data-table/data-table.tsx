@@ -26,6 +26,8 @@ import {
 import { DataTablePagination } from "@/shared/components/data-table/data-table-pagination";
 import { DataTableToolbar } from "@/shared/components/data-table/data-table-toolbar";
 import type { IPagination } from "@/shared/model/pagination-response.model";
+import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
+import { cn } from "@/shared/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,6 +39,8 @@ interface DataTableProps<TData, TValue> {
   onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>;
   pagination?: IPagination;
   searchField?: string;
+  isLoading?: boolean;
+  isFetching?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -49,6 +53,8 @@ export function DataTable<TData, TValue>({
   sorting,
   onSortingChange,
   searchField,
+  isLoading,
+  isFetching,
 }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
@@ -104,8 +110,22 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
+          <TableBody
+            className={cn(
+              "transition-opacity duration-500",
+              isFetching && !isLoading && "opacity-35",
+            )}
+          >
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  <SvgSpinner className="mx-auto h-10 w-10" />
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

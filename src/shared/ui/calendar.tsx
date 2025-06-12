@@ -80,6 +80,28 @@ function Calendar({
     }, [yearRange]),
   );
 
+  // Определяем начальный месяц на основе выбранной даты
+  const defaultMonth = React.useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const selected = (props as any).selected;
+    if (selected) {
+      if (
+        typeof selected === "object" &&
+        selected !== null &&
+        "from" in selected
+      ) {
+        // Range selection
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return (selected as any).from || (selected as any).to || new Date();
+      } else if (selected instanceof Date) {
+        // Single date selection
+        return selected;
+      }
+    }
+    return undefined;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }, [(props as any).selected]);
+
   const {
     // onNextClick,
     onPrevClick,
@@ -171,6 +193,7 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      defaultMonth={defaultMonth}
       className={cn("px-4 pb-6", className)}
       style={{
         width: 248.8 * (columnsDisplayed ?? 1) + "px",
@@ -498,22 +521,27 @@ function YearGrid({
                 setNavView("days");
                 if (selected) {
                   if ("to" in selected) {
+                    const selectedDate =
+                      (selected as { from?: Date; to?: Date })?.from ||
+                      (selected as { from?: Date; to?: Date })?.to;
                     goToMonth(
                       new Date(
                         displayYears.from + i,
-                        (
-                          selected as { to: Date | undefined }
-                        )?.to?.getMonth() ?? 0,
+                        selectedDate?.getMonth() ?? 0,
+                        1,
                       ),
                     );
                   } else {
                     goToMonth(
                       new Date(
                         displayYears.from + i,
-                        (selected as Date | undefined)?.getMonth() ?? 0,
+                        (selected as Date)?.getMonth() ?? 0,
+                        1,
                       ),
                     );
                   }
+                } else {
+                  goToMonth(new Date(displayYears.from + i, 0, 1));
                 }
               }}
               disabled={navView === "years" ? isDisabled : undefined}

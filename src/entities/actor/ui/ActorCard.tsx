@@ -6,15 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 interface ActorCardProps extends React.HTMLAttributes<HTMLDivElement> {
   actor: IActor;
   aspectRatio?: "portrait" | "square";
-  width?: number;
-  height?: number;
 }
 
 export function ActorCard({
   actor,
   aspectRatio = "portrait",
-  width = 40,
-  height = 40,
   className,
   ...props
 }: ActorCardProps) {
@@ -26,13 +22,9 @@ export function ActorCard({
       >
         <Avatar
           className={cn(
-            "h-auto w-auto object-cover transition-all hover:scale-105",
+            "h-full w-full object-cover transition-all hover:scale-105",
             aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square",
           )}
-          style={{
-            width: width,
-            height: height,
-          }}
         >
           <AvatarImage alt={actor.name} src={getImageUrl(actor.image)} />
           <AvatarFallback className="text-center text-[40px] uppercase">
@@ -49,7 +41,7 @@ export function ActorCard({
           >
             {actor.name}
           </Link>
-          <p className="text-muted-foreground text-center text-sm">
+          <p className="text-muted-foreground text-center text-xs">
             {actor.role}
           </p>
         </div>

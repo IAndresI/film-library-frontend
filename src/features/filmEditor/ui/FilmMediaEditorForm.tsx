@@ -15,9 +15,11 @@ import {
 
 import { VideoInput } from "@/shared/ui/video-input";
 import { useEffect } from "react";
-import { MEDIA_URL } from "@/shared/config";
+import { API_URL, MEDIA_URL } from "@/shared/config";
 import { Button } from "@/shared/ui/button";
 import { useEditFilmMedia } from "../lib/hooks/useEditFilmMedia";
+import { filmApi } from "@/entities/film/api/filmApi";
+import { useMutation } from "@tanstack/react-query";
 
 const formSchema = z.object({
   video: z
@@ -73,6 +75,36 @@ export function FilmMediaEditorForm({
     resolver: zodResolver(formSchema),
   });
 
+  const { mutate: generateFilmToken, data: filmToken } = useMutation({
+    mutationFn: filmApi.generateAdminFilmToken,
+  });
+
+  const { mutate: refreshFilmToken } = useMutation({
+    mutationFn: filmApi.refreshAdminFilmToken,
+  });
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (filmToken) {
+      interval = setInterval(
+        () => {
+          refreshFilmToken({
+            filmId: film.id,
+            tokenId: filmToken.tokenId,
+          });
+        },
+        filmToken.expiresIn * 1000 - 5 * 60 * 1000,
+      );
+    }
+    return () => clearInterval(interval);
+  }, [filmToken]);
+
+  useEffect(() => {
+    if (film?.id && film.filmUrl) {
+      generateFilmToken(film?.id);
+    }
+  }, [film]);
+
   const { editFilmMedia, isLoading: isLoadingEditMedia } = useEditFilmMedia();
 
   useEffect(() => {
@@ -115,7 +147,9 @@ export function FilmMediaEditorForm({
                       value={typeof value === "string" ? null : value || null}
                       onChange={onChange}
                       existingVideoUrl={
-                        typeof value === "string" ? value : undefined
+                        typeof value === "string" && filmToken
+                          ? `${API_URL}${filmToken.streamUrl}`
+                          : undefined
                       }
                       label="видео фильма"
                     />

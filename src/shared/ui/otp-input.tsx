@@ -26,7 +26,7 @@ export const Otp = (props: IOtpInputProps) => {
           inputMode="numeric"
           maxLength={1}
           onFocus={(e) => (e.target.placeholder = "")}
-          onBlur={(e) => (e.target.placeholder = "1")}
+          onBlur={(e) => (e.target.placeholder = "-")}
           className={`otp-input h-10 min-w-[40px] appearance-none p-0 text-white ${props.isError && "border-red-600 text-red-600"}`}
         />
       )}

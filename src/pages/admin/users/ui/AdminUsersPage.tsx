@@ -53,7 +53,13 @@ export const AdminUsersPage = () => {
           sorting={columnSorting}
           onSortingChange={setColumnSorting}
           columnFilters={columnFilters}
-          onColumnFiltersChange={setColumnFilters}
+          onColumnFiltersChange={(filters) => {
+            setColumnFilters(filters);
+            setPagination((prev) => ({
+              ...prev,
+              pageIndex: 0,
+            }));
+          }}
           pagination={users?.pagination}
           onPaginationChange={setPagination}
           columns={usersTableColumns}

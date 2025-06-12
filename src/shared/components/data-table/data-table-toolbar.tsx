@@ -256,7 +256,7 @@ export function DataTableToolbar<TData>({
             <DataTableFacetedFilter
               table={table}
               column={isVisibleColumn}
-              title="Видимый"
+              title="Видим для всех"
               options={visibilityStatuses}
             />
           )}

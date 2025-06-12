@@ -9,15 +9,28 @@ import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { ActorCard } from "@/entities/actor/ui/ActorCard";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
 import { filmApi } from "@/entities/film/api/filmApi";
 import { actorApi } from "@/entities/actor/api/actorApi";
+import type { SortingState } from "@tanstack/react-table";
+import { FILM_SORT_OPTIONS } from "@/entities/film/constants";
+import {
+  Select,
+  SelectContent,
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+} from "@/shared/ui/select";
+import { cn } from "@/shared/lib/utils";
 
 export const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchText, setSearchText] = useState(location.search);
   const [queryText, setQueryText] = useState(searchParams.get("query") || "");
+  const [sort, setSort] = useState<SortingState>([
+    FILM_SORT_OPTIONS[0].value[0],
+  ]);
 
   const {
     data: filmsData,
@@ -25,8 +38,9 @@ export const SearchPage = () => {
     hasNextPage: hasNextFilmsPage,
     fetchNextPage: fetchNextFilmsPage,
     isFetchingNextPage: isFetchingNextFilmsPage,
+    isFetching: isFetchingFilms,
   } = useInfiniteQuery({
-    queryKey: ["films", "search", queryText],
+    queryKey: ["films", "search", queryText, sort],
     queryFn: async ({ pageParam = 0, ...meta }) => {
       const queryOptions = filmApi.getAvailableFilmsQueryOptions({
         search: queryText,
@@ -34,6 +48,7 @@ export const SearchPage = () => {
           pageIndex: pageParam,
           pageSize: 10,
         },
+        sort,
       });
       return queryOptions.queryFn!(meta);
     },
@@ -47,6 +62,7 @@ export const SearchPage = () => {
     select: (data) => {
       return data.pages.flatMap((page) => page.data);
     },
+    placeholderData: keepPreviousData,
   });
 
   const {
@@ -55,6 +71,7 @@ export const SearchPage = () => {
     hasNextPage: hasNextActorsPage,
     fetchNextPage: fetchNextActorsPage,
     isFetchingNextPage: isFetchingNextActorsPage,
+    isFetching: isFetchingActors,
   } = useInfiniteQuery({
     queryKey: ["actors", "search", queryText],
     queryFn: async ({ pageParam = 0, ...meta }) => {
@@ -77,6 +94,7 @@ export const SearchPage = () => {
     select: (data) => {
       return data.pages.flatMap((page) => page.data);
     },
+    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {
@@ -128,7 +146,7 @@ export const SearchPage = () => {
             searchParams.set("query", searchText);
             setSearchParams(searchParams);
           }}
-          className="flex w-full max-w-[500px] items-center gap-3 pb-4"
+          className="flex w-full max-w-[500px] items-center gap-3"
         >
           <Input
             type="search"
@@ -145,7 +163,6 @@ export const SearchPage = () => {
             <MagnifyingGlassIcon className="h-6 w-6" />
           </Button>
         </form>
-        <Separator className="mb-4" />
         {(isFilmsLoading || isActorsLoading) && (
           <SvgSpinner className="mx-auto h-10 w-10" />
         )}
@@ -168,15 +185,20 @@ export const SearchPage = () => {
                   </h2>
                 </div>
                 <Separator className="my-4" />
-                <div className="flex flex-wrap gap-4 pb-4">
+                <div
+                  className={cn(
+                    "mb-4 flex flex-wrap gap-4 transition-opacity duration-500",
+                    isFetchingActors &&
+                      !isFetchingNextActorsPage &&
+                      "opacity-35",
+                  )}
+                >
                   {actorsData.map((actor) => (
                     <ActorCard
                       key={actor.name}
                       actor={actor}
                       className="w-[150px] min-w-[150px]"
                       aspectRatio="square"
-                      width={100}
-                      height={100}
                     />
                   ))}
                 </div>
@@ -184,7 +206,7 @@ export const SearchPage = () => {
                   <div className="flex justify-center pb-4">
                     <Button
                       onClick={() => fetchNextActorsPage()}
-                      disabled={isFetchingNextActorsPage}
+                      disabled={isFetchingNextActorsPage || isFetchingActors}
                       variant="outline"
                     >
                       {isFetchingNextActorsPage ? (
@@ -199,19 +221,48 @@ export const SearchPage = () => {
             )}
             {filmsData && filmsData.length > 0 && (
               <>
-                <div className="mt-6 space-y-1">
+                <div className="mt-6 flex items-center justify-between gap-2 space-y-1">
                   <h2 className="text-2xl font-semibold tracking-tight">
                     Фильмы
                   </h2>
+                  <Select
+                    value={sort[0]?.id}
+                    onValueChange={(value) => {
+                      setSort(
+                        FILM_SORT_OPTIONS.find(
+                          (option) => option.value[0].id === value,
+                        )!.value,
+                      );
+                    }}
+                  >
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Сортировка" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {FILM_SORT_OPTIONS.map((option) => (
+                        <SelectItem
+                          key={option.value[0].id}
+                          value={option.value[0].id}
+                        >
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <Separator className="my-4" />
 
-                <div className="flex flex-wrap gap-4 pb-4">
+                <div
+                  className={cn(
+                    "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500",
+                    isFetchingFilms && !isFetchingNextFilmsPage && "opacity-35",
+                  )}
+                >
                   {filmsData.map((film) => (
                     <FilmCard
                       key={film.name}
                       film={film}
-                      className="w-[250px] min-w-[250px]"
+                      className="w-full"
                       width={150}
                       height={150}
                     />
@@ -221,7 +272,7 @@ export const SearchPage = () => {
                   <div className="flex justify-center pb-4">
                     <Button
                       onClick={() => fetchNextFilmsPage()}
-                      disabled={isFetchingNextFilmsPage}
+                      disabled={isFetchingNextFilmsPage || isFetchingFilms}
                       variant="outline"
                     >
                       {isFetchingNextFilmsPage ? (

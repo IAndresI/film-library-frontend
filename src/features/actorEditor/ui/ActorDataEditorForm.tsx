@@ -67,7 +67,7 @@ export function ActorDataEditorForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isVisible: false,
+      isVisible: true,
     },
   });
   const { addActor, isLoading } = useAddActor();
@@ -181,7 +181,7 @@ export function ActorDataEditorForm({
               name="isVisible"
               render={({ field }) => (
                 <FormItem className="flex items-end gap-2">
-                  <FormLabel>Видимость</FormLabel>
+                  <FormLabel>Видим для всех</FormLabel>
                   <FormControl>
                     <Switch
                       checked={field.value}

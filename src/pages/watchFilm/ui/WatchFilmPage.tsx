@@ -64,7 +64,6 @@ export const WatchFilmPage = () => {
         exit={{ opacity: 0 }}
       >
         <SvgLogo className="animate-pulse" />
-        папрап
       </motion.div>
     );
   }

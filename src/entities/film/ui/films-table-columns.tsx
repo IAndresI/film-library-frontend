@@ -104,14 +104,14 @@ export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {
     accessorKey: "isVisible",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Видимый" />
+      <DataTableColumnHeader column={column} title="Видим для всех" />
     ),
     cell: ({ row }) => {
       return <div>{row.getValue("isVisible") ? "Да" : "Нет"}</div>;
     },
     enableSorting: false,
     meta: {
-      columnLabel: "Видимый",
+      columnLabel: "Видим для всех",
     },
   },
   {

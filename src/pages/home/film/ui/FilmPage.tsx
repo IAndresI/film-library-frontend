@@ -63,6 +63,8 @@ export const FilmPage = () => {
       filmId: +id!,
     }),
     enabled: !!user?.id && !!id,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 
   const isSubsciptionActive =
@@ -80,11 +82,15 @@ export const FilmPage = () => {
       key={"home"}
     >
       {isFilmLoading && <SvgSpinner className="mx-auto h-10 w-10" />}
-      {film && user ? (
+      {film && (
         <div className="h-full px-4 py-6 lg:px-8">
           <CustomBreadcrumbs
             className="mb-4"
-            crumbs={[{ label: "Главная", link: "/" }, { label: film.name }]}
+            crumbs={[
+              { label: "Главная", link: "/" },
+              { label: "Фильмы", link: "/films" },
+              { label: film.name },
+            ]}
           />
           <div className="flex items-center justify-between">
             <div className="flex gap-8">
@@ -251,8 +257,6 @@ export const FilmPage = () => {
                     actor={actor}
                     className="w-[100px]"
                     aspectRatio="square"
-                    width={100}
-                    height={100}
                   />
                 ))}
               </div>
@@ -298,7 +302,9 @@ export const FilmPage = () => {
                   ))}
                 </div>
               ) : (
-                "Нет обзоров"
+                <div className="">
+                  <p className="text-muted-foreground">Нет обзоров</p>
+                </div>
               )}
               <div className="px-5">
                 <h4 className="mb-4 text-xl font-medium">
@@ -318,9 +324,10 @@ export const FilmPage = () => {
             </div>
           </div>
         </div>
-      ) : (
+      )}
+      {!film && !isFilmLoading && (
         <div className="col-span-2 flex h-full w-full items-center justify-center lg:col-span-4 xl:col-span-5">
-          <p className="text-muted-foreground">Нет обзоров</p>
+          <p className="text-muted-foreground">Фильм не найден</p>
         </div>
       )}
     </motion.section>

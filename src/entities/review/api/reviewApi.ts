@@ -67,7 +67,7 @@ export const reviewApi = {
     userId: number;
   }) => {
     return queryOptions({
-      queryKey: ["reviews", userId, filters, sort, pagination, userId],
+      queryKey: ["reviews", userId, filters, sort, pagination],
       queryFn: apiInstance.get<IPaginationResponse<IReview>>(
         `/reviews/user/${userId}`,
         {

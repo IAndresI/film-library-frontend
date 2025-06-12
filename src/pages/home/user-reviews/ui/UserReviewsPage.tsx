@@ -1,14 +1,28 @@
 import { Separator } from "@/shared/ui/separator";
 import { motion } from "framer-motion";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { reviewApi } from "@/entities/review/api/reviewApi";
 import { useUser } from "@/app/providers";
 import { UserReviewCard } from "./UserReviewCard";
 import { Button } from "@/shared/ui/button";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
+import type { SortingState } from "@tanstack/react-table";
+import { REVIEW_SORT_OPTIONS } from "@/entities/review/constants";
+import { useState } from "react";
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/shared/ui/select";
+import { cn } from "@/shared/lib/utils";
 
 export const UserReviewsPage = () => {
   const user = useUser();
+  const [sort, setSort] = useState<SortingState>([
+    REVIEW_SORT_OPTIONS[0].value[0],
+  ]);
 
   const {
     data: reviewsData,
@@ -16,12 +30,13 @@ export const UserReviewsPage = () => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isFetching,
   } = useInfiniteQuery({
-    queryKey: ["reviews", user.id],
+    queryKey: ["reviews", user.id, sort],
     queryFn: async ({ pageParam = 0, ...meta }) => {
       const queryOptions = reviewApi.getAllUserReviewsQueryOptions({
         filters: [],
-        sort: [],
+        sort,
         pagination: {
           pageIndex: pageParam,
           pageSize: 10,
@@ -39,6 +54,7 @@ export const UserReviewsPage = () => {
     select: (data) => {
       return data.pages.flatMap((page) => page.data);
     },
+    placeholderData: keepPreviousData,
   });
 
   return (
@@ -56,6 +72,27 @@ export const UserReviewsPage = () => {
               Ваши отзывы
             </h2>
           </div>
+          <Select
+            value={sort[0]?.id}
+            onValueChange={(value) => {
+              setSort(
+                REVIEW_SORT_OPTIONS.find(
+                  (option) => option.value[0].id === value,
+                )!.value,
+              );
+            }}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Сортировка" />
+            </SelectTrigger>
+            <SelectContent>
+              {REVIEW_SORT_OPTIONS.map((option) => (
+                <SelectItem key={option.value[0].id} value={option.value[0].id}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <Separator className="my-4" />
 
@@ -65,7 +102,12 @@ export const UserReviewsPage = () => {
           </div>
         )}
 
-        <div className="grid gap-5 pb-4">
+        <div
+          className={cn(
+            "grid gap-5 pb-4 transition-opacity duration-500",
+            isFetching && !isFetchingNextPage && "opacity-35",
+          )}
+        >
           {reviewsData && reviewsData.length === 0 && !isLoading && (
             <div className="flex items-center justify-center">
               <p className="text-muted-foreground">У вас пока нет отзывов</p>
@@ -85,7 +127,7 @@ export const UserReviewsPage = () => {
           <div className="flex justify-center pb-4">
             <Button
               onClick={() => fetchNextPage()}
-              disabled={isFetchingNextPage}
+              disabled={isFetchingNextPage || isFetching}
               variant="outline"
             >
               {isFetchingNextPage ? (

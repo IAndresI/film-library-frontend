@@ -2,7 +2,7 @@ import { Separator } from "@/shared/ui/separator";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { orderApi } from "@/entities/order/api/orderApi";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
@@ -20,6 +20,8 @@ import { OrderStatusType, OrderType } from "@/entities/order/dto";
 import { FilmCard } from "@/entities/film/ui/FilmCard";
 import { Link } from "react-router-dom";
 import { SvgAnimatedClock } from "@/shared/ui/svg/SvgAnimatedClock";
+import { useEffect } from "react";
+import { queryClient } from "@/shared/api/query-client";
 
 export const OrderPage = ({ isAdmin }: { isAdmin?: boolean }) => {
   const { orderId } = useParams();
@@ -29,6 +31,50 @@ export const OrderPage = ({ isAdmin }: { isAdmin?: boolean }) => {
       ? orderApi.getOrderByIdAdminQueryOptions({ orderId: Number(orderId) })
       : orderApi.getOrderByIdQueryOptions({ orderId: Number(orderId) })),
   });
+
+  const { mutate: checkOrderStatus } = useMutation({
+    mutationFn: orderApi.checkOrderStatus,
+    onSuccess: (data) => {
+      if (data.success) {
+        queryClient.invalidateQueries({
+          queryKey: ["order"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["orders"],
+        });
+        if (
+          data.order.orderStatus === OrderStatusType.PAID &&
+          data.order.orderType === OrderType.FILM
+        ) {
+          queryClient.invalidateQueries({
+            queryKey: ["films"],
+          });
+        }
+        if (
+          data.order.orderStatus === OrderStatusType.PAID &&
+          data.order.orderType === OrderType.SUBSCRIPTION
+        ) {
+          queryClient.invalidateQueries({
+            queryKey: ["user"],
+          });
+        }
+      }
+    },
+  });
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (order?.orderStatus === OrderStatusType.PENDING) {
+      interval = setInterval(() => {
+        checkOrderStatus(order?.id);
+      }, 3000);
+    }
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [order]);
 
   return (
     <motion.section

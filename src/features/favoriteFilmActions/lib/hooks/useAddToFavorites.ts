@@ -1,8 +1,19 @@
 import { useMutation, type MutationFunction } from "@tanstack/react-query";
 import { queryClient } from "@/shared/api/query-client";
 import type { IFilm } from "@/entities/film/dto";
+import { CustomApiError } from "@/shared/model/api-error.model";
 
 export const useAddToFavorites = (props?: {
+  onError?:
+    | ((
+        error: CustomApiError,
+        variables: {
+          userId: number;
+          filmId: number;
+        },
+        context: void | undefined,
+      ) => Promise<unknown> | unknown)
+    | undefined;
   mutationFn:
     | MutationFunction<
         IFilm,
@@ -15,7 +26,7 @@ export const useAddToFavorites = (props?: {
   onSettled?:
     | ((
         data: IFilm | undefined,
-        error: Error | null,
+        error: CustomApiError | null,
         variables: {
           userId: number;
           filmId: number;
@@ -37,7 +48,7 @@ export const useAddToFavorites = (props?: {
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
-  const { onSuccess, onMutate, onSettled, mutationFn } = props || {};
+  const { onSuccess, onMutate, onSettled, mutationFn, onError } = props || {};
 
   const {
     mutate: addToFavorites,
@@ -62,6 +73,9 @@ export const useAddToFavorites = (props?: {
     },
     onSettled: (data, error, variables) => {
       onSettled?.(data, error, variables);
+    },
+    onError: (error, variables, context) => {
+      onError?.(error, variables, context);
     },
     retry: false,
   });

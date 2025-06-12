@@ -77,6 +77,30 @@ export function HomeSidebar() {
             </Link>
           </SidebarHeader>
           <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    isActive={location.pathname === `/`}
+                    asChild
+                  >
+                    <NavLink
+                      to={`/`}
+                      className={({ isActive }) =>
+                        `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? "bg-accent text-accent-foreground" : ""}`
+                      }
+                    >
+                      <span className="">
+                        <FilmIcon className="mr-2 h-4 w-4" />
+                      </span>
+                      <span>Главная</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroup>
             <SidebarGroupLabel className="mb-2 px-4 text-lg font-semibold tracking-tight">
               Ваши данные
             </SidebarGroupLabel>

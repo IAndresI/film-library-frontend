@@ -49,7 +49,13 @@ export const AdminSubscriptionsPage = () => {
           sorting={columnSorting}
           onSortingChange={setColumnSorting}
           columnFilters={columnFilters}
-          onColumnFiltersChange={setColumnFilters}
+          onColumnFiltersChange={(filters) => {
+            setColumnFilters(filters);
+            setPagination((prev) => ({
+              ...prev,
+              pageIndex: 0,
+            }));
+          }}
           pagination={subscriptions?.pagination}
           onPaginationChange={setPagination}
           columns={subscriptionsTableColumns}

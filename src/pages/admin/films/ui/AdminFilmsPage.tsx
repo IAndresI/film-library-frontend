@@ -56,7 +56,13 @@ export const AdminFilmsPage = () => {
           sorting={columnSorting}
           onSortingChange={setColumnSorting}
           columnFilters={columnFilters}
-          onColumnFiltersChange={setColumnFilters}
+          onColumnFiltersChange={(filters) => {
+            setColumnFilters(filters);
+            setPagination((prev) => ({
+              ...prev,
+              pageIndex: 0,
+            }));
+          }}
           pagination={films?.pagination}
           onPaginationChange={setPagination}
           columns={filmsTableColumns}

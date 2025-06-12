@@ -4,7 +4,7 @@ import { FilmCard } from "@/entities/film/ui/FilmCard";
 
 import { motion } from "framer-motion";
 import { filmApi } from "@/entities/film/api/filmApi";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useDebounce } from "@/shared/lib/hooks/use-debounce";
@@ -14,6 +14,16 @@ import { Input } from "@/shared/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Button } from "@/shared/ui/button";
 import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
+import type { SortingState } from "@tanstack/react-table";
+import { FILM_SORT_OPTIONS } from "@/entities/film/constants";
+import {
+  Select,
+  SelectContent,
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+} from "@/shared/ui/select";
+import { cn } from "@/shared/lib/utils";
 
 export const MyFilmsPage = () => {
   const { categoryId } = useParams();
@@ -21,6 +31,9 @@ export const MyFilmsPage = () => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 500);
+  const [sort, setSort] = useState<SortingState>([
+    FILM_SORT_OPTIONS[0].value[0],
+  ]);
 
   const { filters } = useGetAllFilters();
 
@@ -30,13 +43,16 @@ export const MyFilmsPage = () => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isFetching,
   } = useInfiniteQuery({
     queryKey: [
       "films",
       "list",
+      "user",
       categoryId ? [categoryId] : selectedGenres,
       selectedActors,
       debouncedSearch,
+      sort,
     ],
     queryFn: async ({ pageParam = 0, ...meta }) => {
       const queryOptions = filmApi.getUserPurchasedFilmsQueryOptions({
@@ -47,6 +63,7 @@ export const MyFilmsPage = () => {
         genres: categoryId ? [categoryId] : selectedGenres,
         actors: selectedActors,
         search: debouncedSearch,
+        sort,
       });
       return queryOptions.queryFn!(meta);
     },
@@ -59,6 +76,7 @@ export const MyFilmsPage = () => {
     select: (data) => {
       return data.pages.flatMap((page) => page.data);
     },
+    placeholderData: keepPreviousData,
   });
 
   const isFiltered =
@@ -132,6 +150,27 @@ export const MyFilmsPage = () => {
               className="min-h-9"
             />
           )}
+          <Select
+            value={sort[0]?.id}
+            onValueChange={(value) => {
+              setSort(
+                FILM_SORT_OPTIONS.find(
+                  (option) => option.value[0].id === value,
+                )!.value,
+              );
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Сортировка" />
+            </SelectTrigger>
+            <SelectContent>
+              {FILM_SORT_OPTIONS.map((option) => (
+                <SelectItem key={option.value[0].id} value={option.value[0].id}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <Separator className="my-4" />
 
@@ -141,13 +180,18 @@ export const MyFilmsPage = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-4 place-items-center gap-4 pb-4 xl:grid-cols-5">
+        <div
+          className={cn(
+            "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500",
+            isFetching && !isFetchingNextPage && "opacity-35",
+          )}
+        >
           {filmsData && filmsData.length > 0 ? (
             filmsData.map((film, i) => (
               <FilmCard
                 key={`${i}_${film.name}`}
                 film={film}
-                className="w-[180px] 2xl:w-[200px]"
+                className="w-full"
                 aspectRatio="portrait"
               />
             ))
@@ -162,7 +206,7 @@ export const MyFilmsPage = () => {
           <div className="flex justify-center pb-4">
             <Button
               onClick={() => fetchNextPage()}
-              disabled={isFetchingNextPage}
+              disabled={isFetchingNextPage || isFetching}
               variant="outline"
             >
               {isFetchingNextPage ? (

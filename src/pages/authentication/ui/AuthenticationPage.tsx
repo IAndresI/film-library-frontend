@@ -5,7 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { authApi } from "@/features/auth/api";
 
 export const AuthenticationPage = () => {
-  const { data: user, isLoading } = useQuery(authApi.getAuthQueryOptions());
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery(authApi.getAuthQueryOptions());
+
+  console.log("Component", { ...error });
 
   if (isLoading) {
     return null;

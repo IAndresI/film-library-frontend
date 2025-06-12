@@ -1,5 +1,5 @@
 import { API_URL } from "@/shared/config";
-import axios, { type AxiosRequestConfig } from "axios";
+import axios, { CanceledError, type AxiosRequestConfig } from "axios";
 import { CustomApiError } from "../model/api-error.model";
 
 const handleError = (error: unknown): never => {
@@ -9,6 +9,17 @@ const handleError = (error: unknown): never => {
       message: error.response.data.message,
     });
   }
+  if (error instanceof CustomApiError) {
+    throw new CustomApiError(error);
+  }
+
+  if (error instanceof CanceledError) {
+    throw new CustomApiError({
+      code: 408,
+      message: "Запрос отменен",
+    });
+  }
+
   throw new CustomApiError({
     message: "Неизвестная ошибка",
     code: 500,
@@ -36,6 +47,7 @@ $axios.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
     }
+
     return handleError(error);
   },
 );

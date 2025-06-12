@@ -5,6 +5,8 @@ import { useAddToFavorites } from "./useAddToFavorites";
 import { useUser } from "@/app/providers";
 import { useEffect, useRef, useState } from "react";
 import axios, { type CancelTokenSource } from "axios";
+import { toast } from "sonner";
+import { queryClient } from "@/shared/api/query-client";
 
 export const useFavoritesActions = (filmId: number) => {
   const mutationAbortControllerRef = useRef<CancelTokenSource | null>(null);
@@ -20,6 +22,8 @@ export const useFavoritesActions = (filmId: number) => {
       userId: user.id,
     }),
   });
+
+  console.log(filmIds);
 
   useEffect(() => {
     if (filmIds) {
@@ -43,6 +47,17 @@ export const useFavoritesActions = (filmId: number) => {
       onMutate: () => {
         setIsInFavorite(false);
       },
+      onError: (error, variables) => {
+        if (error.code !== 408) {
+          toast.error("Не удалось удалить из избранного");
+        }
+
+        queryClient.setQueryData(
+          ["favorites-ids", variables.userId],
+          (oldData: number[]) => [...oldData, variables.filmId],
+        );
+        setIsInFavorite(true);
+      },
     });
   const { addToFavorites, isLoading: isAddingFavorite } = useAddToFavorites({
     mutationFn: async (data) => {
@@ -59,6 +74,16 @@ export const useFavoritesActions = (filmId: number) => {
     },
     onMutate: () => {
       setIsInFavorite(true);
+    },
+    onError: (error, variables) => {
+      if (error.code !== 408) {
+        toast.error("Не удалось добавить в избранное");
+      }
+      queryClient.setQueryData(
+        ["favorites-ids", variables.userId],
+        (oldData: number[]) => oldData.filter((id) => id !== variables.filmId),
+      );
+      setIsInFavorite(false);
     },
   });
 

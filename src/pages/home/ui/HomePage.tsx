@@ -3,7 +3,6 @@ import { HomeMainPage } from "@/pages/home/home/ui/HomeMainPage";
 import { FilmPage } from "@/pages/home/film/ui/FilmPage";
 import { AnimatePresence } from "framer-motion";
 import { FilmsPage } from "@/pages/home/films/ui/FilmsPage";
-import { NewFilmsPage } from "@/pages/home/new-films/ui/NewFilmsPage";
 import { UserFavoritesPage } from "@/pages/home/user-favorites/ui/UserFavoritesPage";
 import { ActorsPage } from "@/pages/home/actors/ui/ActorsPage";
 import { ActorPage } from "@/pages/home/actor/ui/ActorPage";
@@ -39,7 +38,6 @@ export const HomePage = () => {
         <Route element={<ProfilePage />} path="/profile/*" />
 
         <Route element={<FilmPage />} path="/film/:id" />
-        <Route element={<NewFilmsPage />} path="/films/new" />
         <Route element={<FilmsPage />} path="/films" />
         <Route element={<FilmsPage />} path="/films/genres/:categoryId" />
         <Route element={<MyFilmsPage />} path="/my-films" />

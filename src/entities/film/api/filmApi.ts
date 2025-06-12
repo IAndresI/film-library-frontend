@@ -20,14 +20,16 @@ export const filmApi = {
     genres,
     actors,
     search,
+    sort,
   }: {
     pagination: PaginationState;
     genres?: string[];
     actors?: string[];
     search?: string;
+    sort?: SortingState;
   }) => {
     return queryOptions({
-      queryKey: ["films", "list", genres, actors, search, pagination],
+      queryKey: ["films", "list", genres, actors, search, pagination, sort],
       queryFn: apiInstance.get<IPaginationResponse<IFilm>>(`/films`, {
         params: {
           genres,
@@ -35,6 +37,7 @@ export const filmApi = {
           search,
           pageIndex: pagination.pageIndex,
           pageSize: pagination.pageSize,
+          sort,
         },
       }),
     });
@@ -44,22 +47,24 @@ export const filmApi = {
     genres,
     actors,
     search,
+    sort,
   }: {
     pagination: PaginationState;
     genres?: string[];
     actors?: string[];
     search?: string;
+    sort?: SortingState;
   }) => {
     return queryOptions({
       queryKey: [
         "films",
         "list",
         "user",
-        "purchased",
         genres,
         actors,
         search,
         pagination,
+        sort,
       ],
       queryFn: apiInstance.get<IPaginationResponse<IFilm>>(`/films/purchased`, {
         params: {
@@ -68,6 +73,7 @@ export const filmApi = {
           search,
           pageIndex: pagination.pageIndex,
           pageSize: pagination.pageSize,
+          sort,
         },
       }),
     });
@@ -128,5 +134,28 @@ export const filmApi = {
       refreshed: boolean;
       message: string;
     }>(`/videos/stream/refresh/${filmId}`, { tokenId }),
+  generateAdminFilmToken: (filmId: number) =>
+    apiInstance.post<{
+      token: string;
+      tokenId: string;
+      streamUrl: string;
+      expiresIn: number;
+      filmName: string;
+      filmId: number;
+    }>(`/videos/stream/admin/token/${filmId}`),
+  refreshAdminFilmToken: ({
+    filmId,
+    tokenId,
+  }: {
+    filmId: number;
+    tokenId: string;
+  }) =>
+    apiInstance.post<{
+      tokenId: string;
+      expiresIn: number;
+      filmName: string;
+      refreshed: boolean;
+      message: string;
+    }>(`/videos/stream/admin/refresh/${filmId}`, { tokenId }),
   deleteFilm: (id: number) => apiInstance.delete<IFilm>(`/films/${id}`),
 };

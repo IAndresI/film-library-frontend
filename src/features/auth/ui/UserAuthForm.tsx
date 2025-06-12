@@ -35,7 +35,11 @@ export function UserAuthForm({
   const [email, setEmail] = useState(initialData.email);
   const [otp, setOtp] = useState("");
 
-  const { sendOTP, isLoading } = useSendOTP({
+  const {
+    sendOTP,
+    isLoading,
+    error: sendOTPError,
+  } = useSendOTP({
     onSuccess: () => {
       setIsOtpSend(true);
       localStorage.setItem(
@@ -47,10 +51,17 @@ export function UserAuthForm({
       );
     },
   });
-  const { verifyOTP, isLoading: isVerifyLoading } = useVerifyOTP({
+  const {
+    verifyOTP,
+    isLoading: isVerifyLoading,
+    error: verifyOTPError,
+  } = useVerifyOTP({
     onSuccess: () => {
       setIsOtpSend(false);
       localStorage.removeItem("otpData");
+    },
+    onError: () => {
+      setOtp("");
     },
   });
 
@@ -77,9 +88,19 @@ export function UserAuthForm({
               onChange={(e) => setEmail(e.target.value)}
             />
           )}
-          <Button disabled={isLoading || isVerifyLoading} type="submit">
+          <Button
+            disabled={
+              isLoading || isVerifyLoading || (isOtpSend && otp.length !== 6)
+            }
+            type="submit"
+          >
             {isOtpSend ? "Войти" : "Отправить код"}
           </Button>
+          {(sendOTPError || verifyOTPError) && (
+            <p className="mt-3 text-sm text-red-500">
+              Ошибка: {sendOTPError?.message || verifyOTPError?.message}
+            </p>
+          )}
         </div>
       </form>
     </div>

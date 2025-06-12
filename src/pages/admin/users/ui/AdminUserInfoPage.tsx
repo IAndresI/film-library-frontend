@@ -135,7 +135,13 @@ export const AdminUserInfoPage = () => {
                   sorting={sorting}
                   onSortingChange={setSorting}
                   columnFilters={columnFilters}
-                  onColumnFiltersChange={setColumnFilters}
+                  onColumnFiltersChange={(filters) => {
+                    setColumnFilters(filters);
+                    setPagination((prev) => ({
+                      ...prev,
+                      pageIndex: 0,
+                    }));
+                  }}
                   pagination={orders?.pagination}
                   onPaginationChange={setPagination}
                   columns={ordersTableColumns}

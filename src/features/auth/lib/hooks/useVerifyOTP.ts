@@ -15,8 +15,15 @@ export const useVerifyOTP = (props?: {
         context: unknown,
       ) => Promise<unknown> | unknown)
     | undefined;
+  onError?:
+    | ((
+        error: Error,
+        variables: VerifyOTPRequest,
+        context: unknown,
+      ) => Promise<unknown> | unknown)
+    | undefined;
 }) => {
-  const { onSuccess } = props || {};
+  const { onSuccess, onError } = props || {};
   const navigate = useNavigate();
 
   const {
@@ -32,6 +39,9 @@ export const useVerifyOTP = (props?: {
         navigate("/");
       }
       onSuccess?.(data, variables, context);
+    },
+    onError: (error, variables, context) => {
+      onError?.(error, variables, context);
     },
   });
 

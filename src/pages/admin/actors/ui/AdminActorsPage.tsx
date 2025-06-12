@@ -27,10 +27,17 @@ export const AdminActorsPage = () => {
     pagination,
   };
 
-  const { data: actors } = useQuery({
+  const {
+    data: actors,
+    isLoading: isActorsLoading,
+    isFetching: isActorsFetching,
+  } = useQuery({
     ...actorApi.getAllActorsAdminQueryOptions(params),
     placeholderData: keepPreviousData,
   });
+
+  console.log(isActorsLoading, isActorsFetching);
+
   return (
     <motion.section
       className="col-span-3 lg:col-span-4"
@@ -52,10 +59,18 @@ export const AdminActorsPage = () => {
 
         <DataTable
           searchField="name"
+          isLoading={isActorsLoading}
+          isFetching={isActorsFetching}
           sorting={columnSorting}
           onSortingChange={setColumnSorting}
           columnFilters={columnFilters}
-          onColumnFiltersChange={setColumnFilters}
+          onColumnFiltersChange={(filters) => {
+            setColumnFilters(filters);
+            setPagination((prev) => ({
+              ...prev,
+              pageIndex: 0,
+            }));
+          }}
           pagination={actors?.pagination}
           onPaginationChange={setPagination}
           columns={actorsTableColumns}
