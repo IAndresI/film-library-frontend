@@ -212,17 +212,18 @@ export const FilmPage = () => {
                           Трейлер
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="flex h-fit max-h-[85svh] max-w-[85vw] flex-col">
+                      <DialogContent className="flex h-fit max-h-[85svh] max-w-max flex-col">
                         <DialogHeader>
                           <DialogTitle className="text-center text-3xl">
                             {film.name}
                           </DialogTitle>
                         </DialogHeader>
-                        <div className="grid h-fit overflow-hidden rounded-lg">
+                        <div className="trailer grid justify-center overflow-hidden rounded-lg">
                           <VideoPlayer
-                            key={film.trailerUrl}
+                            id={`trailer-${film.id}-time`}
                             src={getMediaUrl(film.trailerUrl)}
                             title={`${film.name} - Трейлер`}
+                            className="mx-auto"
                           />
                         </div>
                       </DialogContent>

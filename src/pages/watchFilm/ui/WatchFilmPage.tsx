@@ -135,6 +135,7 @@ export const WatchFilmPage = () => {
                   <VideoPlayer
                     src={`${API_URL}${filmToken.streamUrl}`}
                     title={film.name}
+                    id={film.id.toString()}
                   />
                 </div>
               </div>

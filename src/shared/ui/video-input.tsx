@@ -55,6 +55,7 @@ export const VideoInput = ({
               onClick={(e) => e.stopPropagation()}
             >
               <VideoPlayer
+                id={videoKey}
                 title={value?.name || "Видео"}
                 key={videoKey}
                 src={videoSrc}

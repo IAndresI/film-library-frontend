@@ -1,3 +1,4 @@
+import { useUser } from "@/app/providers";
 import { subscriptionApi } from "@/entities/subscription/api/subscriptionApi";
 import { SubscriptionStatus } from "@/entities/subscription/dto";
 import type { IUser } from "@/entities/user/dto";
@@ -16,12 +17,20 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-const invalidateUserSubscriptionQueryOptions = (userId: number) => {
+const invalidateUserSubscriptionQueryOptions = (
+  userId: number,
+  isCurrentUser: boolean,
+) => {
   queryClient.invalidateQueries({ queryKey: ["users"] });
   queryClient.invalidateQueries({ queryKey: ["users", userId] });
+  queryClient.invalidateQueries({ queryKey: ["subscriptions"] });
+  if (isCurrentUser) {
+    queryClient.invalidateQueries({ queryKey: ["user"] });
+  }
 };
 
 export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
+  const currentUser = useUser();
   const [selectedPlan, setSelectedPlan] = useState<number | undefined>(
     undefined,
   );
@@ -39,7 +48,10 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
   } = useMutation({
     mutationFn: subscriptionApi.invalidateUserSubscription,
     onSuccess: (data) => {
-      invalidateUserSubscriptionQueryOptions(data.id);
+      invalidateUserSubscriptionQueryOptions(
+        data.id,
+        data.userId === currentUser.id,
+      );
       toast.success(`Подписка пользователя "${user.name}" успешно отозвана`);
     },
     onError: (error) => {
@@ -53,7 +65,10 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
     useMutation({
       mutationFn: subscriptionApi.giveSubscriptionToUser,
       onSuccess: (data) => {
-        invalidateUserSubscriptionQueryOptions(data.id);
+        invalidateUserSubscriptionQueryOptions(
+          data.id,
+          data.userId === currentUser.id,
+        );
         toast.success("Подпсика выдана", {
           description: `Пользователю "${user.name}" успешно выдана "${data.plan.name}"`,
         });

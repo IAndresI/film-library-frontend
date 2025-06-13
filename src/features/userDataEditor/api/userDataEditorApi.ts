@@ -6,10 +6,12 @@ export const userDataEditorApi = {
     name,
     id,
     avatar,
+    isAdmin,
   }: {
     name: string;
     id: number;
     avatar?: File | null;
+    isAdmin?: boolean;
   }) => {
     const formData = new FormData();
     formData.append("name", name);
@@ -17,6 +19,9 @@ export const userDataEditorApi = {
       formData.append("avatar", avatar);
     } else if (avatar === null) {
       formData.append("avatar", "null");
+    }
+    if (isAdmin !== undefined) {
+      formData.append("isAdmin", isAdmin.toString());
     }
     return apiInstance.put<IUser>(`/users/${id}`, formData, {
       headers: {

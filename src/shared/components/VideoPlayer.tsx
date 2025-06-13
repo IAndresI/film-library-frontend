@@ -32,23 +32,173 @@ import {
   VolumeX,
   RotateCcw,
   RotateCw,
+  ArrowLeftIcon,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { SvgSpinner } from "../ui/svg/SvgSpinner";
+import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
+
+// Кастомное хранилище для Vidstack
+const createCustomStorage = (filmId: string) => ({
+  // Общие настройки (громкость, muted и т.д.) - глобальные
+  async getVolume() {
+    const settings = localStorage.getItem("player-settings");
+    if (settings) {
+      const parsed = JSON.parse(settings);
+      return parsed.volume ?? null;
+    }
+    return null;
+  },
+
+  async setVolume(volume: number) {
+    const settings = JSON.parse(
+      localStorage.getItem("player-settings") || "{}",
+    );
+    settings.volume = volume;
+    localStorage.setItem("player-settings", JSON.stringify(settings));
+  },
+
+  async getMuted() {
+    const settings = localStorage.getItem("player-settings");
+    if (settings) {
+      const parsed = JSON.parse(settings);
+      return parsed.muted ?? null;
+    }
+    return null;
+  },
+
+  async setMuted(muted: boolean) {
+    const settings = JSON.parse(
+      localStorage.getItem("player-settings") || "{}",
+    );
+    settings.muted = muted;
+    localStorage.setItem("player-settings", JSON.stringify(settings));
+  },
+
+  async getPlaybackRate() {
+    const settings = localStorage.getItem("player-settings");
+    if (settings) {
+      const parsed = JSON.parse(settings);
+      return parsed.playbackRate ?? null;
+    }
+    return null;
+  },
+
+  async setPlaybackRate(rate: number) {
+    const settings = JSON.parse(
+      localStorage.getItem("player-settings") || "{}",
+    );
+    settings.playbackRate = rate;
+    localStorage.setItem("player-settings", JSON.stringify(settings));
+  },
+
+  async getCaptions() {
+    const settings = localStorage.getItem("player-settings");
+    if (settings) {
+      const parsed = JSON.parse(settings);
+      return parsed.captions ?? null;
+    }
+    return null;
+  },
+
+  async setCaptions(captions: boolean) {
+    const settings = JSON.parse(
+      localStorage.getItem("player-settings") || "{}",
+    );
+    settings.captions = captions;
+    localStorage.setItem("player-settings", JSON.stringify(settings));
+  },
+
+  async getLang() {
+    const settings = localStorage.getItem("player-settings");
+    if (settings) {
+      const parsed = JSON.parse(settings);
+      return parsed.lang ?? null;
+    }
+    return null;
+  },
+
+  async setLang(lang: string | null) {
+    const settings = JSON.parse(
+      localStorage.getItem("player-settings") || "{}",
+    );
+    settings.lang = lang;
+    localStorage.setItem("player-settings", JSON.stringify(settings));
+  },
+
+  async getVideoQuality() {
+    const settings = localStorage.getItem("player-settings");
+    if (settings) {
+      const parsed = JSON.parse(settings);
+      return parsed.videoQuality ?? null;
+    }
+    return null;
+  },
+
+  async setVideoQuality(quality: unknown) {
+    const settings = JSON.parse(
+      localStorage.getItem("player-settings") || "{}",
+    );
+    settings.videoQuality = quality;
+    localStorage.setItem("player-settings", JSON.stringify(settings));
+  },
+
+  async getAudioGain() {
+    const settings = localStorage.getItem("player-settings");
+    if (settings) {
+      const parsed = JSON.parse(settings);
+      return parsed.audioGain ?? null;
+    }
+    return null;
+  },
+
+  async setAudioGain(gain: number | null) {
+    const settings = JSON.parse(
+      localStorage.getItem("player-settings") || "{}",
+    );
+    settings.audioGain = gain;
+    localStorage.setItem("player-settings", JSON.stringify(settings));
+  },
+
+  // Время просмотра - индивидуально для каждого фильма
+  async getTime() {
+    const timeKey = `film-${filmId}-time`;
+    const timeData = localStorage.getItem(timeKey);
+    return timeData ? parseFloat(timeData) : null;
+  },
+
+  async setTime(time: number, ended?: boolean) {
+    const timeKey = `film-${filmId}-time`;
+    // Если фильм закончился, не сохраняем время
+    if (ended) {
+      localStorage.removeItem(timeKey);
+    } else {
+      localStorage.setItem(timeKey, time.toString());
+    }
+  },
+});
 
 export const VideoPlayer = ({
   src,
   title,
+  id,
+  className,
 }: {
   src: PlayerSrc;
   title: string;
+  id: string;
+  className?: string;
 }) => {
+  const customStorage = createCustomStorage(id);
+
   return (
     <MediaPlayer
       streamType="on-demand"
       title={title}
       src={src}
-      storage="vidstack-player"
+      storage={customStorage}
+      className={className}
     >
       <MediaProvider />
       <Controls.Root
@@ -56,7 +206,7 @@ export const VideoPlayer = ({
         hideOnMouseLeave
       >
         <Controls.Group>
-          <VideoControls />
+          <VideoControls id={id} />
         </Controls.Group>
       </Controls.Root>
     </MediaPlayer>
@@ -65,7 +215,7 @@ export const VideoPlayer = ({
 
 let clickTimeout: NodeJS.Timeout | null = null;
 
-const VideoControls = () => {
+const VideoControls = ({ id }: { id: string }) => {
   const volume = useMediaState("volume");
   const muted = useMediaState("muted");
   const playbackRate = useMediaState("playbackRate");
@@ -142,6 +292,13 @@ const VideoControls = () => {
       <div className="media-waiting:flex absolute inset-0 bottom-[68px] hidden items-center justify-center">
         <SvgSpinner className="size-40" />
       </div>
+
+      <Button variant="ghost" asChild className="absolute top-5 left-5 z-50">
+        <Link to={`/film/${id}`}>
+          <ArrowLeftIcon className="h-4 w-4" />
+          Назад
+        </Link>
+      </Button>
 
       {/* Клик по видео для воспроизведения/паузы */}
       <button

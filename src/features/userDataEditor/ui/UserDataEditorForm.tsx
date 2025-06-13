@@ -19,6 +19,8 @@ import {
 import { ImageInput } from "@/shared/ui/image-input";
 import { getImageUrl } from "@/shared/lib/utils";
 import { queryClient } from "@/shared/api/query-client";
+import { Switch } from "@/shared/ui/switch";
+import { useUser } from "@/app/providers";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Имя обязательно" }).min(3, {
@@ -44,19 +46,23 @@ const formSchema = z.object({
       ].includes(value.type);
     }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF")
     .optional(),
+  isAdmin: z.boolean().optional(),
 });
 
 export function UserDataEditorForm({
   className,
   userData,
   ...props
-}: { userData: IUser } & React.HTMLAttributes<HTMLFormElement>) {
+}: {
+  userData: IUser;
+} & React.HTMLAttributes<HTMLFormElement>) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const currentUser = useUser();
   const { editUserData, isLoading } = useEditUserData({
     onSuccess: (user) => {
-      if (userData) {
+      if (userData.id === currentUser.id) {
         queryClient.setQueryData(["user"], user);
       }
     },
@@ -66,6 +72,7 @@ export function UserDataEditorForm({
     form.reset({
       name: userData.name,
       avatar: getImageUrl(userData.avatar),
+      isAdmin: userData.isAdmin,
     });
   }, [userData.avatar]);
 
@@ -102,6 +109,24 @@ export function UserDataEditorForm({
                 </FormItem>
               )}
             />
+            {currentUser.isAdmin && (
+              <FormField
+                control={form.control}
+                name="isAdmin"
+                render={({ field }) => (
+                  <FormItem className="flex items-end gap-2">
+                    <FormLabel>Админ</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="avatar"
