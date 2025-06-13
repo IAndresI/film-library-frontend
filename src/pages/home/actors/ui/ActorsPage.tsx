@@ -3,10 +3,9 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 
-import { useGetAllFilters } from '@/features/filters/lib/hooks';
-
-import { actorApi } from '@/entities/actor/api/actorApi';
+import { actorApi } from '@/entities/actor/api/actor.api';
 import { ActorCard } from '@/entities/actor/ui/ActorCard';
+import { useGetAllFilters } from '@/entities/filters/lib/hooks';
 
 import { useDebounce } from '@/shared/lib/hooks/use-debounce';
 import { cn } from '@/shared/lib/utils';

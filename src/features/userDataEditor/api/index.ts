@@ -1,1 +1,1 @@
-export { userDataEditorApi } from './userDataEditorApi';
+export { userDataEditorApi } from './userDataEditor.api';

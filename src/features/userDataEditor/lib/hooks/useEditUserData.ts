@@ -1,11 +1,11 @@
-import type { IUser } from '@/entities/user/dto';
+import type { IUser } from '@/entities/user/model';
 
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { queryClient } from '@/shared/api/query-client';
 
-import { userDataEditorApi } from '../../api/userDataEditorApi';
+import { userDataEditorApi } from '../../api/userDataEditor.api';
 
 export const useEditUserData = (props?: {
   onSuccess?:

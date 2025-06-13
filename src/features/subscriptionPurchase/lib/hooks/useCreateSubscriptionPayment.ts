@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { subscriptionPurchaseApi } from '../../api/subscriptionPurchaseApi';
+import { subscriptionPurchaseApi } from '../../api/subscriptionPurchase.api';
 
 export const useCreateSubscriptionPayment = (props?: {
   onSuccess?:

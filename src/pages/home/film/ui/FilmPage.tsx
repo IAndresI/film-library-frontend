@@ -8,17 +8,16 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
 
-import { useUser } from '@/app/providers';
-
 import { useFavoritesActions } from '@/features/favoriteFilmActions/lib/hooks';
 import { UserFilmPaymentForm } from '@/features/filmPurchase/ui';
 import { ReviewEditorForm } from '@/features/reviewEditor/ui';
 
 import { ActorCard } from '@/entities/actor/ui/ActorCard';
-import { filmApi } from '@/entities/film/api/filmApi';
+import { filmApi } from '@/entities/film/api/film.api';
 import { getMediaUrl } from '@/entities/film/lib/helpers';
-import { reviewApi } from '@/entities/review/api/reviewApi';
-import { SubscriptionStatus } from '@/entities/subscription/dto';
+import { reviewApi } from '@/entities/review/api/review.api';
+import { SubscriptionStatus } from '@/entities/subscription/model';
+import { useUser } from '@/entities/user/providers';
 
 import { CustomBreadcrumbs } from '@/shared/components/CustomBreadcrumbs';
 import { VideoPlayer } from '@/shared/components/VideoPlayer';

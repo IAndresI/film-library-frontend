@@ -1,1 +1,1 @@
-export { reviewEditorApi } from './reviewEditorApi';
+export { reviewEditorApi } from './reviewEditor.api';

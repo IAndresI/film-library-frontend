@@ -1,4 +1,4 @@
-import type { IReview } from '@/entities/review/dto';
+import type { IReview } from '@/entities/review/model';
 import type { ComponentProps } from 'react';
 
 import { useState } from 'react';

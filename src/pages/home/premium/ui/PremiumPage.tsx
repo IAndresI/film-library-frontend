@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion';
 
-import { useUser } from '@/app/providers';
-
 import { UserSubscriptionPaymentForm } from '@/features/subscriptionPurchase/ui';
 
-import { SubscriptionStatus } from '@/entities/subscription/dto';
+import { SubscriptionStatus } from '@/entities/subscription/model';
+import { useUser } from '@/entities/user/providers';
 
 import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
 

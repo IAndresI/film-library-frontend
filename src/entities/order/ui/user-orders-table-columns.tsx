@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import type { IOrder } from '../dto';
+import type { IOrder } from '../model';
 
 import { Link } from 'react-router-dom';
 

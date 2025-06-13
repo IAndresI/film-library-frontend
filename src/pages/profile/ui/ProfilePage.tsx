@@ -5,13 +5,12 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useUser } from '@/app/providers';
-
 import { UserDataEditorForm } from '@/features/userDataEditor/ui/UserDataEditorForm';
 
-import { orderApi } from '@/entities/order/api/orderApi';
+import { orderApi } from '@/entities/order/api/order.api';
 import { userOrdersTableColumns } from '@/entities/order/ui/user-orders-table-columns';
-import { SubscriptionStatus } from '@/entities/subscription/dto';
+import { SubscriptionStatus } from '@/entities/subscription/model';
+import { useUser } from '@/entities/user/providers';
 
 import { DataTable } from '@/shared/components';
 import { formatDate } from '@/shared/lib/helpers';

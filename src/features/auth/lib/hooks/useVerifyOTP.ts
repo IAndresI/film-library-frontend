@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { queryClient } from '@/shared/api/query-client';
 
-import { authApi } from '../../api/authApi';
+import { authApi } from '../../api/auth.api';
 
 export const useVerifyOTP = (props?: {
   onSuccess?:

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 
-import { filmApi } from '@/entities/film/api/filmApi';
+import { filmApi } from '@/entities/film/api/film.api';
 import { FilmCard } from '@/entities/film/ui/FilmCard';
 import { FilmSkeleton } from '@/entities/film/ui/FilmSkeleton';
 

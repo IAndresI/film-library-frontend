@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useQuery } from '@tanstack/react-query';
 
-import { filmApi } from '@/entities/film/api/filmApi';
+import { filmApi } from '@/entities/film/api/film.api';
 import { subscriptionApi } from '@/entities/subscription/api';
-import { userApi } from '@/entities/user/api/userApi';
+import { userApi } from '@/entities/user/api/user.api';
 
 import { useDebounce } from '@/shared/lib/hooks/use-debounce';
 

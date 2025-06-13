@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 import { ActorDataEditorForm } from '@/features/actorEditor/ui/ActorDataEditorForm';
 
-import { actorApi } from '@/entities/actor/api/actorApi';
+import { actorApi } from '@/entities/actor/api/actor.api';
 
 import { DeleteModal } from '@/shared/components';
 import { Button } from '@/shared/ui/button';

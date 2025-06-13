@@ -1,4 +1,4 @@
-import type { IActor } from '@/entities/actor/dto';
+import type { IActor } from '@/entities/actor/model';
 import type { IActorEditorForm } from '../../model';
 
 import { useMutation } from '@tanstack/react-query';
@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { queryClient } from '@/shared/api/query-client';
 
-import { actorEditorApi } from '../../api/actorEditorApi';
+import { actorEditorApi } from '../../api/actorEditor.api';
 
 export const useEditActorData = (props?: {
   onSuccess?:

@@ -1,1 +1,1 @@
-export { favoriteFilmActionsApi } from './favoriteFilmActionsApi';
+export { favoriteFilmActionsApi } from './favoriteFilmActions.api';

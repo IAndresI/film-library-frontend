@@ -1,4 +1,4 @@
-import type { IFilm, IGenre } from '@/entities/film/dto';
+import type { IFilm, IGenre } from '@/entities/film/model';
 import type { ColumnDef } from '@tanstack/react-table';
 
 import { Link } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { Badge } from '@/shared/ui/badge';
 
 import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
 import { DataTableRowActions } from '../../../shared/components/data-table/data-table-row-actions';
-import { filmApi } from '../api/filmApi';
+import { filmApi } from '../api/film.api';
 
 export const filmsTableColumns: ColumnDef<IFilm>[] = [
   {

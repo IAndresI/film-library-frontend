@@ -1,11 +1,11 @@
-import type { IReview } from '@/entities/review/dto';
+import type { IReview } from '@/entities/review/model';
 
 import { StarFilledIcon } from '@radix-ui/react-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
-import { filmApi } from '@/entities/film/api/filmApi';
-import { reviewApi } from '@/entities/review/api/reviewApi';
+import { filmApi } from '@/entities/film/api/film.api';
+import { reviewApi } from '@/entities/review/api/review.api';
 
 import { getImageUrl } from '@/shared/lib/utils';
 import { Badge } from '@/shared/ui/badge';

@@ -3,15 +3,14 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
 
-import { useUser } from '@/app/providers';
-
 import { UserFilmPaymentForm } from '@/features/filmPurchase/ui';
 
-import { filmApi } from '@/entities/film/api/filmApi';
-import { SubscriptionStatus } from '@/entities/subscription/dto';
+import { filmApi } from '@/entities/film/api/film.api';
+import { SubscriptionStatus } from '@/entities/subscription/model';
+import { useUser } from '@/entities/user/providers';
 
 import { VideoPlayer } from '@/shared/components/VideoPlayer';
-import { API_URL } from '@/shared/config';
+import { API_BASE_URL } from '@/shared/config';
 import { Button } from '@/shared/ui/button';
 import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
 import { SvgLogo } from '@/shared/ui/svg/SvgLogo';
@@ -145,7 +144,7 @@ export const WatchFilmPage = () => {
                 <div className="player">
                   <VideoPlayer
                     filmId={film.id.toString()}
-                    src={`${API_URL}${filmToken.streamUrl}`}
+                    src={`${API_BASE_URL}${filmToken.streamUrl}`}
                     title={film.name}
                     id={film.id.toString()}
                   />

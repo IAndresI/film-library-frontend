@@ -1,4 +1,4 @@
-import type { SubscriptionStatus as SubscriptionStatusType } from '@/entities/subscription/dto';
+import type { SubscriptionStatus as SubscriptionStatusType } from '@/entities/subscription/model';
 
 import React from 'react';
 

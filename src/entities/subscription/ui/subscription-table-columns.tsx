@@ -1,6 +1,6 @@
-import type { IUser } from '@/entities/user/dto';
+import type { IUser } from '@/entities/user/model';
 import type { ColumnDef } from '@tanstack/react-table';
-import type { IPlan, ISubscription } from '../dto';
+import type { IPlan, ISubscription } from '../model';
 
 import { Link } from 'react-router-dom';
 

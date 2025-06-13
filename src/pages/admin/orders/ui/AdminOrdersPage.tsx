@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-table';
 import { motion } from 'framer-motion';
 
-import { orderApi } from '@/entities/order/api/orderApi';
+import { orderApi } from '@/entities/order/api/order.api';
 import { ordersTableColumns } from '@/entities/order/ui/orders-table-columns';
 
 import { DataTable } from '@/shared/components/data-table/data-table';

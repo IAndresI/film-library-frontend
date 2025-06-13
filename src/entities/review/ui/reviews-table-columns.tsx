@@ -1,6 +1,6 @@
-import type { IFilm } from '@/entities/film/dto';
-import type { IReview } from '@/entities/review/dto';
-import type { IUser } from '@/entities/user/dto';
+import type { IFilm } from '@/entities/film/model';
+import type { IReview } from '@/entities/review/model';
+import type { IUser } from '@/entities/user/model';
 import type { ColumnDef } from '@tanstack/react-table';
 
 import { Link } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { getImageUrl } from '@/shared/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 
 import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
-import { reviewApi } from '../api/reviewApi';
+import { reviewApi } from '../api/review.api';
 
 export const reviewsTableColumns: ColumnDef<IReview>[] = [
   {

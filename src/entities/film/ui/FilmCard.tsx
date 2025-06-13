@@ -1,4 +1,4 @@
-import type { IFilm } from '@/entities/film/dto';
+import type { IFilm } from '@/entities/film/model';
 
 import { BookmarkFilledIcon, StarFilledIcon } from '@radix-ui/react-icons';
 import { BookmarkIcon } from 'lucide-react';

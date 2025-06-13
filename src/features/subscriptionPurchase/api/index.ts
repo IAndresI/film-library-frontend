@@ -1,1 +1,1 @@
-export { subscriptionPurchaseApi } from './subscriptionPurchaseApi';
+export { subscriptionPurchaseApi } from './subscriptionPurchase.api';

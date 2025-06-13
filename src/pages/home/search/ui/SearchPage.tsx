@@ -6,9 +6,9 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 
-import { actorApi } from '@/entities/actor/api/actorApi';
+import { actorApi } from '@/entities/actor/api/actor.api';
 import { ActorCard } from '@/entities/actor/ui/ActorCard';
-import { filmApi } from '@/entities/film/api/filmApi';
+import { filmApi } from '@/entities/film/api/film.api';
 import { FILM_SORT_OPTIONS } from '@/entities/film/constants';
 import { FilmCard } from '@/entities/film/ui/FilmCard';
 

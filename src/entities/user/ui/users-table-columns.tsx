@@ -1,10 +1,10 @@
-import type { IUser } from '@/entities/user/dto';
+import type { IUser } from '@/entities/user/model';
 import type { ColumnDef } from '@tanstack/react-table';
 
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { SubscriptionStatus } from '@/entities/subscription/dto';
+import { SubscriptionStatus } from '@/entities/subscription/model';
 
 import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
 import { DeleteModal } from '@/shared/components/DeleteModal';
@@ -13,7 +13,7 @@ import { getImageUrl } from '@/shared/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 
 import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
-import { userApi } from '../api/userApi';
+import { userApi } from '../api/user.api';
 
 export const usersTableColumns: ColumnDef<IUser>[] = [
   {

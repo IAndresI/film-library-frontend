@@ -2,7 +2,7 @@ import type { SendOTPRequest, SendOTPResponse } from '../../model/auth.model';
 
 import { useMutation } from '@tanstack/react-query';
 
-import { authApi } from '../../api/authApi';
+import { authApi } from '../../api/auth.api';
 
 export const useSendOTP = (props?: {
   onSuccess?:

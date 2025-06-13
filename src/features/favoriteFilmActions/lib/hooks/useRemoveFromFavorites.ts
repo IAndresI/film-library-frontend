@@ -1,4 +1,4 @@
-import type { IFilm } from '@/entities/film/dto';
+import type { IFilm } from '@/entities/film/model';
 import type { CustomApiError } from '@/shared/model/api-error.model';
 import type { MutationFunction } from '@tanstack/react-query';
 

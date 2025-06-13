@@ -8,7 +8,7 @@ import {
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import { actorApi } from '@/entities/actor/api/actorApi';
+import { actorApi } from '@/entities/actor/api/actor.api';
 import { actorsTableColumns } from '@/entities/actor/ui/actors-table-columns';
 
 import { DataTable } from '@/shared/components/data-table/data-table';

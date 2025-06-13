@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { FilmIcon } from 'lucide-react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 
-import { filmApi } from '@/entities/film/api/filmApi';
+import { filmApi } from '@/entities/film/api/film.api';
 
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import {

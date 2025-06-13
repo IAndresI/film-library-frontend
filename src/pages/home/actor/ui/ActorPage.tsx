@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 
-import { actorApi } from '@/entities/actor/api/actorApi';
+import { actorApi } from '@/entities/actor/api/actor.api';
 import { FilmCard } from '@/entities/film/ui/FilmCard';
 
 import { CustomBreadcrumbs } from '@/shared/components/CustomBreadcrumbs';

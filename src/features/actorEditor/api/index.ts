@@ -1,1 +1,1 @@
-export { actorEditorApi } from './actorEditorApi';
+export { actorEditorApi } from './actorEditor.api';

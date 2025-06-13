@@ -7,11 +7,10 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 
-import { useUser } from '@/app/providers';
-
 import { authApi } from '@/features/auth/api';
 
-import { SubscriptionStatus } from '@/entities/subscription/dto';
+import { SubscriptionStatus } from '@/entities/subscription/model';
+import { useUser } from '@/entities/user/providers';
 
 import { ModeToggle } from '@/shared/components/ModeToggle';
 import {

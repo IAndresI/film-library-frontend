@@ -1,5 +1,1 @@
-import { MEDIA_URL } from '@/shared/config';
-
-export const getMediaUrl = (url: string) => {
-  return `${MEDIA_URL}${url}`;
-};
+export { getMediaUrl } from './get-media-url';

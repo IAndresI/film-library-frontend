@@ -13,8 +13,8 @@ import {
 import { Link, useParams } from 'react-router-dom';
 
 import { FilmCard } from '@/entities/film/ui/FilmCard';
-import { orderApi } from '@/entities/order/api/orderApi';
-import { OrderStatusType, OrderType } from '@/entities/order/dto';
+import { orderApi } from '@/entities/order/api/order.api';
+import { OrderStatusType, OrderType } from '@/entities/order/model';
 
 import { queryClient } from '@/shared/api/query-client';
 import { Badge } from '@/shared/ui/badge';

@@ -5,11 +5,11 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'sonner';
 
-import { useUser } from '@/app/providers';
+import { useUser } from '@/entities/user/providers';
 
 import { queryClient } from '@/shared/api/query-client';
 
-import { favoriteFilmActionsApi } from '../../api/favoriteFilmActionsApi';
+import { favoriteFilmActionsApi } from '../../api/favoriteFilmActions.api';
 import { useAddToFavorites } from './useAddToFavorites';
 import { useRemoveFromFavorites } from './useRemoveFromFavorites';
 

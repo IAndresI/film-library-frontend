@@ -5,9 +5,9 @@ import { toast } from 'sonner';
 
 import { FilmDataEditorForm } from '@/features/filmEditor/ui';
 import { FilmMediaEditorForm } from '@/features/filmEditor/ui/FilmMediaEditorForm';
-import { useGetAllFilters } from '@/features/filters/lib/hooks';
 
-import { filmApi } from '@/entities/film/api/filmApi';
+import { filmApi } from '@/entities/film/api/film.api';
+import { useGetAllFilters } from '@/entities/filters/lib/hooks';
 
 import { DeleteModal } from '@/shared/components';
 import { Button } from '@/shared/ui/button';

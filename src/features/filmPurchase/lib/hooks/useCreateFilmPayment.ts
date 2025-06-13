@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { filmPurchaseApi } from '../../api/filmPurchaseApi';
+import { filmPurchaseApi } from '../../api/filmPurchase.api';
 
 export const useCreateFilmPayment = (props?: {
   onSuccess?:

@@ -1,4 +1,4 @@
-import type { IActor } from '@/entities/actor/dto';
+import type { IActor } from '@/entities/actor/model';
 import type { IActorEditorForm } from '../../model';
 
 import { useMutation } from '@tanstack/react-query';

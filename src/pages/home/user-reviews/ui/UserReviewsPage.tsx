@@ -4,10 +4,9 @@ import { useState } from 'react';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 
-import { useUser } from '@/app/providers';
-
-import { reviewApi } from '@/entities/review/api/reviewApi';
+import { reviewApi } from '@/entities/review/api/review.api';
 import { REVIEW_SORT_OPTIONS } from '@/entities/review/constants';
+import { useUser } from '@/entities/user/providers';
 
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';

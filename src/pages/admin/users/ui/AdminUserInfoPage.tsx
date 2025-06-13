@@ -12,10 +12,10 @@ import { toast } from 'sonner';
 
 import { UserDataEditorForm } from '@/features/userDataEditor/ui';
 
-import { orderApi } from '@/entities/order/api/orderApi';
+import { orderApi } from '@/entities/order/api/order.api';
 import { ordersTableColumns } from '@/entities/order/ui/orders-table-columns';
-import { SubscriptionStatus } from '@/entities/subscription/dto';
-import { userApi } from '@/entities/user/api/userApi';
+import { SubscriptionStatus } from '@/entities/subscription/model';
+import { userApi } from '@/entities/user/api/user.api';
 
 import { DataTable, DeleteModal } from '@/shared/components';
 import { getImageUrl } from '@/shared/lib/utils';

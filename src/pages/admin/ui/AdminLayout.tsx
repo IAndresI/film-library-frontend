@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import { useUser } from '@/app/providers';
+import { useUser } from '@/entities/user/providers';
 
 import { SidebarProvider } from '../../../shared/ui/sidebar';
 import { AdminHeader } from './AdminHeader';

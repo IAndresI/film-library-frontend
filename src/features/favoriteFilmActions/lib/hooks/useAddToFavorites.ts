@@ -1,4 +1,4 @@
-import type { IFilm } from '@/entities/film/dto';
+import type { IFilm } from '@/entities/film/model';
 import type { MutationFunction } from '@tanstack/react-query';
 
 import { useMutation } from '@tanstack/react-query';

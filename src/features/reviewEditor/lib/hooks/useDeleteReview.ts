@@ -1,4 +1,4 @@
-import type { IReview } from '@/entities/review/dto';
+import type { IReview } from '@/entities/review/model';
 
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';

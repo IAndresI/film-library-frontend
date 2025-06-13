@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import type { IActor } from '../dto';
+import type { IActor } from '../model';
 
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -11,7 +11,7 @@ import { getImageUrl } from '@/shared/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 
 import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
-import { actorApi } from '../api/actorApi';
+import { actorApi } from '../api/actor.api';
 
 export const actorsTableColumns: ColumnDef<IActor>[] = [
   {

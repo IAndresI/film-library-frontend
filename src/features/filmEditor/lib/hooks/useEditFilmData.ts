@@ -1,4 +1,4 @@
-import type { IFilm } from '@/entities/film/dto';
+import type { IFilm } from '@/entities/film/model';
 import type { IEditFilmData } from '../../model';
 
 import { useMutation } from '@tanstack/react-query';
@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { queryClient } from '@/shared/api/query-client';
 
-import { filmEditorApi } from '../../api/filmEditorApi';
+import { filmEditorApi } from '../../api/filmEditor.api';
 
 export const useEditFilmData = (props?: {
   onSuccess?:

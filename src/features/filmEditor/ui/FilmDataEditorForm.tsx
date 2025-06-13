@@ -1,5 +1,5 @@
-import type { IFilm } from '@/entities/film/dto';
-import type { IFilter } from '@/features/filters/dto';
+import type { IFilm } from '@/entities/film/model';
+import type { IFilter } from '@/entities/filters/model';
 
 import * as React from 'react';
 import { useEffect } from 'react';
@@ -8,7 +8,7 @@ import { formatDate } from 'date-fns';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { MEDIA_URL } from '@/shared/config';
+import { MEDIA_BASE_URL } from '@/shared/config';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { DatePicker } from '@/shared/ui/date-picker';
@@ -138,7 +138,7 @@ export function FilmDataEditorForm({
         isVisible: film.isVisible,
         name: film.name,
         description: film.description,
-        image: film?.image ? `${MEDIA_URL}${film.image}` : undefined,
+        image: film?.image ? `${MEDIA_BASE_URL}${film.image}` : undefined,
         genres: film.genres.map((genre) => genre.id.toString()),
         release_date: new Date(film.releaseDate),
         actors: film.actors.map((actor) => ({

@@ -2,7 +2,7 @@ import type { AxiosRequestConfig } from 'axios';
 
 import axios, { CanceledError } from 'axios';
 
-import { API_URL } from '@/shared/config';
+import { API_BASE_URL } from '@/shared/config';
 
 import { CustomApiError } from '../model/api-error.model';
 
@@ -31,7 +31,7 @@ const handleError = (error: unknown): never => {
 };
 
 export const $axios = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

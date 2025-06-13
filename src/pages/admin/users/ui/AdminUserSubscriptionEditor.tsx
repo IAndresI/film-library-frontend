@@ -1,13 +1,12 @@
-import type { IUser } from '@/entities/user/dto';
+import type { IUser } from '@/entities/user/model';
 
 import React, { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { useUser } from '@/app/providers';
-
-import { subscriptionApi } from '@/entities/subscription/api/subscriptionApi';
-import { SubscriptionStatus } from '@/entities/subscription/dto';
+import { subscriptionApi } from '@/entities/subscription/api/subscription.api';
+import { SubscriptionStatus } from '@/entities/subscription/model';
+import { useUser } from '@/entities/user/providers';
 
 import { queryClient } from '@/shared/api/query-client';
 import { formatDate } from '@/shared/lib/helpers';

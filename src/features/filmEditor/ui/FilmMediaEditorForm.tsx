@@ -1,4 +1,4 @@
-import type { IFilm } from '@/entities/film/dto';
+import type { IFilm } from '@/entities/film/model';
 
 import * as React from 'react';
 import { useEffect } from 'react';
@@ -7,9 +7,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { filmApi } from '@/entities/film/api/filmApi';
+import { filmApi } from '@/entities/film/api/film.api';
 
-import { API_URL, MEDIA_URL } from '@/shared/config';
+import { API_BASE_URL, MEDIA_BASE_URL } from '@/shared/config';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import {
@@ -113,9 +113,9 @@ export function FilmMediaEditorForm({
   useEffect(() => {
     if (film) {
       form.reset({
-        video: film?.filmUrl ? `${MEDIA_URL}${film.filmUrl}` : undefined,
+        video: film?.filmUrl ? `${MEDIA_BASE_URL}${film.filmUrl}` : undefined,
         trailer: film?.trailerUrl
-          ? `${MEDIA_URL}${film.trailerUrl}`
+          ? `${MEDIA_BASE_URL}${film.trailerUrl}`
           : undefined,
       });
     }
@@ -151,7 +151,7 @@ export function FilmMediaEditorForm({
                       onChange={onChange}
                       existingVideoUrl={
                         typeof value === 'string' && filmToken
-                          ? `${API_URL}${filmToken.streamUrl}`
+                          ? `${API_BASE_URL}${filmToken.streamUrl}`
                           : undefined
                       }
                       label="видео фильма"

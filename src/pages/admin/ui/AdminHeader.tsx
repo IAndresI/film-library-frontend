@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { useUser } from '@/app/providers';
+import { useUser } from '@/entities/user/providers';
 
 import { ModeToggle } from '@/shared/components/ModeToggle';
 import { SidebarTrigger } from '@/shared/ui/sidebar';

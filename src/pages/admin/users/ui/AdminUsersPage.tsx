@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-table';
 import { motion } from 'framer-motion';
 
-import { userApi } from '@/entities/user/api/userApi';
+import { userApi } from '@/entities/user/api/user.api';
 import { usersTableColumns } from '@/entities/user/ui/users-table-columns';
 
 import { DataTable } from '@/shared/components/data-table/data-table';

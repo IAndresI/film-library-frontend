@@ -1,11 +1,11 @@
-import type { IUser } from '@/entities/user/dto';
+import type { IUser } from '@/entities/user/model';
 
 import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { useUser } from '@/app/providers';
+import { useUser } from '@/entities/user/providers';
 
 import { queryClient } from '@/shared/api/query-client';
 import { cn, getImageUrl } from '@/shared/lib/utils';

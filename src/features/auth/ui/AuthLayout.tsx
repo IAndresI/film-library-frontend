@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { UserContext } from '@/app/providers';
-
 import { authApi } from '@/features/auth/api';
+
+import { UserContext } from '@/entities/user/providers';
 
 import { SvgLogo } from '@/shared/ui/svg/SvgLogo';
 

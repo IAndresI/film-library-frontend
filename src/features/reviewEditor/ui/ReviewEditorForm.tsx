@@ -1,4 +1,4 @@
-import type { IReview } from '@/entities/review/dto';
+import type { IReview } from '@/entities/review/model';
 
 import * as React from 'react';
 import { useEffect } from 'react';

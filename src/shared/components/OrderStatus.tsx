@@ -1,4 +1,4 @@
-import type { OrderStatusType } from '@/entities/order/dto';
+import type { OrderStatusType } from '@/entities/order/model';
 
 import React from 'react';
 

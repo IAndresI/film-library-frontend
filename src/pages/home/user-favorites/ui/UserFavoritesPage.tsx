@@ -5,13 +5,11 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 
-import { useUser } from '@/app/providers';
-
-import { useGetAllFilters } from '@/features/filters/lib/hooks';
-
 import { FILM_SORT_OPTIONS } from '@/entities/film/constants';
 import { FilmCard } from '@/entities/film/ui/FilmCard';
-import { userApi } from '@/entities/user/api/userApi';
+import { useGetAllFilters } from '@/entities/filters/lib/hooks';
+import { userApi } from '@/entities/user/api/user.api';
+import { useUser } from '@/entities/user/providers';
 
 import { useDebounce } from '@/shared/lib/hooks/use-debounce';
 import { cn } from '@/shared/lib/utils';

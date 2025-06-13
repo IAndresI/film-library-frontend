@@ -6,11 +6,10 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 
-import { useGetAllFilters } from '@/features/filters/lib/hooks';
-
-import { filmApi } from '@/entities/film/api/filmApi';
+import { filmApi } from '@/entities/film/api/film.api';
 import { FILM_SORT_OPTIONS } from '@/entities/film/constants';
 import { FilmCard } from '@/entities/film/ui/FilmCard';
+import { useGetAllFilters } from '@/entities/filters/lib/hooks';
 
 import { useDebounce } from '@/shared/lib/hooks/use-debounce';
 import { cn } from '@/shared/lib/utils';
