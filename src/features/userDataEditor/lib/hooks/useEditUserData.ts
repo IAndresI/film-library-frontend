@@ -1,15 +1,18 @@
-import { useMutation } from "@tanstack/react-query";
-import { userDataEditorApi } from "../../api/userDataEditorApi";
-import type { IUser } from "@/entities/user/dto";
-import { queryClient } from "@/shared/api/query-client";
-import { toast } from "sonner";
+import type { IUser } from '@/entities/user/dto';
+
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+
+import { queryClient } from '@/shared/api/query-client';
+
+import { userDataEditorApi } from '../../api/userDataEditorApi';
 
 export const useEditUserData = (props?: {
   onSuccess?:
     | ((
         data: IUser,
         variables: { name: string; id: number },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
@@ -24,16 +27,16 @@ export const useEditUserData = (props?: {
     mutationFn: userDataEditorApi.editUserData,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: ["users", variables.id],
+        queryKey: ['users', variables.id],
       });
       queryClient.invalidateQueries({
-        queryKey: ["users"],
+        queryKey: ['users'],
       });
-      toast.success("Данные успешно обновлены");
+      toast.success('Данные успешно обновлены');
       onSuccess?.(data, variables, context);
     },
     onError: (error) => {
-      toast.error("Не удалось обновить данные", {
+      toast.error('Не удалось обновить данные', {
         description: error.message,
       });
     },

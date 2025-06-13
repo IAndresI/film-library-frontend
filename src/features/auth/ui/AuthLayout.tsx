@@ -1,10 +1,13 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { UserContext } from "@/app/providers";
-import { authApi } from "@/features/auth/api";
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+
+import { UserContext } from '@/app/providers';
+
+import { authApi } from '@/features/auth/api';
+
+import { SvgLogo } from '@/shared/ui/svg/SvgLogo';
 
 export const AuthLayout = () => {
   const navigate = useNavigate();
@@ -17,11 +20,11 @@ export const AuthLayout = () => {
     isError,
   } = useQuery(authApi.getAuthQueryOptions());
 
-  const locationArr = location.pathname?.split("/") ?? [];
+  const locationArr = location.pathname?.split('/') ?? [];
 
   useEffect(() => {
     if (isError || (isSuccess && !user)) {
-      navigate("/authentication");
+      navigate('/authentication');
     }
   }, [isError, isSuccess, user, navigate]);
 
@@ -44,7 +47,7 @@ export const AuthLayout = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <Outlet key={locationArr[1] === "admin" ? 1 : 2} />
+            <Outlet key={locationArr[1] === 'admin' ? 1 : 2} />
           </motion.div>
         </UserContext.Provider>
       )}

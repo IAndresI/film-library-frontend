@@ -1,4 +1,4 @@
-import type { IUser } from "@/entities/user/dto";
+import type { IUser } from '@/entities/user/dto';
 
 // Типы для OTP
 export interface SendOTPRequest {

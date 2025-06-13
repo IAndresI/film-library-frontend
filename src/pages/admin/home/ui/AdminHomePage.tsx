@@ -1,27 +1,29 @@
-import { Chart } from "@/pages/admin/home/ui/Chart";
-import { Separator } from "@/shared/ui/separator";
-import { SvgFire } from "@/shared/ui/svg/SvgFire";
-import { SvgReview } from "@/shared/ui/svg/SvgReview";
-import { SvgUsers } from "@/shared/ui/svg/SvgUsers";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+
+import { Chart } from '@/pages/admin/home/ui/Chart';
+
+import { Separator } from '@/shared/ui/separator';
+import { SvgFire } from '@/shared/ui/svg/SvgFire';
+import { SvgReview } from '@/shared/ui/svg/SvgReview';
+import { SvgUsers } from '@/shared/ui/svg/SvgUsers';
 
 const cards = [
   {
-    title: "Total users",
+    title: 'Total users',
     icon: SvgUsers,
-    value: "+2350",
+    value: '+2350',
     percentage: 20.1,
   },
   {
-    title: "Total films",
+    title: 'Total films',
     icon: SvgFire,
-    value: "+100",
+    value: '+100',
     percentage: 120,
   },
   {
-    title: "Total reviews",
+    title: 'Total reviews',
     icon: SvgReview,
-    value: "-59",
+    value: '-59',
     percentage: -5.56,
   },
 ];
@@ -33,13 +35,13 @@ export const AdminHomePage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home"}
+      key={'home'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Analytic data</p>
+            <p className="text-muted-foreground text-sm">Analytic data</p>
           </div>
         </div>
         <Separator className="my-4" />
@@ -47,31 +49,31 @@ export const AdminHomePage = () => {
           {cards.map((card) => (
             <div
               key={card.title}
-              className="rounded-xl border bg-card text-card-foreground shadow"
+              className="bg-card text-card-foreground rounded-xl border shadow"
             >
               <div className="flex flex-row items-center justify-between space-y-0 p-6 pb-2">
                 <div className="text-sm font-medium tracking-tight">
                   {card.title}
                 </div>
-                <card.icon className="h-4 w-4 text-muted-foreground" />
+                <card.icon className="text-muted-foreground h-4 w-4" />
               </div>
               <div className="p-6 pt-0">
                 <div className="text-2xl font-bold">{card.value}</div>
-                <p className="text-xs text-muted-foreground">
-                  {card.percentage < 0 ? "" : "+"}
+                <p className="text-muted-foreground text-xs">
+                  {card.percentage < 0 ? '' : '+'}
                   {card.percentage}% from last month
                 </p>
               </div>
             </div>
           ))}
         </div>
-        <div className="col-span-4 rounded-xl border bg-card text-card-foreground shadow">
+        <div className="bg-card text-card-foreground col-span-4 rounded-xl border shadow">
           <div className="flex flex-col space-y-1.5 p-6">
-            <div className="font-semibold leading-none tracking-tight">
+            <div className="leading-none font-semibold tracking-tight">
               New users
             </div>
           </div>
-          <div className="p-6 pl-2 pt-0">
+          <div className="p-6 pt-0 pl-2">
             <Chart />
           </div>
         </div>

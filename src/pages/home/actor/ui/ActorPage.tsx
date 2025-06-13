@@ -1,16 +1,17 @@
-import { CustomBreadcrumbs } from "@/shared/components/CustomBreadcrumbs";
-import { FilmCard } from "@/entities/film/ui/FilmCard";
-import { ScrollBar } from "@/shared/ui/scroll-area";
-import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
+import { Separator } from '@radix-ui/react-dropdown-menu';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
-import { actorApi } from "@/entities/actor/api/actorApi";
-import { Separator } from "@radix-ui/react-dropdown-menu";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
-import { getImageUrl } from "@/shared/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
+import { actorApi } from '@/entities/actor/api/actorApi';
+import { FilmCard } from '@/entities/film/ui/FilmCard';
+
+import { CustomBreadcrumbs } from '@/shared/components/CustomBreadcrumbs';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+import { ScrollBar } from '@/shared/ui/scroll-area';
+import { SvgSpinner } from '@/shared/ui/svg/SvgSpinner';
 
 export const ActorPage = () => {
   const { id } = useParams();
@@ -26,7 +27,7 @@ export const ActorPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home"}
+      key={'home'}
     >
       {isLoading && <SvgSpinner className="mx-auto h-10 w-10" />}
       {data ? (
@@ -34,8 +35,8 @@ export const ActorPage = () => {
           <CustomBreadcrumbs
             className="mb-4"
             crumbs={[
-              { label: "Главная", link: "/" },
-              { label: "Актеры", link: "/actors" },
+              { label: 'Главная', link: '/' },
+              { label: 'Актеры', link: '/actors' },
               { label: data.name },
             ]}
           />
@@ -43,14 +44,17 @@ export const ActorPage = () => {
             <div className="flex gap-8">
               <Avatar
                 className={
-                  "h-[150px] min-w-[150px] overflow-hidden rounded-[100%] object-cover transition-all"
+                  'h-[150px] min-w-[150px] overflow-hidden rounded-[100%] object-cover transition-all'
                 }
                 style={{
                   width: 150,
                   height: 150,
                 }}
               >
-                <AvatarImage alt={data.name} src={getImageUrl(data.image)} />
+                <AvatarImage
+                  alt={data.name}
+                  src={getImageUrl(data.image)}
+                />
                 <AvatarFallback className="text-center text-[40px] uppercase">
                   {data.name.slice(0, 2)}
                 </AvatarFallback>
@@ -97,7 +101,7 @@ export const ActorPage = () => {
           </div>
         </div>
       ) : (
-        "No Info"
+        'No Info'
       )}
     </motion.section>
   );

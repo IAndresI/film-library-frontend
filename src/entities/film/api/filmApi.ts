@@ -1,18 +1,20 @@
-import type { IFilm, IGenre } from "@/entities/film/dto";
-import { apiInstance } from "@/shared/api/base";
-import type { IPaginationResponse } from "@/shared/model/pagination-response.model";
-import { queryOptions } from "@tanstack/react-query";
+import type { IFilm, IGenre } from '@/entities/film/dto';
+import type { IPaginationResponse } from '@/shared/model/pagination-response.model';
 import type {
   ColumnFiltersState,
   PaginationState,
   SortingState,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
+
+import { queryOptions } from '@tanstack/react-query';
+
+import { apiInstance } from '@/shared/api/base';
 
 export const filmApi = {
   getAllGenresQueryOptions: () => {
     return queryOptions({
-      queryKey: ["genres"],
-      queryFn: apiInstance.get<IGenre[]>("/genres"),
+      queryKey: ['genres'],
+      queryFn: apiInstance.get<IGenre[]>('/genres'),
     });
   },
   getAvailableFilmsQueryOptions: ({
@@ -29,7 +31,7 @@ export const filmApi = {
     sort?: SortingState;
   }) => {
     return queryOptions({
-      queryKey: ["films", "list", genres, actors, search, pagination, sort],
+      queryKey: ['films', 'list', genres, actors, search, pagination, sort],
       queryFn: apiInstance.get<IPaginationResponse<IFilm>>(`/films`, {
         params: {
           genres,
@@ -57,9 +59,9 @@ export const filmApi = {
   }) => {
     return queryOptions({
       queryKey: [
-        "films",
-        "list",
-        "user",
+        'films',
+        'list',
+        'user',
         genres,
         actors,
         search,
@@ -88,7 +90,7 @@ export const filmApi = {
     pagination: PaginationState;
   }) => {
     return queryOptions({
-      queryKey: ["films", "list", "admin", filters, sort, pagination],
+      queryKey: ['films', 'list', 'admin', filters, sort, pagination],
       queryFn: apiInstance.get<IPaginationResponse<IFilm>>(`/films/admin/all`, {
         params: {
           filters,
@@ -101,13 +103,13 @@ export const filmApi = {
   },
   getFilmByIdQueryOptions: (id: number) => {
     return queryOptions({
-      queryKey: ["films", id],
+      queryKey: ['films', id],
       queryFn: apiInstance.get<IFilm>(`/films/${id}`),
     });
   },
   getFilmByIdAdminQueryOptions: (id: number) => {
     return queryOptions({
-      queryKey: ["films", "admin", id],
+      queryKey: ['films', 'admin', id],
       queryFn: apiInstance.get<IFilm>(`/films/admin/${id}`),
     });
   },

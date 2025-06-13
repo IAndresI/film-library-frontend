@@ -1,32 +1,40 @@
-import { cn, getImageUrl } from "@/shared/lib/utils";
-import { Link } from "react-router-dom";
-import type { IActor } from "@/entities/actor/dto";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
+import type { IActor } from '@/entities/actor/dto';
+
+import { Link } from 'react-router-dom';
+
+import { cn, getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 
 interface ActorCardProps extends React.HTMLAttributes<HTMLDivElement> {
   actor: IActor;
-  aspectRatio?: "portrait" | "square";
+  aspectRatio?: 'portrait' | 'square';
 }
 
 export function ActorCard({
   actor,
-  aspectRatio = "portrait",
+  aspectRatio = 'portrait',
   className,
   ...props
 }: ActorCardProps) {
   return (
-    <div className={cn("space-y-3", className)} {...props}>
+    <div
+      className={cn('space-y-3', className)}
+      {...props}
+    >
       <Link
         to={`/actors/${actor.id}`}
         className="flex justify-center overflow-hidden rounded-[50%]"
       >
         <Avatar
           className={cn(
-            "h-full w-full object-cover transition-all hover:scale-105",
-            aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square",
+            'h-full w-full object-cover transition-all hover:scale-105',
+            aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square'
           )}
         >
-          <AvatarImage alt={actor.name} src={getImageUrl(actor.image)} />
+          <AvatarImage
+            alt={actor.name}
+            src={getImageUrl(actor.image)}
+          />
           <AvatarFallback className="text-center text-[40px] uppercase">
             {actor.name.slice(0, 2)}
           </AvatarFallback>

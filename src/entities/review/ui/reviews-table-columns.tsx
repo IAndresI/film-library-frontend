@@ -1,33 +1,41 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../../../shared/components/data-table/data-table-column-header";
-import type { IReview } from "@/entities/review/dto";
-import type { IFilm } from "@/entities/film/dto";
-import { formatDate } from "@/shared/lib/helpers";
-import type { IUser } from "@/entities/user/dto";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { DeleteModal } from "@/shared/components/DeleteModal";
-import { DataTableRowActions } from "@/shared/components/data-table/data-table-row-actions";
-import { ReviewModerationModal } from "@/features/reviewModeration/ui/ReviewModerationModal";
-import { reviewApi } from "../api/reviewApi";
-import { Link } from "react-router-dom";
-import { getImageUrl } from "@/shared/lib/utils";
+import type { IFilm } from '@/entities/film/dto';
+import type { IReview } from '@/entities/review/dto';
+import type { IUser } from '@/entities/user/dto';
+import type { ColumnDef } from '@tanstack/react-table';
+
+import { Link } from 'react-router-dom';
+
+import { ReviewModerationModal } from '@/features/reviewModeration/ui/ReviewModerationModal';
+
+import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
+import { DeleteModal } from '@/shared/components/DeleteModal';
+import { formatDate } from '@/shared/lib/helpers';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+
+import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
+import { reviewApi } from '../api/reviewApi';
 
 export const reviewsTableColumns: ColumnDef<IReview>[] = [
   {
-    accessorKey: "id",
+    accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader className="pl-3" column={column} title="ID" />
+      <DataTableColumnHeader
+        className="pl-3"
+        column={column}
+        title="ID"
+      />
     ),
-    cell: ({ row }) => <div className="px-3">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="px-3">{row.getValue('id')}</div>,
     enableSorting: false,
     enableHiding: false,
     meta: {
-      columnLabel: "ID",
+      columnLabel: 'ID',
     },
   },
   {
-    accessorKey: "film",
-    id: "filmId",
+    accessorKey: 'film',
+    id: 'filmId',
     header: ({ column, table }) => (
       <DataTableColumnHeader
         useMetaSortName={true}
@@ -43,7 +51,10 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
           to={`/admin/films/${film.id}`}
           className="flex items-center space-x-2"
         >
-          <img className="h-10 w-10 rounded" src={getImageUrl(film.image)} />
+          <img
+            className="h-10 w-10 rounded"
+            src={getImageUrl(film.image)}
+          />
           <span className="block max-w-[150px] truncate font-medium">
             {film.name}
           </span>
@@ -51,25 +62,28 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
       );
     },
     meta: {
-      columnLabel: "Фильм",
-      filterField: "filmId",
-      sortField: "filmName",
+      columnLabel: 'Фильм',
+      filterField: 'filmId',
+      sortField: 'filmName',
     },
   },
   {
-    accessorKey: "rating",
+    accessorKey: 'rating',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Рейтинг" />
+      <DataTableColumnHeader
+        column={column}
+        title="Рейтинг"
+      />
     ),
-    cell: ({ row }) => <div>{row.getValue("rating")} / 10</div>,
+    cell: ({ row }) => <div>{row.getValue('rating')} / 10</div>,
 
     meta: {
-      columnLabel: "Рейтинг",
+      columnLabel: 'Рейтинг',
     },
   },
   {
-    accessorKey: "user",
-    id: "userId",
+    accessorKey: 'user',
+    id: 'userId',
     header: ({ column, table }) => (
       <DataTableColumnHeader
         useMetaSortName={true}
@@ -96,57 +110,66 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
       );
     },
     meta: {
-      columnLabel: "Пользователь",
-      filterField: "userId",
-      sortField: "userName",
+      columnLabel: 'Пользователь',
+      filterField: 'userId',
+      sortField: 'userName',
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: 'createdAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата создания" />
+      <DataTableColumnHeader
+        column={column}
+        title="Дата создания"
+      />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          {formatDate(row.getValue("createdAt"))}
+          {formatDate(row.getValue('createdAt'))}
         </div>
       );
     },
     meta: {
-      columnLabel: "Дата создания",
+      columnLabel: 'Дата создания',
     },
   },
   {
-    accessorKey: "text",
+    accessorKey: 'text',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Отзыв" />
+      <DataTableColumnHeader
+        column={column}
+        title="Отзыв"
+      />
     ),
     cell: ({ row }) => {
       return (
-        <p className="min-w-[500px] font-medium">{row.getValue("text")}</p>
+        <p className="min-w-[500px] font-medium">{row.getValue('text')}</p>
       );
     },
   },
   {
-    accessorKey: "isApproved",
+    accessorKey: 'isApproved',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="На модерации" />
+      <DataTableColumnHeader
+        column={column}
+        title="На модерации"
+      />
     ),
     cell: ({ row }) => {
       return (
         <p className="truncate font-medium">
-          {row.getValue("isApproved") ? "Нет" : "Да"}
+          {row.getValue('isApproved') ? 'Нет' : 'Да'}
         </p>
       );
     },
     enableSorting: false,
     meta: {
-      columnLabel: "На модерации",
+      columnLabel: 'На модерации',
     },
   },
   {
-    id: "actions",
+    id: 'actions',
     cell: ({ row }) => (
       <DataTableRowActions
         editModal={
@@ -160,7 +183,7 @@ export const reviewsTableColumns: ColumnDef<IReview>[] = [
             title="Удаление отзыва"
             description="Вы уверены, что хотите удалить этот отзыв?"
             onDelete={() => reviewApi.deleteReview(row.original.id)}
-            queryKey={["reviews"]}
+            queryKey={['reviews']}
           />
         }
         row={row}

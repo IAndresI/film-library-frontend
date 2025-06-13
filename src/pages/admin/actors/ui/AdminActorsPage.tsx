@@ -1,17 +1,19 @@
-import { DataTable } from "@/shared/components/data-table/data-table";
-import { Separator } from "@/shared/ui/separator";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState } from 'react';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import {
   type ColumnFiltersState,
   type PaginationState,
   type SortingState,
-} from "@tanstack/react-table";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { actorsTableColumns } from "@/entities/actor/ui/actors-table-columns";
-import { actorApi } from "@/entities/actor/api/actorApi";
-import { Link } from "react-router-dom";
-import { Button } from "@/shared/ui/button";
+} from '@tanstack/react-table';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
+import { actorApi } from '@/entities/actor/api/actorApi';
+import { actorsTableColumns } from '@/entities/actor/ui/actors-table-columns';
+
+import { DataTable } from '@/shared/components/data-table/data-table';
+import { Button } from '@/shared/ui/button';
+import { Separator } from '@/shared/ui/separator';
 
 export const AdminActorsPage = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -44,7 +46,7 @@ export const AdminActorsPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"admin_users"}
+      key={'admin_users'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">

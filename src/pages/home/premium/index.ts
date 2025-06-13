@@ -1,1 +1,1 @@
-export { PremiumPage } from "./ui";
+export { PremiumPage } from './ui';

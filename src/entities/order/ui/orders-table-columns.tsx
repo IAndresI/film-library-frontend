@@ -1,31 +1,39 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../../../shared/components/data-table/data-table-column-header";
-import type { IOrder } from "../dto";
-import { formatDate } from "@/shared/lib/helpers";
-import { OrderStatus } from "@/shared/components/OrderStatus";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { Link } from "react-router-dom";
-import { getImageUrl } from "@/shared/lib/utils";
-import { DataTableRowActions } from "@/shared/components/data-table/data-table-row-actions";
+import type { ColumnDef } from '@tanstack/react-table';
+import type { IOrder } from '../dto';
+
+import { Link } from 'react-router-dom';
+
+import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
+import { OrderStatus } from '@/shared/components/OrderStatus';
+import { formatDate } from '@/shared/lib/helpers';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+
+import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
 
 export const ordersTableColumns: ColumnDef<IOrder>[] = [
   {
-    accessorKey: "id",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="№" />,
+    accessorKey: 'id',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="№"
+      />
+    ),
     cell: ({ row }) => (
       <Link
         className="whitespace-nowrap"
-        to={`/admin/orders/${row.getValue("id")}`}
+        to={`/admin/orders/${row.getValue('id')}`}
       >
-        Заказ №{row.getValue("id")}
+        Заказ №{row.getValue('id')}
       </Link>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "user",
-    id: "userId",
+    accessorKey: 'user',
+    id: 'userId',
     header: ({ column, table }) => (
       <DataTableColumnHeader
         useMetaSortName={true}
@@ -52,14 +60,14 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
       );
     },
     meta: {
-      columnLabel: "Пользователь",
-      filterField: "userId",
-      sortField: "userName",
+      columnLabel: 'Пользователь',
+      filterField: 'userId',
+      sortField: 'userName',
     },
   },
   {
-    accessorKey: "plan",
-    id: "planId",
+    accessorKey: 'plan',
+    id: 'planId',
     header: ({ column, table }) => (
       <DataTableColumnHeader
         useMetaSortName={true}
@@ -75,19 +83,19 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
           <span className="block truncate font-medium">{plan.name}</span>
         </div>
       ) : (
-        "-"
+        '-'
       );
     },
     meta: {
-      columnLabel: "План",
-      filterField: "planId",
-      sortField: "planName",
+      columnLabel: 'План',
+      filterField: 'planId',
+      sortField: 'planName',
     },
     enableSorting: false,
   },
   {
-    accessorKey: "film",
-    id: "filmId",
+    accessorKey: 'film',
+    id: 'filmId',
     header: ({ column, table }) => (
       <DataTableColumnHeader
         useMetaSortName={true}
@@ -103,42 +111,48 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
           <span className="block truncate font-medium">{film.name}</span>
         </div>
       ) : (
-        "-"
+        '-'
       );
     },
     meta: {
-      columnLabel: "Фильм",
-      filterField: "filmId",
-      sortField: "filmName",
+      columnLabel: 'Фильм',
+      filterField: 'filmId',
+      sortField: 'filmName',
     },
     enableSorting: false,
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: 'createdAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата создания" />
+      <DataTableColumnHeader
+        column={column}
+        title="Дата создания"
+      />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          {formatDate(row.getValue("createdAt"), true)}
+          {formatDate(row.getValue('createdAt'), true)}
         </div>
       );
     },
     meta: {
-      columnLabel: "Дата создания",
+      columnLabel: 'Дата создания',
     },
   },
   {
-    accessorKey: "amount",
+    accessorKey: 'amount',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Сумма" />
+      <DataTableColumnHeader
+        column={column}
+        title="Сумма"
+      />
     ),
     cell: ({ row }) => {
-      return <div className="flex space-x-2">{row.getValue("amount")} ₽</div>;
+      return <div className="flex space-x-2">{row.getValue('amount')} ₽</div>;
     },
     meta: {
-      columnLabel: "Сумма",
+      columnLabel: 'Сумма',
     },
   },
   // {
@@ -157,42 +171,53 @@ export const ordersTableColumns: ColumnDef<IOrder>[] = [
   //   },
   // },
   {
-    accessorKey: "paidAt",
+    accessorKey: 'paidAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата оплаты" />
+      <DataTableColumnHeader
+        column={column}
+        title="Дата оплаты"
+      />
     ),
     cell: ({ row }) => {
       const paidAt = row.original.paidAt;
       return (
         <div className="flex items-center">
-          {paidAt ? formatDate(paidAt) : "-"}
+          {paidAt ? formatDate(paidAt) : '-'}
         </div>
       );
     },
     meta: {
-      columnLabel: "Дата оплаты",
+      columnLabel: 'Дата оплаты',
     },
   },
   {
-    accessorKey: "orderStatus",
+    accessorKey: 'orderStatus',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Статус" />
+      <DataTableColumnHeader
+        column={column}
+        title="Статус"
+      />
     ),
     cell: ({ row }) => {
-      return <OrderStatus size="small" status={row.getValue("orderStatus")} />;
+      return (
+        <OrderStatus
+          size="small"
+          status={row.getValue('orderStatus')}
+        />
+      );
     },
     meta: {
-      columnLabel: "Статус",
+      columnLabel: 'Статус',
     },
     enableSorting: false,
   },
   {
-    id: "actions",
+    id: 'actions',
     cell: ({ row }) => (
       <DataTableRowActions
         actions={[
           {
-            title: "Подробнее",
+            title: 'Подробнее',
             link: `/admin/orders/${row.original.id}`,
           },
         ]}

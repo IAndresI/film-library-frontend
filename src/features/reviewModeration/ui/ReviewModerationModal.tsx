@@ -1,4 +1,6 @@
-import { Button } from "@/shared/ui/button";
+import { useState } from 'react';
+
+import { Button } from '@/shared/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -6,10 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import { useApproveReview } from "../lib/hooks/useApproveReview";
-import { useRejectReview } from "../lib/hooks/useRejectReview";
-import { useState } from "react";
+} from '@/shared/ui/dialog';
+
+import { useApproveReview } from '../lib/hooks/useApproveReview';
+import { useRejectReview } from '../lib/hooks/useRejectReview';
 
 export const ReviewModerationModal = ({
   id,
@@ -40,10 +42,16 @@ export const ReviewModerationModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <DialogTrigger asChild>
-        <Button className="w-full justify-start" variant="ghost">
-          {isApproved ? "На модерацию" : "Одобрить"}
+        <Button
+          className="w-full justify-start"
+          variant="ghost"
+        >
+          {isApproved ? 'На модерацию' : 'Одобрить'}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[85svh] overflow-auto">
@@ -51,7 +59,10 @@ export const ReviewModerationModal = ({
           <DialogTitle>Модерация отзыва</DialogTitle>
           <DialogDescription>Отзыв №{id}</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="flex items-center gap-2">
+        <form
+          onSubmit={handleSubmit}
+          className="flex items-center gap-2"
+        >
           <DialogTrigger asChild>
             <Button
               disabled={isApproveLoading || isRejectLoading}
@@ -67,7 +78,7 @@ export const ReviewModerationModal = ({
             className="ml-auto w-full max-w-[200px]"
             type="submit"
           >
-            {isApproved ? "Отправить на модерацию" : "Одобрить"}
+            {isApproved ? 'Отправить на модерацию' : 'Одобрить'}
           </Button>
         </form>
       </DialogContent>

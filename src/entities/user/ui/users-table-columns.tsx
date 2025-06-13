@@ -1,30 +1,40 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../../../shared/components/data-table/data-table-column-header";
-import type { IUser } from "@/entities/user/dto";
-import { getImageUrl } from "@/shared/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { formatDate } from "@/shared/lib/helpers";
-import { DataTableRowActions } from "@/shared/components/data-table/data-table-row-actions";
-import { DeleteModal } from "@/shared/components/DeleteModal";
-import { userApi } from "../api/userApi";
-import { SubscriptionStatus } from "@/entities/subscription/dto";
-import { Link } from "react-router-dom";
-import { toast } from "sonner";
+import type { IUser } from '@/entities/user/dto';
+import type { ColumnDef } from '@tanstack/react-table';
+
+import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
+
+import { SubscriptionStatus } from '@/entities/subscription/dto';
+
+import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
+import { DeleteModal } from '@/shared/components/DeleteModal';
+import { formatDate } from '@/shared/lib/helpers';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+
+import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
+import { userApi } from '../api/userApi';
 
 export const usersTableColumns: ColumnDef<IUser>[] = [
   {
-    accessorKey: "id",
+    accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
+      <DataTableColumnHeader
+        column={column}
+        title="ID"
+      />
     ),
-    cell: ({ row }) => <div>{row.getValue("id")}</div>,
+    cell: ({ row }) => <div>{row.getValue('id')}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Пользователь" />
+      <DataTableColumnHeader
+        column={column}
+        title="Пользователь"
+      />
     ),
     cell: ({ row }) => {
       return (
@@ -45,58 +55,70 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
       );
     },
     meta: {
-      columnLabel: "Пользователь",
+      columnLabel: 'Пользователь',
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: 'createdAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Зарегистрирован" />
+      <DataTableColumnHeader
+        column={column}
+        title="Зарегистрирован"
+      />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          {formatDate(row.getValue("createdAt"))}
+          {formatDate(row.getValue('createdAt'))}
         </div>
       );
     },
     meta: {
-      columnLabel: "Зарегистрирован",
+      columnLabel: 'Зарегистрирован',
     },
   },
   {
-    accessorKey: "email",
+    accessorKey: 'email',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
+      <DataTableColumnHeader
+        column={column}
+        title="Email"
+      />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
           <p className="max-w-[500px] truncate font-medium">
-            {row.getValue("email")}
+            {row.getValue('email')}
           </p>
         </div>
       );
     },
     meta: {
-      columnLabel: "Email",
+      columnLabel: 'Email',
     },
   },
   {
-    accessorKey: "isAdmin",
+    accessorKey: 'isAdmin',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Админ" />
+      <DataTableColumnHeader
+        column={column}
+        title="Админ"
+      />
     ),
-    cell: ({ row }) => <div>{row.getValue("isAdmin") ? "Да" : "Нет"}</div>,
+    cell: ({ row }) => <div>{row.getValue('isAdmin') ? 'Да' : 'Нет'}</div>,
     enableSorting: false,
     meta: {
-      columnLabel: "Админ",
+      columnLabel: 'Админ',
     },
   },
   {
-    accessorKey: "subscription",
+    accessorKey: 'subscription',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Подписка" />
+      <DataTableColumnHeader
+        column={column}
+        title="Подписка"
+      />
     ),
     cell: ({ row }) => {
       const subscription = row.original.subscription;
@@ -104,28 +126,28 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
         <div>
           {subscription &&
             subscription.subscriptionStatus === SubscriptionStatus.EXPIRED &&
-            "Истекла"}
+            'Истекла'}
           {subscription &&
             subscription.subscriptionStatus === SubscriptionStatus.ACTIVE &&
-            "Активна"}
+            'Активна'}
           {subscription &&
             subscription.subscriptionStatus === SubscriptionStatus.CANCELLED &&
-            "Отменена"}
-          {!subscription && "Нет подписки"}
+            'Отменена'}
+          {!subscription && 'Нет подписки'}
         </div>
       );
     },
     meta: {
-      columnLabel: "Подписка",
+      columnLabel: 'Подписка',
     },
   },
   {
-    id: "actions",
+    id: 'actions',
     cell: ({ row }) => (
       <DataTableRowActions
         actions={[
           {
-            title: "Информация",
+            title: 'Информация',
             link: `/admin/users/${row.original.id}`,
           },
         ]}
@@ -136,10 +158,10 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
             onDelete={() => userApi.deleteUser(row.original.id)}
             onSuccess={() => {
               toast.success(
-                `Пользователь "${row.original.name}" успешно удален`,
+                `Пользователь "${row.original.name}" успешно удален`
               );
             }}
-            queryKey={["users"]}
+            queryKey={['users']}
           />
         }
         row={row}

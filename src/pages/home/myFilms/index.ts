@@ -1,1 +1,1 @@
-export { MyFilmsPage } from "./ui";
+export { MyFilmsPage } from './ui';

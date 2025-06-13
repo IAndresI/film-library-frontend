@@ -1,1 +1,1 @@
-export { UserReviewSkeleton } from "./ui";
+export { UserReviewSkeleton } from './ui';

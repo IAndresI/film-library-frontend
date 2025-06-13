@@ -1,5 +1,6 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { filtersApi } from "../../api/reviewModerationApi";
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+
+import { filtersApi } from '../../api/reviewModerationApi';
 
 export const useGetAllFilters = (isAdmin: boolean = false) => {
   const { data: filters, ...queryProps } = useQuery({

@@ -1,12 +1,15 @@
-import { actorApi } from "@/entities/actor/api/actorApi";
-import { ActorDataEditorForm } from "@/features/actorEditor/ui/ActorDataEditorForm";
-import { DeleteModal } from "@/shared/components";
-import { Button } from "@/shared/ui/button";
-import { Separator } from "@/shared/ui/separator";
-import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+
+import { ActorDataEditorForm } from '@/features/actorEditor/ui/ActorDataEditorForm';
+
+import { actorApi } from '@/entities/actor/api/actorApi';
+
+import { DeleteModal } from '@/shared/components';
+import { Button } from '@/shared/ui/button';
+import { Separator } from '@/shared/ui/separator';
 
 export const AdminActorEditorPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,13 +26,13 @@ export const AdminActorEditorPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"admin_film_editor"}
+      key={'admin_film_editor'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-2xl font-semibold tracking-tight">
-              {id ? "Редактирование актёра" : "Добавление актёра"}
+              {id ? 'Редактирование актёра' : 'Добавление актёра'}
             </h2>
           </div>
           {actor && (
@@ -38,10 +41,10 @@ export const AdminActorEditorPage = () => {
               description={`Вы уверены, что хотите удалить актёра ${actor?.name}?`}
               onDelete={() => actorApi.deleteActor(actor?.id)}
               onSuccess={() => {
-                navigate("/admin/actors");
+                navigate('/admin/actors');
                 toast.success(`Актёр "${actor.name}" успешно удален`);
               }}
-              queryKey={["actors"]}
+              queryKey={['actors']}
             >
               <Button>Удалить актёра</Button>
             </DeleteModal>

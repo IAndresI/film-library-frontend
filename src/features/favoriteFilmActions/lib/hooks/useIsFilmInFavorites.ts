@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { favoriteFilmActionsApi } from "../../api/favoriteFilmActionsApi";
+import { useQuery } from '@tanstack/react-query';
+
+import { favoriteFilmActionsApi } from '../../api/favoriteFilmActionsApi';
 
 export const useIsFilmInFavorites = (userId: number, filmId: number) => {
   const {
@@ -11,7 +12,7 @@ export const useIsFilmInFavorites = (userId: number, filmId: number) => {
     favoriteFilmActionsApi.checkFavoriteStatusQueryOptions({
       userId,
       filmId,
-    }),
+    })
   );
 
   return {

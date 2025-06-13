@@ -1,1 +1,1 @@
-export { filmPurchaseApi } from "./filmPurchaseApi";
+export { filmPurchaseApi } from './filmPurchaseApi';

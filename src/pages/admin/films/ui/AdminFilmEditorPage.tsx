@@ -1,15 +1,18 @@
-import { filmApi } from "@/entities/film/api/filmApi";
-import { FilmDataEditorForm } from "@/features/filmEditor/ui";
-import { FilmMediaEditorForm } from "@/features/filmEditor/ui/FilmMediaEditorForm";
-import { useGetAllFilters } from "@/features/filters/lib/hooks";
-import { DeleteModal } from "@/shared/components";
-import { Button } from "@/shared/ui/button";
-import { Separator } from "@/shared/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+
+import { FilmDataEditorForm } from '@/features/filmEditor/ui';
+import { FilmMediaEditorForm } from '@/features/filmEditor/ui/FilmMediaEditorForm';
+import { useGetAllFilters } from '@/features/filters/lib/hooks';
+
+import { filmApi } from '@/entities/film/api/filmApi';
+
+import { DeleteModal } from '@/shared/components';
+import { Button } from '@/shared/ui/button';
+import { Separator } from '@/shared/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 
 export const AdminFilmEditorPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,13 +34,13 @@ export const AdminFilmEditorPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"admin_film_editor"}
+      key={'admin_film_editor'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-2xl font-semibold tracking-tight">
-              {id ? "Редактирование фильма" : "Добавление фильма"}
+              {id ? 'Редактирование фильма' : 'Добавление фильма'}
             </h2>
           </div>
           {film && (
@@ -46,10 +49,10 @@ export const AdminFilmEditorPage = () => {
               description={`Вы уверены, что хотите удалить фильм ${film?.name}?`}
               onDelete={() => filmApi.deleteFilm(film?.id)}
               onSuccess={() => {
-                navigate("/admin/films");
+                navigate('/admin/films');
                 toast.success(`Фильм "${film.name}" успешно удален`);
               }}
-              queryKey={["films"]}
+              queryKey={['films']}
             >
               <Button>Удалить фильм</Button>
             </DeleteModal>
@@ -58,10 +61,16 @@ export const AdminFilmEditorPage = () => {
         <Separator className="my-4" />
         <Tabs defaultValue="data">
           <TabsList className="w-full">
-            <TabsTrigger className="w-full" value="data">
+            <TabsTrigger
+              className="w-full"
+              value="data"
+            >
               Данные
             </TabsTrigger>
-            <TabsTrigger className="w-full" value="media">
+            <TabsTrigger
+              className="w-full"
+              value="media"
+            >
               Медиа
             </TabsTrigger>
           </TabsList>

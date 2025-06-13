@@ -1,7 +1,11 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { BookmarkIcon } from "@radix-ui/react-icons";
-import { SvgActor } from "../../../shared/ui/svg/SvgActor";
-import { SvgReview } from "../../../shared/ui/svg/SvgReview";
+import { BookmarkIcon } from '@radix-ui/react-icons';
+import { useQuery } from '@tanstack/react-query';
+import { FilmIcon } from 'lucide-react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+
+import { filmApi } from '@/entities/film/api/filmApi';
+
+import { ScrollArea } from '@/shared/ui/scroll-area';
 import {
   Sidebar,
   SidebarContent,
@@ -13,15 +17,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/shared/ui/sidebar";
-import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
-import { useQuery } from "@tanstack/react-query";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-import { SvgUser } from "@/shared/ui/svg/SvgUser";
-import { FilmIcon } from "lucide-react";
-import { ScrollArea } from "@/shared/ui/scroll-area";
-import { SvgFire } from "@/shared/ui/svg/SvgFire";
+} from '@/shared/ui/sidebar';
+import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
+import { SvgFire } from '@/shared/ui/svg/SvgFire';
+import { SvgLogo } from '@/shared/ui/svg/SvgLogo';
+import { SvgUser } from '@/shared/ui/svg/SvgUser';
+
+import { SvgActor } from '../../../shared/ui/svg/SvgActor';
+import { SvgReview } from '../../../shared/ui/svg/SvgReview';
 
 const library = [
   // {
@@ -30,34 +33,39 @@ const library = [
   //   icon: <SvgFire className="w-4 h-4 mr-2" />,
   // },
   {
-    label: "Избранное",
-    link: "/favorites",
+    label: 'Избранное',
+    link: '/favorites',
     icon: <BookmarkIcon className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Актеры",
-    link: "/actors",
+    label: 'Актеры',
+    link: '/actors',
     icon: <SvgActor className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Мои отзывы",
-    link: "/reviews",
+    label: 'Мои отзывы',
+    link: '/reviews',
     icon: <SvgReview className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Профиль",
-    link: "/profile",
+    label: 'Профиль',
+    link: '/profile',
     icon: <SvgUser className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Мои фильмы",
-    link: "/my-films",
+    label: 'Мои фильмы',
+    link: '/my-films',
     icon: <SvgFire className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Premium",
-    link: "/premium",
-    icon: <SvgCrown gradient className="mr-2 h-4 w-4" />,
+    label: 'Premium',
+    link: '/premium',
+    icon: (
+      <SvgCrown
+        gradient
+        className="mr-2 h-4 w-4"
+      />
+    ),
   },
 ];
 
@@ -71,8 +79,11 @@ export function HomeSidebar() {
     <Sidebar collapsible="icon">
       <ScrollArea>
         <SidebarContent>
-          <SidebarHeader className={!open ? "px-0" : "px-4"}>
-            <Link to="/" className={!open ? "pr-0 pl-1" : ""}>
+          <SidebarHeader className={!open ? 'px-0' : 'px-4'}>
+            <Link
+              to="/"
+              className={!open ? 'pr-0 pl-1' : ''}
+            >
               <SvgLogo className="h-10 w-10" />
             </Link>
           </SidebarHeader>
@@ -87,7 +98,7 @@ export function HomeSidebar() {
                     <NavLink
                       to={`/`}
                       className={({ isActive }) =>
-                        `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? "bg-accent text-accent-foreground" : ""}`
+                        `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? 'bg-accent text-accent-foreground' : ''}`
                       }
                     >
                       <span className="">
@@ -115,7 +126,7 @@ export function HomeSidebar() {
                       <NavLink
                         to={lib.link}
                         className={({ isActive }) =>
-                          `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? "bg-accent text-accent-foreground" : ""}`
+                          `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? 'bg-accent text-accent-foreground' : ''}`
                         }
                       >
                         {lib.icon}
@@ -141,7 +152,7 @@ export function HomeSidebar() {
                     <NavLink
                       to={`/films`}
                       className={({ isActive }) =>
-                        `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? "bg-accent text-accent-foreground" : ""}`
+                        `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? 'bg-accent text-accent-foreground' : ''}`
                       }
                     >
                       <span className="">
@@ -162,7 +173,7 @@ export function HomeSidebar() {
                       <NavLink
                         to={`/films/genres/${genre.id}`}
                         className={({ isActive }) =>
-                          `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? "bg-accent text-accent-foreground" : ""}`
+                          `hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 ${isActive ? 'bg-accent text-accent-foreground' : ''}`
                         }
                       >
                         <span className="mr-2">{genre.icon}</span>

@@ -1,22 +1,27 @@
-import { Separator } from "@/shared/ui/separator";
-import { motion } from "framer-motion";
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
-import { reviewApi } from "@/entities/review/api/reviewApi";
-import { useUser } from "@/app/providers";
-import { UserReviewCard } from "./UserReviewCard";
-import { Button } from "@/shared/ui/button";
-import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
-import type { SortingState } from "@tanstack/react-table";
-import { REVIEW_SORT_OPTIONS } from "@/entities/review/constants";
-import { useState } from "react";
+import type { SortingState } from '@tanstack/react-table';
+
+import { useState } from 'react';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+
+import { useUser } from '@/app/providers';
+
+import { reviewApi } from '@/entities/review/api/reviewApi';
+import { REVIEW_SORT_OPTIONS } from '@/entities/review/constants';
+
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
 import {
   Select,
-  SelectValue,
-  SelectTrigger,
   SelectContent,
   SelectItem,
-} from "@/shared/ui/select";
-import { cn } from "@/shared/lib/utils";
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui/select';
+import { Separator } from '@/shared/ui/separator';
+import { SvgSpinner } from '@/shared/ui/svg/SvgSpinner';
+
+import { UserReviewCard } from './UserReviewCard';
 
 export const UserReviewsPage = () => {
   const user = useUser();
@@ -32,7 +37,7 @@ export const UserReviewsPage = () => {
     isFetchingNextPage,
     isFetching,
   } = useInfiniteQuery({
-    queryKey: ["reviews", user.id, sort],
+    queryKey: ['reviews', user.id, sort],
     queryFn: async ({ pageParam = 0, ...meta }) => {
       const queryOptions = reviewApi.getAllUserReviewsQueryOptions({
         filters: [],
@@ -63,7 +68,7 @@ export const UserReviewsPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home"}
+      key={'home'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
@@ -77,8 +82,8 @@ export const UserReviewsPage = () => {
             onValueChange={(value) => {
               setSort(
                 REVIEW_SORT_OPTIONS.find(
-                  (option) => option.value[0].id === value,
-                )!.value,
+                  (option) => option.value[0].id === value
+                )!.value
               );
             }}
           >
@@ -87,7 +92,10 @@ export const UserReviewsPage = () => {
             </SelectTrigger>
             <SelectContent>
               {REVIEW_SORT_OPTIONS.map((option) => (
-                <SelectItem key={option.value[0].id} value={option.value[0].id}>
+                <SelectItem
+                  key={option.value[0].id}
+                  value={option.value[0].id}
+                >
                   {option.label}
                 </SelectItem>
               ))}
@@ -104,8 +112,8 @@ export const UserReviewsPage = () => {
 
         <div
           className={cn(
-            "grid gap-5 pb-4 transition-opacity duration-500",
-            isFetching && !isFetchingNextPage && "opacity-35",
+            'grid gap-5 pb-4 transition-opacity duration-500',
+            isFetching && !isFetchingNextPage && 'opacity-35'
           )}
         >
           {reviewsData && reviewsData.length === 0 && !isLoading && (
@@ -117,7 +125,10 @@ export const UserReviewsPage = () => {
             reviewsData.length > 0 &&
             reviewsData.map((review, i, arr) => (
               <>
-                <UserReviewCard key={review.id} review={review} />
+                <UserReviewCard
+                  key={review.id}
+                  review={review}
+                />
                 {i !== arr.length - 1 && <Separator className="mt-5" />}
               </>
             ))}
@@ -133,7 +144,7 @@ export const UserReviewsPage = () => {
               {isFetchingNextPage ? (
                 <SvgSpinner className="h-4 w-4" />
               ) : (
-                "Показать ещё отзывов"
+                'Показать ещё отзывов'
               )}
             </Button>
           </div>

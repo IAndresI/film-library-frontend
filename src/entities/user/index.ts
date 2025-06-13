@@ -1,1 +1,1 @@
-export { usersTableColumns } from "./ui";
+export { usersTableColumns } from './ui';

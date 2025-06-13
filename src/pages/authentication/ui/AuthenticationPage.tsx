@@ -1,8 +1,10 @@
-import { Navigate } from "react-router-dom";
-import { UserAuthForm } from "@/features/auth/ui/UserAuthForm";
-import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
-import { useQuery } from "@tanstack/react-query";
-import { authApi } from "@/features/auth/api";
+import { useQuery } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
+
+import { authApi } from '@/features/auth/api';
+import { UserAuthForm } from '@/features/auth/ui/UserAuthForm';
+
+import { SvgLogo } from '@/shared/ui/svg/SvgLogo';
 
 export const AuthenticationPage = () => {
   const {
@@ -11,14 +13,19 @@ export const AuthenticationPage = () => {
     error,
   } = useQuery(authApi.getAuthQueryOptions());
 
-  console.log("Component", { ...error });
+  console.log('Component', { ...error });
 
   if (isLoading) {
     return null;
   }
 
   if (user) {
-    return <Navigate replace to={"/"} />;
+    return (
+      <Navigate
+        replace
+        to={'/'}
+      />
+    );
   }
 
   return (

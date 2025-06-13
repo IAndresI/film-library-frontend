@@ -1,29 +1,39 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../../../shared/components/data-table/data-table-column-header";
-import { formatDate } from "@/shared/lib/helpers";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { DeleteModal } from "@/shared/components/DeleteModal";
-import { DataTableRowActions } from "@/shared/components/data-table/data-table-row-actions";
-import type { IActor } from "../dto";
-import { actorApi } from "../api/actorApi";
-import { getImageUrl } from "@/shared/lib/utils";
-import { Link } from "react-router-dom";
-import { toast } from "sonner";
+import type { ColumnDef } from '@tanstack/react-table';
+import type { IActor } from '../dto';
+
+import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
+
+import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
+import { DeleteModal } from '@/shared/components/DeleteModal';
+import { formatDate } from '@/shared/lib/helpers';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+
+import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
+import { actorApi } from '../api/actorApi';
 
 export const actorsTableColumns: ColumnDef<IActor>[] = [
   {
-    accessorKey: "id",
+    accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader className="pl-3" column={column} title="ID" />
+      <DataTableColumnHeader
+        className="pl-3"
+        column={column}
+        title="ID"
+      />
     ),
-    cell: ({ row }) => <div className="px-3">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="px-3">{row.getValue('id')}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Имя" />
+      <DataTableColumnHeader
+        column={column}
+        title="Имя"
+      />
     ),
     cell: ({ row }) => {
       return (
@@ -44,13 +54,16 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
       );
     },
     meta: {
-      columnLabel: "Имя",
+      columnLabel: 'Имя',
     },
   },
   {
-    accessorKey: "birthday",
+    accessorKey: 'birthday',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата рождения" />
+      <DataTableColumnHeader
+        column={column}
+        title="Дата рождения"
+      />
     ),
     cell: ({ row }) => {
       return (
@@ -60,46 +73,52 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
       );
     },
     meta: {
-      columnLabel: "Дата рождения",
+      columnLabel: 'Дата рождения',
     },
   },
   {
-    accessorKey: "description",
+    accessorKey: 'description',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Описание" />
+      <DataTableColumnHeader
+        column={column}
+        title="Описание"
+      />
     ),
     cell: ({ row }) => {
       return (
         <p className="max-w-[300px] truncate font-medium">
-          {row.getValue("description")}
+          {row.getValue('description')}
         </p>
       );
     },
     meta: {
-      columnLabel: "Описание",
+      columnLabel: 'Описание',
     },
   },
   {
-    accessorKey: "isVisible",
+    accessorKey: 'isVisible',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Видим для всех" />
+      <DataTableColumnHeader
+        column={column}
+        title="Видим для всех"
+      />
     ),
     cell: ({ row }) => {
-      return <div>{row.getValue("isVisible") ? "Да" : "Нет"}</div>;
+      return <div>{row.getValue('isVisible') ? 'Да' : 'Нет'}</div>;
     },
     enableSorting: false,
     meta: {
-      columnLabel: "Видим для всех",
+      columnLabel: 'Видим для всех',
     },
   },
 
   {
-    id: "actions",
+    id: 'actions',
     cell: ({ row }) => (
       <DataTableRowActions
         actions={[
           {
-            title: "Редактировать",
+            title: 'Редактировать',
             link: `/admin/actors/${row.original.id}`,
           },
         ]}
@@ -111,7 +130,7 @@ export const actorsTableColumns: ColumnDef<IActor>[] = [
             onSuccess={() => {
               toast.success(`Актёр "${row.original.name}" успешно удален`);
             }}
-            queryKey={["actors"]}
+            queryKey={['actors']}
           />
         }
         row={row}

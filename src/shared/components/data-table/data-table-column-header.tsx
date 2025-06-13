@@ -1,20 +1,22 @@
+import type { Column, Table } from '@tanstack/react-table';
+
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   CaretSortIcon,
   EyeNoneIcon,
-} from "@radix-ui/react-icons";
-import type { Column, Table } from "@tanstack/react-table";
+} from '@radix-ui/react-icons';
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from '@/shared/lib/utils';
+
+import { Button } from '../../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
-import { Button } from "../../ui/button";
+} from '../../ui/dropdown-menu';
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -48,9 +50,9 @@ export function DataTableColumnHeader<TData, TValue>({
   const isSorted =
     useMetaSortName && table
       ? currentSort?.desc === false
-        ? "asc"
+        ? 'asc'
         : currentSort?.desc === true
-          ? "desc"
+          ? 'desc'
           : false
       : column.getIsSorted();
 
@@ -64,7 +66,7 @@ export function DataTableColumnHeader<TData, TValue>({
   };
 
   return (
-    <div className={cn("flex items-center space-x-2", className)}>
+    <div className={cn('flex items-center space-x-2', className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -72,9 +74,9 @@ export function DataTableColumnHeader<TData, TValue>({
             className="data-[state=open]:bg-accent -ml-3 h-8"
           >
             <span>{title}</span>
-            {isSorted === "asc" ? (
+            {isSorted === 'asc' ? (
               <ArrowDownIcon className="ml-2 h-4 w-4" />
-            ) : isSorted === "desc" ? (
+            ) : isSorted === 'desc' ? (
               <ArrowUpIcon className="ml-2 h-4 w-4" />
             ) : (
               <CaretSortIcon className="ml-2 h-4 w-4" />

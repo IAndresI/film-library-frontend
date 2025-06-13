@@ -1,1 +1,1 @@
-export { ReviewModerationModal } from "./ReviewModerationModal";
+export { ReviewModerationModal } from './ReviewModerationModal';

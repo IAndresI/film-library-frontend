@@ -1,1 +1,1 @@
-export { UserSubscriptionPaymentForm } from "./UserSubscriptionPaymentForm";
+export { UserSubscriptionPaymentForm } from './UserSubscriptionPaymentForm';

@@ -1,1 +1,1 @@
-export { ReviewEditorForm } from "./ReviewEditorForm";
+export { ReviewEditorForm } from './ReviewEditorForm';

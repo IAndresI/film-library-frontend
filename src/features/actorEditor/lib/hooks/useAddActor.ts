@@ -1,18 +1,20 @@
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/shared/api/query-client";
+import type { IActor } from '@/entities/actor/dto';
+import type { IActorEditorForm } from '../../model';
 
-import { useNavigate } from "react-router-dom";
-import type { IActorEditorForm } from "../../model";
-import type { IActor } from "@/entities/actor/dto";
-import { actorEditorApi } from "../../api";
-import { toast } from "sonner";
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+
+import { queryClient } from '@/shared/api/query-client';
+
+import { actorEditorApi } from '../../api';
 
 export const useAddActor = (props?: {
   onSuccess?:
     | ((
         data: IActor,
         variables: IActorEditorForm,
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
@@ -28,13 +30,13 @@ export const useAddActor = (props?: {
   } = useMutation({
     mutationFn: actorEditorApi.addActor,
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: ["actors"] });
+      queryClient.invalidateQueries({ queryKey: ['actors'] });
       onSuccess?.(data, variables, context);
       toast.success(`Актёр "${data.name}" успешно добавлен`);
       navigate(`/admin/actors/${data.id}`);
     },
     onError: (error) => {
-      toast.error("Не удалось добавить актёра", {
+      toast.error('Не удалось добавить актёра', {
         description: error.message,
       });
     },

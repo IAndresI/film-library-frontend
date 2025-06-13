@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { SVGProps } from 'react';
 
 export const SvgAnimatedClock = (props: SVGProps<SVGSVGElement>) => {
   return (
@@ -13,7 +13,11 @@ export const SvgAnimatedClock = (props: SVGProps<SVGSVGElement>) => {
       strokeWidth="2"
     >
       {/* Циферблат */}
-      <circle cx="12" cy="12" r="10" />
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+      />
 
       {/* Минутная стрелка (длинная) */}
       <line
@@ -52,7 +56,12 @@ export const SvgAnimatedClock = (props: SVGProps<SVGSVGElement>) => {
       </line>
 
       {/* Центральная точка */}
-      <circle cx="12" cy="12" r=".5" fill="currentColor" />
+      <circle
+        cx="12"
+        cy="12"
+        r=".5"
+        fill="currentColor"
+      />
     </svg>
   );
 };

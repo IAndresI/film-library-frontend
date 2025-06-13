@@ -1,66 +1,69 @@
-import * as React from "react";
-import { cn } from "@/shared/lib/utils";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { IFilm } from "@/entities/film/dto";
+import type { IFilm } from '@/entities/film/dto';
+
+import * as React from 'react';
+import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { filmApi } from '@/entities/film/api/filmApi';
+
+import { API_URL, MEDIA_URL } from '@/shared/config';
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
 import {
+  Form,
   FormControl,
-  FormItem,
   FormField,
+  FormItem,
   FormLabel,
   FormMessage,
-  Form,
-} from "@/shared/ui/form";
+} from '@/shared/ui/form';
+import { VideoInput } from '@/shared/ui/video-input';
 
-import { VideoInput } from "@/shared/ui/video-input";
-import { useEffect } from "react";
-import { API_URL, MEDIA_URL } from "@/shared/config";
-import { Button } from "@/shared/ui/button";
-import { useEditFilmMedia } from "../lib/hooks/useEditFilmMedia";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { useMutation } from "@tanstack/react-query";
+import { useEditFilmMedia } from '../lib/hooks/useEditFilmMedia';
 
 const formSchema = z.object({
   video: z
     .union([
-      z.instanceof(File, { message: "Выберите файл видео" }),
-      z.string().url("Неверный формат URL видео"),
+      z.instanceof(File, { message: 'Выберите файл видео' }),
+      z.string().url('Неверный формат URL видео'),
     ])
     .refine((value) => {
-      if (typeof value === "string") return true;
+      if (typeof value === 'string') return true;
       return value.size <= 1000 * 1024 * 1024;
-    }, "Размер файла не должен превышать 1000MB")
+    }, 'Размер файла не должен превышать 1000MB')
     .refine((value) => {
-      if (typeof value === "string") return true;
+      if (typeof value === 'string') return true;
       return [
-        "video/mp4",
-        "video/mov",
-        "video/avi",
-        "video/webm",
-        "video/quicktime",
+        'video/mp4',
+        'video/mov',
+        'video/avi',
+        'video/webm',
+        'video/quicktime',
       ].includes(value.type);
-    }, "Поддерживаются только форматы: MP4, MOV, AVI, WebM")
+    }, 'Поддерживаются только форматы: MP4, MOV, AVI, WebM')
     .optional(),
   trailer: z
     .union([
-      z.instanceof(File, { message: "Выберите файл трейлера" }),
-      z.string().url("Неверный формат URL трейлера"),
+      z.instanceof(File, { message: 'Выберите файл трейлера' }),
+      z.string().url('Неверный формат URL трейлера'),
     ])
     .refine((value) => {
-      if (typeof value === "string") return true;
+      if (typeof value === 'string') return true;
       return value.size <= 500 * 1024 * 1024;
-    }, "Размер файла не должен превышать 500MB")
+    }, 'Размер файла не должен превышать 500MB')
     .refine((value) => {
-      if (typeof value === "string") return true;
+      if (typeof value === 'string') return true;
       return [
-        "video/mp4",
-        "video/mov",
-        "video/avi",
-        "video/webm",
-        "video/quicktime",
+        'video/mp4',
+        'video/mov',
+        'video/avi',
+        'video/webm',
+        'video/quicktime',
       ].includes(value.type);
-    }, "Поддерживаются только форматы: MP4, MOV, AVI, WebM")
+    }, 'Поддерживаются только форматы: MP4, MOV, AVI, WebM')
     .optional(),
 });
 
@@ -93,7 +96,7 @@ export function FilmMediaEditorForm({
             tokenId: filmToken.tokenId,
           });
         },
-        filmToken.expiresIn * 1000 - 5 * 60 * 1000,
+        filmToken.expiresIn * 1000 - 5 * 60 * 1000
       );
     }
     return () => clearInterval(interval);
@@ -129,7 +132,7 @@ export function FilmMediaEditorForm({
   return (
     <Form {...form}>
       <form
-        className={cn("grid gap-6", className)}
+        className={cn('grid gap-6', className)}
         {...props}
         onSubmit={form.handleSubmit(onSubmit)}
       >
@@ -144,10 +147,10 @@ export function FilmMediaEditorForm({
                   <FormControl>
                     <VideoInput
                       className="min-h-[391.25px]"
-                      value={typeof value === "string" ? null : value || null}
+                      value={typeof value === 'string' ? null : value || null}
                       onChange={onChange}
                       existingVideoUrl={
-                        typeof value === "string" && filmToken
+                        typeof value === 'string' && filmToken
                           ? `${API_URL}${filmToken.streamUrl}`
                           : undefined
                       }
@@ -166,10 +169,10 @@ export function FilmMediaEditorForm({
                   <FormLabel>Трейлер</FormLabel>
                   <FormControl>
                     <VideoInput
-                      value={typeof value === "string" ? null : value || null}
+                      value={typeof value === 'string' ? null : value || null}
                       onChange={onChange}
                       existingVideoUrl={
-                        typeof value === "string" ? value : undefined
+                        typeof value === 'string' ? value : undefined
                       }
                       label="трейлер фильма"
                     />
@@ -185,7 +188,7 @@ export function FilmMediaEditorForm({
           type="submit"
           disabled={isLoadingEditMedia || !form.formState.isDirty}
         >
-          {isLoadingEditMedia ? "Сохраняем..." : "Сохранить"}
+          {isLoadingEditMedia ? 'Сохраняем...' : 'Сохранить'}
         </Button>
       </form>
     </Form>

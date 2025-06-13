@@ -1,16 +1,20 @@
-import type { IReview } from "@/entities/review/dto";
-import { type ComponentProps, useState } from "react";
+import type { IReview } from '@/entities/review/dto';
+import type { ComponentProps } from 'react';
+
+import { useState } from 'react';
+
+import { ReviewEditorForm } from '@/features/reviewEditor/ui';
+
+import { Badge } from '@/shared/ui/badge';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import { ReviewEditorForm } from "@/features/reviewEditor/ui";
-import { Badge } from "@/shared/ui/badge";
+} from '@/shared/ui/dialog';
 
-interface IReviewModalProps extends ComponentProps<"div"> {
+interface IReviewModalProps extends ComponentProps<'div'> {
   review: IReview;
 }
 
@@ -22,14 +26,20 @@ export const ReviewModal = ({ review, ...props }: IReviewModalProps) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="max-h-[85svh] overflow-auto sm:max-w-[850px]">
         <DialogHeader>
           <DialogTitle>
-            Редактировать обзор{" "}
+            Редактировать обзор{' '}
             {review && !review.isApproved && (
-              <Badge variant="outline" className="ml-2">
+              <Badge
+                variant="outline"
+                className="ml-2"
+              >
                 Ожидает модерации
               </Badge>
             )}

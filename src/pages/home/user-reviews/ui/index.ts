@@ -1,3 +1,3 @@
-export { ReviewModal } from "./ReviewModal";
-export { UserReviewCard } from "./UserReviewCard";
-export { UserReviewsPage } from "./UserReviewsPage";
+export { ReviewModal } from './ReviewModal';
+export { UserReviewCard } from './UserReviewCard';
+export { UserReviewsPage } from './UserReviewsPage';

@@ -1,27 +1,32 @@
+import { useEffect, useState } from 'react';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import {
   Link,
   useLocation,
   useNavigate,
   useSearchParams,
-} from "react-router-dom";
-import { Button } from "../../../shared/ui/button";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { Input } from "../../../shared/ui/input";
-import { useEffect, useState } from "react";
+} from 'react-router-dom';
+
+import { useUser } from '@/app/providers';
+
+import { authApi } from '@/features/auth/api';
+
+import { SubscriptionStatus } from '@/entities/subscription/dto';
+
+import { ModeToggle } from '@/shared/components/ModeToggle';
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/shared/ui/drawer";
-import { ModeToggle } from "@/shared/components/ModeToggle";
-import { SidebarTrigger } from "@/shared/ui/sidebar";
-import { useUser } from "@/app/providers";
-import { authApi } from "@/features/auth/api";
-import { SvgLogout } from "@/shared/ui/svg/SvgLogout";
-import { SubscriptionStatus } from "@/entities/subscription/dto";
-import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
+} from '@/shared/ui/drawer';
+import { SidebarTrigger } from '@/shared/ui/sidebar';
+import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
+import { SvgLogout } from '@/shared/ui/svg/SvgLogout';
+
+import { Button } from '../../../shared/ui/button';
+import { Input } from '../../../shared/ui/input';
 
 export const HomeHeader = () => {
   const user = useUser();
@@ -31,14 +36,14 @@ export const HomeHeader = () => {
   const [searchParams] = useSearchParams();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    const URLSearchText = searchParams.get("query");
+    const URLSearchText = searchParams.get('query');
     if (URLSearchText) {
       setSearchText(URLSearchText);
     } else {
-      setSearchText("");
+      setSearchText('');
     }
   }, [location.search]);
 
@@ -49,7 +54,10 @@ export const HomeHeader = () => {
       </div>
       <div className="flex items-center gap-5">
         {user.isAdmin && (
-          <Button variant="secondary" asChild>
+          <Button
+            variant="secondary"
+            asChild
+          >
             <Link to="/admin">Панель администратора</Link>
           </Button>
         )}
@@ -59,7 +67,10 @@ export const HomeHeader = () => {
           onOpenChange={(isOpen) => setIsOpen(isOpen)}
         >
           <DrawerTrigger asChild>
-            <Button className="flex items-center gap-2 px-5" variant="default">
+            <Button
+              className="flex items-center gap-2 px-5"
+              variant="default"
+            >
               <MagnifyingGlassIcon className="h-5 w-5" />
               Поиск
             </Button>
@@ -77,8 +88,8 @@ export const HomeHeader = () => {
                   e.preventDefault();
                   navigate(`/search?query=${searchText}`);
                   setIsOpen(false);
-                  if (!searchParams.get("query")) {
-                    setSearchText("");
+                  if (!searchParams.get('query')) {
+                    setSearchText('');
                   }
                 }}
                 className="mx-auto flex w-full max-w-[500px] items-center gap-3 pb-4"
@@ -106,7 +117,10 @@ export const HomeHeader = () => {
           user.subscription.subscriptionStatus === SubscriptionStatus.EXPIRED ||
           user.subscription.subscriptionStatus ===
             SubscriptionStatus.CANCELLED) && (
-          <Button asChild variant="rainbow">
+          <Button
+            asChild
+            variant="rainbow"
+          >
             <Link to="/premium">Premium</Link>
           </Button>
         )}
@@ -121,7 +135,10 @@ export const HomeHeader = () => {
               user.subscription.subscriptionStatus ===
                 SubscriptionStatus.ACTIVE && (
                 <div className="absolute bottom-1/2 -left-[15px] -rotate-45">
-                  <SvgCrown className="h-5 w-5" gradient />
+                  <SvgCrown
+                    className="h-5 w-5"
+                    gradient
+                  />
                 </div>
               )}
           </div>

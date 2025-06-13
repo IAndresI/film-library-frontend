@@ -1,13 +1,15 @@
-import { useMutation } from "@tanstack/react-query";
-import { authApi } from "../../api/authApi";
-import type { SendOTPRequest, SendOTPResponse } from "../../model/auth.model";
+import type { SendOTPRequest, SendOTPResponse } from '../../model/auth.model';
+
+import { useMutation } from '@tanstack/react-query';
+
+import { authApi } from '../../api/authApi';
 
 export const useSendOTP = (props?: {
   onSuccess?:
     | ((
         data: SendOTPResponse,
         variables: SendOTPRequest,
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {

@@ -1,1 +1,1 @@
-export { filmEditorApi } from "./filmEditorApi";
+export { filmEditorApi } from './filmEditorApi';

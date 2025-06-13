@@ -1,20 +1,21 @@
+import type { IPagination } from '@/shared/model/pagination-response.model';
+import type { Table } from '@tanstack/react-table';
+
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
-import type { Table } from "@tanstack/react-table";
+} from '@radix-ui/react-icons';
 
-import { Button } from "../../ui/button";
+import { Button } from '../../ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../ui/select";
-import type { IPagination } from "@/shared/model/pagination-response.model";
+} from '../../ui/select';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -55,7 +56,10 @@ export function DataTablePagination<TData>({
             </SelectTrigger>
             <SelectContent side="top">
               {[3, 10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <SelectItem
+                  key={pageSize}
+                  value={`${pageSize}`}
+                >
                   {pageSize}
                 </SelectItem>
               ))}
@@ -63,7 +67,7 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex w-[120px] items-center justify-center text-sm font-medium">
-          Страница {currentPage} из{" "}
+          Страница {currentPage} из{' '}
           {pagination?.totalPages || table.getPageCount()}
         </div>
         <div className="flex items-center space-x-2">
@@ -101,7 +105,7 @@ export function DataTablePagination<TData>({
               table.setPageIndex(
                 pagination?.totalPages
                   ? pagination?.totalPages - 1
-                  : table.getPageCount() - 1,
+                  : table.getPageCount() - 1
               )
             }
             disabled={!hasNextPage}

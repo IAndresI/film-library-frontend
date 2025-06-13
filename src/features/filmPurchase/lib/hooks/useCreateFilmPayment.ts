@@ -1,5 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
-import { filmPurchaseApi } from "../../api/filmPurchaseApi";
+import { useMutation } from '@tanstack/react-query';
+
+import { filmPurchaseApi } from '../../api/filmPurchaseApi';
 
 export const useCreateFilmPayment = (props?: {
   onSuccess?:
@@ -11,7 +12,7 @@ export const useCreateFilmPayment = (props?: {
           orderId: string;
         },
         variables: { userId: number; filmId: number; redirectUrl?: string },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {

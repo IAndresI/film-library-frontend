@@ -1,33 +1,34 @@
-import { Separator } from "@/shared/ui/separator";
+import type { SortingState } from '@tanstack/react-table';
 
-import { FilmCard } from "@/entities/film/ui/FilmCard";
+import { useEffect, useState } from 'react';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 
-import { motion } from "framer-motion";
-import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Input } from "@/shared/ui/input";
-import { Button } from "@/shared/ui/button";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { ActorCard } from "@/entities/actor/ui/ActorCard";
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
-import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { actorApi } from "@/entities/actor/api/actorApi";
-import type { SortingState } from "@tanstack/react-table";
-import { FILM_SORT_OPTIONS } from "@/entities/film/constants";
+import { actorApi } from '@/entities/actor/api/actorApi';
+import { ActorCard } from '@/entities/actor/ui/ActorCard';
+import { filmApi } from '@/entities/film/api/filmApi';
+import { FILM_SORT_OPTIONS } from '@/entities/film/constants';
+import { FilmCard } from '@/entities/film/ui/FilmCard';
+
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
 import {
   Select,
   SelectContent,
-  SelectValue,
-  SelectTrigger,
   SelectItem,
-} from "@/shared/ui/select";
-import { cn } from "@/shared/lib/utils";
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui/select';
+import { Separator } from '@/shared/ui/separator';
+import { SvgSpinner } from '@/shared/ui/svg/SvgSpinner';
 
 export const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchText, setSearchText] = useState(location.search);
-  const [queryText, setQueryText] = useState(searchParams.get("query") || "");
+  const [queryText, setQueryText] = useState(searchParams.get('query') || '');
   const [sort, setSort] = useState<SortingState>([
     FILM_SORT_OPTIONS[0].value[0],
   ]);
@@ -40,7 +41,7 @@ export const SearchPage = () => {
     isFetchingNextPage: isFetchingNextFilmsPage,
     isFetching: isFetchingFilms,
   } = useInfiniteQuery({
-    queryKey: ["films", "search", queryText, sort],
+    queryKey: ['films', 'search', queryText, sort],
     queryFn: async ({ pageParam = 0, ...meta }) => {
       const queryOptions = filmApi.getAvailableFilmsQueryOptions({
         search: queryText,
@@ -73,7 +74,7 @@ export const SearchPage = () => {
     isFetchingNextPage: isFetchingNextActorsPage,
     isFetching: isFetchingActors,
   } = useInfiniteQuery({
-    queryKey: ["actors", "search", queryText],
+    queryKey: ['actors', 'search', queryText],
     queryFn: async ({ pageParam = 0, ...meta }) => {
       const queryOptions = actorApi.getAllActorsQueryOptions({
         search: queryText,
@@ -98,18 +99,18 @@ export const SearchPage = () => {
   });
 
   useEffect(() => {
-    const URLSearchText = searchParams.get("query");
+    const URLSearchText = searchParams.get('query');
     if (URLSearchText) {
       setSearchText(URLSearchText);
     } else {
-      setSearchText("");
+      setSearchText('');
     }
   }, [location.search]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setQueryText(searchText);
-      searchParams.set("query", searchText);
+      searchParams.set('query', searchText);
       setSearchParams(searchParams);
     }, 500);
 
@@ -122,18 +123,18 @@ export const SearchPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home"}
+      key={'home'}
     >
       <div className="px-4 py-6 lg:px-8">
         <div className="mb-2 flex items-center justify-between">
           <div className="space-y-1">
             <h2 className="text-2xl font-semibold tracking-tight">
-              Поиск{" "}
-              {searchParams.get("query") && (
+              Поиск{' '}
+              {searchParams.get('query') && (
                 <>
-                  по запросу:{" "}
+                  по запросу:{' '}
                   <span className="font-normal">
-                    {searchParams.get("query")}
+                    {searchParams.get('query')}
                   </span>
                 </>
               )}
@@ -143,7 +144,7 @@ export const SearchPage = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            searchParams.set("query", searchText);
+            searchParams.set('query', searchText);
             setSearchParams(searchParams);
           }}
           className="flex w-full max-w-[500px] items-center gap-3"
@@ -166,7 +167,7 @@ export const SearchPage = () => {
         {(isFilmsLoading || isActorsLoading) && (
           <SvgSpinner className="mx-auto h-10 w-10" />
         )}
-        {queryText.length <= 0 && "Начните поиск..."}
+        {queryText.length <= 0 && 'Начните поиск...'}
         {filmsData &&
           filmsData.length <= 0 &&
           actorsData &&
@@ -187,10 +188,10 @@ export const SearchPage = () => {
                 <Separator className="my-4" />
                 <div
                   className={cn(
-                    "mb-4 flex flex-wrap gap-4 transition-opacity duration-500",
+                    'mb-4 flex flex-wrap gap-4 transition-opacity duration-500',
                     isFetchingActors &&
                       !isFetchingNextActorsPage &&
-                      "opacity-35",
+                      'opacity-35'
                   )}
                 >
                   {actorsData.map((actor) => (
@@ -212,7 +213,7 @@ export const SearchPage = () => {
                       {isFetchingNextActorsPage ? (
                         <SvgSpinner className="h-4 w-4" />
                       ) : (
-                        "Показать ещё актёров"
+                        'Показать ещё актёров'
                       )}
                     </Button>
                   </div>
@@ -230,8 +231,8 @@ export const SearchPage = () => {
                     onValueChange={(value) => {
                       setSort(
                         FILM_SORT_OPTIONS.find(
-                          (option) => option.value[0].id === value,
-                        )!.value,
+                          (option) => option.value[0].id === value
+                        )!.value
                       );
                     }}
                   >
@@ -254,8 +255,8 @@ export const SearchPage = () => {
 
                 <div
                   className={cn(
-                    "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500",
-                    isFetchingFilms && !isFetchingNextFilmsPage && "opacity-35",
+                    'grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500',
+                    isFetchingFilms && !isFetchingNextFilmsPage && 'opacity-35'
                   )}
                 >
                   {filmsData.map((film) => (
@@ -278,7 +279,7 @@ export const SearchPage = () => {
                       {isFetchingNextFilmsPage ? (
                         <SvgSpinner className="h-4 w-4" />
                       ) : (
-                        "Показать ещё фильмов"
+                        'Показать ещё фильмов'
                       )}
                     </Button>
                   </div>

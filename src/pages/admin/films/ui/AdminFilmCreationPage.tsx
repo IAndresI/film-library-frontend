@@ -1,7 +1,9 @@
-import { FilmDataEditorForm } from "@/features/filmEditor/ui";
-import { useGetAllFilters } from "@/features/filters/lib/hooks";
-import { Separator } from "@/shared/ui/separator";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+
+import { FilmDataEditorForm } from '@/features/filmEditor/ui';
+import { useGetAllFilters } from '@/features/filters/lib/hooks';
+
+import { Separator } from '@/shared/ui/separator';
 
 export const AdminFilmCreationPage = () => {
   const { filters } = useGetAllFilters(true);
@@ -12,7 +14,7 @@ export const AdminFilmCreationPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"admin_film_editor"}
+      key={'admin_film_editor'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">

@@ -1,4 +1,4 @@
-import type { IFilm } from "../film/dto";
+import type { IFilm } from '../film/dto';
 
 export interface IActor {
   id: number;

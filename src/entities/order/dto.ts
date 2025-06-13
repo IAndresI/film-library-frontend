@@ -1,17 +1,17 @@
-import type { IFilm } from "../film/dto";
-import type { IPlan } from "../subscription/dto";
-import type { IUser } from "../user/dto";
+import type { IFilm } from '../film/dto';
+import type { IPlan } from '../subscription/dto';
+import type { IUser } from '../user/dto';
 
 export enum OrderStatusType {
-  PENDING = "pending",
-  PAID = "paid",
-  FAILED = "failed",
-  CANCELLED = "cancelled",
+  PENDING = 'pending',
+  PAID = 'paid',
+  FAILED = 'failed',
+  CANCELLED = 'cancelled',
 }
 
 export enum OrderType {
-  SUBSCRIPTION = "subscription",
-  FILM = "film",
+  SUBSCRIPTION = 'subscription',
+  FILM = 'film',
 }
 
 export interface IOrder {

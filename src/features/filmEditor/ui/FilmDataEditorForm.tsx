@@ -1,90 +1,92 @@
-import * as React from "react";
-import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import type { IFilm } from '@/entities/film/dto';
+import type { IFilter } from '@/features/filters/dto';
 
-import { useEditFilmData } from "../lib/hooks";
-import { useForm, useFieldArray } from "react-hook-form";
-import { z } from "zod";
-import { Input } from "@/shared/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { IFilm } from "@/entities/film/dto";
+import * as React from 'react';
+import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { formatDate } from 'date-fns';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { MEDIA_URL } from '@/shared/config';
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { DatePicker } from '@/shared/ui/date-picker';
 import {
+  Form,
   FormControl,
-  FormItem,
   FormField,
+  FormItem,
   FormLabel,
   FormMessage,
-  Form,
-} from "@/shared/ui/form";
-import { MultiSelect } from "@/shared/ui/multi-select";
-import { DatePicker } from "@/shared/ui/date-picker";
-import { Textarea } from "@/shared/ui/textarea";
+} from '@/shared/ui/form';
+import { ImageInput } from '@/shared/ui/image-input';
+import { Input } from '@/shared/ui/input';
+import { MultiSelect } from '@/shared/ui/multi-select';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import { ImageInput } from "@/shared/ui/image-input";
-import { Switch } from "@/shared/ui/switch";
-import { useAddFilm } from "../lib/hooks/useAddFilm";
-import { useEffect } from "react";
-import { MEDIA_URL } from "@/shared/config";
-import { formatDate } from "date-fns";
-import type { IFilter } from "@/features/filters/dto";
+} from '@/shared/ui/select';
+import { Switch } from '@/shared/ui/switch';
+import { Textarea } from '@/shared/ui/textarea';
+
+import { useEditFilmData } from '../lib/hooks';
+import { useAddFilm } from '../lib/hooks/useAddFilm';
 
 const formSchema = z
   .object({
-    name: z.string({ required_error: "Название фильма обязательно" }).min(2, {
-      message: "Название фильма должно быть не менее 2 символов",
+    name: z.string({ required_error: 'Название фильма обязательно' }).min(2, {
+      message: 'Название фильма должно быть не менее 2 символов',
     }),
-    description: z.string({ required_error: "Описание обязательно" }).min(20, {
-      message: "Описание должно быть не менее 20 символов",
+    description: z.string({ required_error: 'Описание обязательно' }).min(20, {
+      message: 'Описание должно быть не менее 20 символов',
     }),
     image: z
       .union([
-        z.instanceof(File, { message: "Выберите файл изображения" }),
-        z.string().url("Неверный формат URL изображения"),
+        z.instanceof(File, { message: 'Выберите файл изображения' }),
+        z.string().url('Неверный формат URL изображения'),
       ])
       .refine((value) => {
-        if (typeof value === "string") return true;
+        if (typeof value === 'string') return true;
         return value.size <= 5 * 1024 * 1024;
-      }, "Размер файла не должен превышать 5MB")
+      }, 'Размер файла не должен превышать 5MB')
       .refine((value) => {
-        if (typeof value === "string") return true;
+        if (typeof value === 'string') return true;
         return [
-          "image/jpeg",
-          "image/jpg",
-          "image/png",
-          "image/webp",
-          "image/gif",
+          'image/jpeg',
+          'image/jpg',
+          'image/png',
+          'image/webp',
+          'image/gif',
         ].includes(value.type);
-      }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF"),
+      }, 'Поддерживаются только форматы: JPEG, PNG, WebP, GIF'),
     genres: z
-      .array(z.string(), { message: "Выберите хотя бы один жанр" })
+      .array(z.string(), { message: 'Выберите хотя бы один жанр' })
       .min(1),
     release_date: z.date({
-      message: "Введите дату выхода фильма",
+      message: 'Введите дату выхода фильма',
     }),
     actors: z
       .array(
         z.object({
           id: z
             .number({
-              required_error: "Выберите актёра",
-              message: "Выберите актёра",
+              required_error: 'Выберите актёра',
+              message: 'Выберите актёра',
             })
-            .min(1, { message: "Выберите актёра" }),
+            .min(1, { message: 'Выберите актёра' }),
           role: z.string().optional(),
-        }),
+        })
       )
       .optional(),
     isVisible: z.boolean(),
     isPaid: z.boolean(),
     price: z.coerce
       .number()
-      .min(1, { message: "Цена не может быть меньше 1 рубля" })
+      .min(1, { message: 'Цена не может быть меньше 1 рубля' })
       .optional(),
   })
   .refine(
@@ -95,9 +97,9 @@ const formSchema = z
       return true;
     },
     {
-      message: "Цена обязательна для платного фильма",
-      path: ["price"],
-    },
+      message: 'Цена обязательна для платного фильма',
+      path: ['price'],
+    }
   );
 
 export function FilmDataEditorForm({
@@ -122,13 +124,13 @@ export function FilmDataEditorForm({
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "actors",
+    name: 'actors',
   });
 
   const { addFilm, isLoading } = useAddFilm();
   const { editFilm, isLoading: isLoadingEdit } = useEditFilmData();
 
-  const isPaidValue = form.watch("isPaid");
+  const isPaidValue = form.watch('isPaid');
 
   useEffect(() => {
     if (film) {
@@ -151,23 +153,23 @@ export function FilmDataEditorForm({
 
   useEffect(() => {
     if (!isPaidValue) {
-      form.setValue("price", undefined);
+      form.setValue('price', undefined);
     } else {
-      form.setValue("price", film?.price);
+      form.setValue('price', film?.price);
     }
   }, [isPaidValue, form]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     const baseData = {
       ...data,
-      release_date: formatDate(data.release_date, "yyyy-MM-dd"),
+      release_date: formatDate(data.release_date, 'yyyy-MM-dd'),
       actors: data.actors || [],
     };
 
     if (film) {
       // При редактировании передаем картинку только если она новая
       const editData =
-        typeof data.image === "string"
+        typeof data.image === 'string'
           ? { ...baseData, image: undefined, id: film.id }
           : { ...baseData, image: data.image, id: film.id };
 
@@ -181,7 +183,7 @@ export function FilmDataEditorForm({
   return (
     <Form {...form}>
       <form
-        className={cn("grid gap-6", className)}
+        className={cn('grid gap-6', className)}
         {...props}
         onSubmit={form.handleSubmit(onSubmit)}
       >
@@ -258,7 +260,7 @@ export function FilmDataEditorForm({
                       type="number"
                       disabled={!isPaidValue}
                       {...field}
-                      value={isPaidValue ? field.value || "" : ""}
+                      value={isPaidValue ? field.value || '' : ''}
                       onChange={(e) => {
                         if (isPaidValue) {
                           field.onChange(e);
@@ -325,7 +327,7 @@ export function FilmDataEditorForm({
                                     value={
                                       field.value && field.value > 0
                                         ? field.value.toString()
-                                        : ""
+                                        : ''
                                     }
                                     onValueChange={(value) => {
                                       field.onChange(parseInt(value));
@@ -360,7 +362,7 @@ export function FilmDataEditorForm({
                                   <FormControl>
                                     <Input
                                       placeholder="Роль"
-                                      value={field.value || ""}
+                                      value={field.value || ''}
                                       onChange={(e) => {
                                         field.onChange(e.target.value);
                                       }}
@@ -385,7 +387,7 @@ export function FilmDataEditorForm({
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => append({ id: 0, role: "" })}
+                        onClick={() => append({ id: 0, role: '' })}
                       >
                         Добавить актёра
                       </Button>
@@ -419,10 +421,10 @@ export function FilmDataEditorForm({
                   <FormLabel>Изображение</FormLabel>
                   <FormControl>
                     <ImageInput
-                      value={typeof value === "string" ? null : value}
+                      value={typeof value === 'string' ? null : value}
                       onChange={onChange}
                       existingImageUrl={
-                        typeof value === "string" ? value : undefined
+                        typeof value === 'string' ? value : undefined
                       }
                     />
                   </FormControl>
@@ -436,7 +438,7 @@ export function FilmDataEditorForm({
             type="submit"
             disabled={isLoading || isLoadingEdit || !form.formState.isDirty}
           >
-            {isLoading || isLoadingEdit ? "Сохраняем..." : "Сохранить"}
+            {isLoading || isLoadingEdit ? 'Сохраняем...' : 'Сохранить'}
           </Button>
         </div>
       </form>

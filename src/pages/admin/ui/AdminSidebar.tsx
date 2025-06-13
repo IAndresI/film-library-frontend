@@ -1,7 +1,5 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { SvgFire } from "../../../shared/ui/svg/SvgFire";
-import { SvgActor } from "../../../shared/ui/svg/SvgActor";
-import { SvgReview } from "../../../shared/ui/svg/SvgReview";
+import { Link, NavLink, useLocation } from 'react-router-dom';
+
 import {
   Sidebar,
   SidebarContent,
@@ -13,49 +11,53 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/shared/ui/sidebar";
-import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
-import { SvgUndeReview } from "@/shared/ui/svg/SvgUndeReview";
-import { SvgUsers } from "@/shared/ui/svg/SvgUsers";
-import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-import { SvgPayment } from "@/shared/ui/svg/SvgPayment";
+} from '@/shared/ui/sidebar';
+import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
+import { SvgLogo } from '@/shared/ui/svg/SvgLogo';
+import { SvgPayment } from '@/shared/ui/svg/SvgPayment';
+import { SvgUndeReview } from '@/shared/ui/svg/SvgUndeReview';
+import { SvgUsers } from '@/shared/ui/svg/SvgUsers';
+
+import { SvgActor } from '../../../shared/ui/svg/SvgActor';
+import { SvgFire } from '../../../shared/ui/svg/SvgFire';
+import { SvgReview } from '../../../shared/ui/svg/SvgReview';
 
 const links = [
   {
-    label: "Подписки",
-    link: "/admin",
+    label: 'Подписки',
+    link: '/admin',
     icon: <SvgCrown className="mr-2 h-4 w-4" />,
     index: true,
   },
   {
-    label: "Заказы",
-    link: "/admin/orders",
+    label: 'Заказы',
+    link: '/admin/orders',
     icon: <SvgPayment className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Фильмы",
-    link: "/admin/films",
+    label: 'Фильмы',
+    link: '/admin/films',
     icon: <SvgFire className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Пользователи",
-    link: "/admin/users",
+    label: 'Пользователи',
+    link: '/admin/users',
     icon: <SvgUsers className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Актеры",
-    link: "/admin/actors",
+    label: 'Актеры',
+    link: '/admin/actors',
     icon: <SvgActor className="mr-2 h-4 w-4" />,
   },
   {
-    label: "Все отзывы",
-    link: "/admin/reviews",
+    label: 'Все отзывы',
+    link: '/admin/reviews',
     icon: <SvgReview className="mr-2 h-4 w-4" />,
     index: true,
   },
   {
-    label: "Отзывы на модерации",
-    link: "/admin/reviews/on-approve",
+    label: 'Отзывы на модерации',
+    link: '/admin/reviews/on-approve',
     icon: <SvgUndeReview className="mr-2 h-4 w-4" />,
     index: true,
   },
@@ -68,8 +70,11 @@ export function AdminSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
-        <SidebarHeader className={!open ? "px-0" : "px-4"}>
-          <Link to="/admin" className={!open ? "pr-0 pl-1" : ""}>
+        <SidebarHeader className={!open ? 'px-0' : 'px-4'}>
+          <Link
+            to="/admin"
+            className={!open ? 'pr-0 pl-1' : ''}
+          >
             <SvgLogo className="h-10 w-10" />
           </Link>
         </SidebarHeader>

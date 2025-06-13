@@ -1,1 +1,1 @@
-export { type IActorEditorForm } from "./actor-editor-form.model";
+export { type IActorEditorForm } from './actor-editor-form.model';

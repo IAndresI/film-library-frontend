@@ -1,4 +1,4 @@
-import type { ISubscription } from "../subscription/dto";
+import type { ISubscription } from '../subscription/dto';
 
 export interface IUser {
   id: number;

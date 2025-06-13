@@ -1,50 +1,52 @@
-import * as React from "react";
-import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import type { IUser } from '@/entities/user/dto';
 
-import { useEditUserData } from "../lib/hooks";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import type { IUser } from "@/entities/user/dto";
-import { Input } from "@/shared/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { useUser } from '@/app/providers';
+
+import { queryClient } from '@/shared/api/query-client';
+import { cn, getImageUrl } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
 import {
+  Form,
   FormControl,
-  FormItem,
   FormField,
+  FormItem,
   FormLabel,
   FormMessage,
-  Form,
-} from "@/shared/ui/form";
-import { ImageInput } from "@/shared/ui/image-input";
-import { getImageUrl } from "@/shared/lib/utils";
-import { queryClient } from "@/shared/api/query-client";
-import { Switch } from "@/shared/ui/switch";
-import { useUser } from "@/app/providers";
+} from '@/shared/ui/form';
+import { ImageInput } from '@/shared/ui/image-input';
+import { Input } from '@/shared/ui/input';
+import { Switch } from '@/shared/ui/switch';
+
+import { useEditUserData } from '../lib/hooks';
 
 const formSchema = z.object({
-  name: z.string({ required_error: "Имя обязательно" }).min(3, {
-    message: "Имя должно быть не менее 3 символов",
+  name: z.string({ required_error: 'Имя обязательно' }).min(3, {
+    message: 'Имя должно быть не менее 3 символов',
   }),
   avatar: z
     .union([
-      z.instanceof(File, { message: "Выберите файл изображения" }),
-      z.string().url("Неверный формат URL изображения"),
+      z.instanceof(File, { message: 'Выберите файл изображения' }),
+      z.string().url('Неверный формат URL изображения'),
     ])
     .refine((value) => {
-      if (typeof value === "string") return true;
+      if (typeof value === 'string') return true;
       return value.size <= 5 * 1024 * 1024;
-    }, "Размер файла не должен превышать 5MB")
+    }, 'Размер файла не должен превышать 5MB')
     .refine((value) => {
-      if (typeof value === "string") return true;
+      if (typeof value === 'string') return true;
       return [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
-        "image/gif",
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
+        'image/gif',
       ].includes(value.type);
-    }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF")
+    }, 'Поддерживаются только форматы: JPEG, PNG, WebP, GIF')
     .optional(),
   isAdmin: z.boolean().optional(),
 });
@@ -63,7 +65,7 @@ export function UserDataEditorForm({
   const { editUserData, isLoading } = useEditUserData({
     onSuccess: (user) => {
       if (userData.id === currentUser.id) {
-        queryClient.setQueryData(["user"], user);
+        queryClient.setQueryData(['user'], user);
       }
     },
   });
@@ -78,9 +80,9 @@ export function UserDataEditorForm({
 
   const onSubmit = ({ avatar, ...data }: z.infer<typeof formSchema>) => {
     const editData =
-      typeof avatar === "undefined"
+      typeof avatar === 'undefined'
         ? { ...data, avatar: null, id: userData.id }
-        : typeof avatar === "string"
+        : typeof avatar === 'string'
           ? { ...data, id: userData.id }
           : { ...data, avatar, id: userData.id };
 
@@ -90,7 +92,7 @@ export function UserDataEditorForm({
   return (
     <Form {...form}>
       <form
-        className={cn("grid gap-6", className)}
+        className={cn('grid gap-6', className)}
         {...props}
         onSubmit={form.handleSubmit(onSubmit)}
       >
@@ -103,7 +105,10 @@ export function UserDataEditorForm({
                 <FormItem>
                   <FormLabel>Имя</FormLabel>
                   <FormControl>
-                    <Input placeholder="Введите Ваше имя..." {...field} />
+                    <Input
+                      placeholder="Введите Ваше имя..."
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -136,10 +141,10 @@ export function UserDataEditorForm({
                     <FormLabel>Аватар</FormLabel>
                     <FormControl>
                       <ImageInput
-                        value={typeof value === "string" ? null : value || null}
+                        value={typeof value === 'string' ? null : value || null}
                         onChange={onChange}
                         existingImageUrl={
-                          typeof value === "string" ? value : undefined
+                          typeof value === 'string' ? value : undefined
                         }
                       />
                     </FormControl>
@@ -153,7 +158,7 @@ export function UserDataEditorForm({
               type="submit"
               disabled={isLoading || !form.formState.isDirty}
             >
-              {isLoading ? "Сохраняем..." : "Сохранить"}
+              {isLoading ? 'Сохраняем...' : 'Сохранить'}
             </Button>
           </div>
         </div>

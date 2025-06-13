@@ -3,4 +3,4 @@ export type {
   SendOTPResponse,
   VerifyOTPRequest,
   VerifyOTPResponse,
-} from "./auth.model";
+} from './auth.model';

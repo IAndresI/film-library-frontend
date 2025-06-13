@@ -1,14 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
-import { reviewModerationApi } from "../../api/reviewModerationApi";
-import { queryClient } from "@/shared/api/query-client";
-import type { IReview } from "@/entities/review/dto";
+import type { IReview } from '@/entities/review/dto';
+
+import { useMutation } from '@tanstack/react-query';
+
+import { queryClient } from '@/shared/api/query-client';
+
+import { reviewModerationApi } from '../../api/reviewModerationApi';
 
 export const useApproveReview = (props?: {
   onSuccess?:
     | ((
         data: IReview,
         variables: { id: number },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
@@ -22,7 +25,7 @@ export const useApproveReview = (props?: {
   } = useMutation({
     mutationFn: reviewModerationApi.approveReview,
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
       onSuccess?.(data, variables, context);
     },
   });

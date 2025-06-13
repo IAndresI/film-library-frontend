@@ -1,2 +1,2 @@
-export { AdminHomePage } from "./AdminHomePage";
-export { Chart } from "./Chart";
+export { AdminHomePage } from './AdminHomePage';
+export { Chart } from './Chart';

@@ -1,2 +1,2 @@
-export { useSendOTP } from "./useSendOTP";
-export { useVerifyOTP } from "./useVerifyOTP";
+export { useSendOTP } from './useSendOTP';
+export { useVerifyOTP } from './useVerifyOTP';

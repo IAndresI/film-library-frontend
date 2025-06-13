@@ -1,4 +1,5 @@
-import { SlashIcon } from "@radix-ui/react-icons";
+import { SlashIcon } from '@radix-ui/react-icons';
+import { Link } from 'react-router-dom';
 
 import {
   Breadcrumb,
@@ -7,11 +8,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/shared/ui/breadcrumb";
-import { Link } from "react-router-dom";
+} from '@/shared/ui/breadcrumb';
 
 interface ICustomBreadcrumbsProps
-  extends React.ComponentPropsWithoutRef<"nav"> {
+  extends React.ComponentPropsWithoutRef<'nav'> {
   crumbs: {
     label: string;
     link?: string;
@@ -41,7 +41,7 @@ export const CustomBreadcrumbs = ({
             <BreadcrumbItem key={crumb.label}>
               <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
             </BreadcrumbItem>
-          ),
+          )
         )}
       </BreadcrumbList>
     </Breadcrumb>

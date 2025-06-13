@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -7,8 +7,8 @@
 
 @theme {
   --default-font-family:
-    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   --container-center: true;
   --container-padding: 2rem;
@@ -217,7 +217,7 @@
   }
 
   .chunk-container::after {
-    content: "";
+    content: '';
     @apply absolute -inset-4 rounded-xl border shadow-xl;
   }
 
@@ -326,19 +326,19 @@
   }
 }
 
-[data-theme="light"] {
+[data-theme='light'] {
   display: block;
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   display: none;
 }
 
-.dark [data-theme="light"] {
+.dark [data-theme='light'] {
   display: none;
 }
 
-.dark [data-theme="dark"] {
+.dark [data-theme='dark'] {
   display: block;
 }
 

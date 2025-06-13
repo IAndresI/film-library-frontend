@@ -1,5 +1,6 @@
-import OTPInput from "react-otp-input";
-import { Input } from "./input";
+import OTPInput from 'react-otp-input';
+
+import { Input } from './input';
 
 interface IOtpInputProps {
   value: string;
@@ -25,9 +26,9 @@ export const Otp = (props: IOtpInputProps) => {
           autoComplete="one-time-code"
           inputMode="numeric"
           maxLength={1}
-          onFocus={(e) => (e.target.placeholder = "")}
-          onBlur={(e) => (e.target.placeholder = "-")}
-          className={`otp-input h-10 min-w-[40px] appearance-none p-0 text-white ${props.isError && "border-red-600 text-red-600"}`}
+          onFocus={(e) => (e.target.placeholder = '')}
+          onBlur={(e) => (e.target.placeholder = '-')}
+          className={`otp-input h-10 min-w-[40px] appearance-none p-0 text-white ${props.isError && 'border-red-600 text-red-600'}`}
         />
       )}
     />

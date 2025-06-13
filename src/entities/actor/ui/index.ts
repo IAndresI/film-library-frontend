@@ -1,2 +1,2 @@
-export { ActorCard } from "./ActorCard";
-export { ActorSkeleton } from "./ActorSkeleton";
+export { ActorCard } from './ActorCard';
+export { ActorSkeleton } from './ActorSkeleton';

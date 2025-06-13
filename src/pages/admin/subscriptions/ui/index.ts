@@ -1,1 +1,1 @@
-export { AdminSubscriptionsPage } from "./AdminSubscriptionsPage";
+export { AdminSubscriptionsPage } from './AdminSubscriptionsPage';

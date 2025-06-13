@@ -1,10 +1,8 @@
-import {
-  useMutation,
-  useQueryClient,
-  type MutationFunction,
-} from "@tanstack/react-query";
-import type { IFilm } from "@/entities/film/dto";
-import type { CustomApiError } from "@/shared/model/api-error.model";
+import type { IFilm } from '@/entities/film/dto';
+import type { CustomApiError } from '@/shared/model/api-error.model';
+import type { MutationFunction } from '@tanstack/react-query';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useRemoveFromFavorites = (props?: {
   onError?:
@@ -14,7 +12,7 @@ export const useRemoveFromFavorites = (props?: {
           userId: number;
           filmId: number;
         },
-        context: void | undefined,
+        context: void | undefined
       ) => Promise<unknown> | unknown)
     | undefined;
   mutationFn:
@@ -31,7 +29,7 @@ export const useRemoveFromFavorites = (props?: {
         data: IFilm | undefined,
         error: CustomApiError | null,
         variables: { userId: number; filmId: number },
-        context: void | undefined,
+        context: void | undefined
       ) => Promise<unknown> | unknown)
     | undefined;
   onMutate?:
@@ -44,7 +42,7 @@ export const useRemoveFromFavorites = (props?: {
     | ((
         data: IFilm,
         variables: { userId: number; filmId: number },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
@@ -59,14 +57,14 @@ export const useRemoveFromFavorites = (props?: {
     mutationFn: mutationFn,
     onMutate: (variables) => {
       queryClient.setQueryData(
-        ["favorites-ids", variables.userId],
-        (oldData: number[]) => oldData.filter((id) => id !== variables.filmId),
+        ['favorites-ids', variables.userId],
+        (oldData: number[]) => oldData.filter((id) => id !== variables.filmId)
       );
       onMutate?.(variables);
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: ["favorites"],
+        queryKey: ['favorites'],
       });
 
       onSuccess?.(data, variables, context);

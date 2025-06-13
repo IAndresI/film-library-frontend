@@ -1,9 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/shared/api/query-client";
+import type { IReview } from '@/entities/review/dto';
 
-import type { IReview } from "@/entities/review/dto";
-import { reviewEditorApi } from "../../api";
-import { toast } from "sonner";
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+
+import { queryClient } from '@/shared/api/query-client';
+
+import { reviewEditorApi } from '../../api';
 
 export const useCreateReview = (props?: {
   onSuccess?:
@@ -15,7 +17,7 @@ export const useCreateReview = (props?: {
           userId: number;
           filmId: number;
         },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
@@ -29,8 +31,8 @@ export const useCreateReview = (props?: {
   } = useMutation({
     mutationFn: reviewEditorApi.createReview,
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: ["reviews"] });
-      toast.success("Обзор успешно создан");
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      toast.success('Обзор успешно создан');
       onSuccess?.(data, variables, context);
     },
   });

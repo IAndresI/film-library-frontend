@@ -1,7 +1,10 @@
-import { useMutation, type MutationFunction } from "@tanstack/react-query";
-import { queryClient } from "@/shared/api/query-client";
-import type { IFilm } from "@/entities/film/dto";
-import { CustomApiError } from "@/shared/model/api-error.model";
+import type { IFilm } from '@/entities/film/dto';
+import type { MutationFunction } from '@tanstack/react-query';
+
+import { useMutation } from '@tanstack/react-query';
+
+import { queryClient } from '@/shared/api/query-client';
+import { CustomApiError } from '@/shared/model/api-error.model';
 
 export const useAddToFavorites = (props?: {
   onError?:
@@ -11,7 +14,7 @@ export const useAddToFavorites = (props?: {
           userId: number;
           filmId: number;
         },
-        context: void | undefined,
+        context: void | undefined
       ) => Promise<unknown> | unknown)
     | undefined;
   mutationFn:
@@ -31,7 +34,7 @@ export const useAddToFavorites = (props?: {
           userId: number;
           filmId: number;
         },
-        context: void | undefined,
+        context: void | undefined
       ) => Promise<unknown> | unknown)
     | undefined;
   onMutate?:
@@ -44,7 +47,7 @@ export const useAddToFavorites = (props?: {
     | ((
         data: IFilm,
         variables: { filmId: number },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
@@ -59,14 +62,14 @@ export const useAddToFavorites = (props?: {
     mutationFn: mutationFn,
     onMutate: (variables) => {
       queryClient.setQueryData(
-        ["favorites-ids", variables.userId],
-        (oldData: number[]) => [...oldData, variables.filmId],
+        ['favorites-ids', variables.userId],
+        (oldData: number[]) => [...oldData, variables.filmId]
       );
       onMutate?.(variables);
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: ["favorites"],
+        queryKey: ['favorites'],
       });
 
       onSuccess?.(data, variables, context);

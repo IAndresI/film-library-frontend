@@ -1,16 +1,20 @@
-import { useUser } from "@/app/providers";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { SubscriptionStatus } from "@/entities/subscription/dto";
-import { UserFilmPaymentForm } from "@/features/filmPurchase/ui";
-import { VideoPlayer } from "@/shared/components/VideoPlayer";
-import { API_URL } from "@/shared/config";
-import { Button } from "@/shared/ui/button";
-import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-import { SvgLogo } from "@/shared/ui/svg/SvgLogo";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Link, useParams } from 'react-router-dom';
+
+import { useUser } from '@/app/providers';
+
+import { UserFilmPaymentForm } from '@/features/filmPurchase/ui';
+
+import { filmApi } from '@/entities/film/api/filmApi';
+import { SubscriptionStatus } from '@/entities/subscription/dto';
+
+import { VideoPlayer } from '@/shared/components/VideoPlayer';
+import { API_URL } from '@/shared/config';
+import { Button } from '@/shared/ui/button';
+import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
+import { SvgLogo } from '@/shared/ui/svg/SvgLogo';
 
 export const WatchFilmPage = () => {
   const { id } = useParams();
@@ -43,7 +47,7 @@ export const WatchFilmPage = () => {
             tokenId: filmToken.tokenId,
           });
         },
-        filmToken.expiresIn * 1000 - 5 * 60 * 1000,
+        filmToken.expiresIn * 1000 - 5 * 60 * 1000
       );
     }
     return () => clearInterval(interval);
@@ -73,7 +77,10 @@ export const WatchFilmPage = () => {
       <div className="flex h-[100svh] w-[100vw] items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <p className="text-2xl font-bold">К сожалению, фильм не найден</p>
-          <Button size="lg" asChild>
+          <Button
+            size="lg"
+            asChild
+          >
             <Link to="/">На главную</Link>
           </Button>
         </div>
@@ -97,8 +104,12 @@ export const WatchFilmPage = () => {
       <div className="flex h-[100svh] w-[100vw] items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           {!isFilmPurchased && isFilmPaid && (
-            <Button asChild className="h-12 p-0 px-5" variant="rainbow">
-              <Link to={"/premium"}>
+            <Button
+              asChild
+              className="h-12 p-0 px-5"
+              variant="rainbow"
+            >
+              <Link to={'/premium'}>
                 <SvgCrown className="mr-2 min-h-[24px] min-w-[24px]" />
                 Смотреть вместе с подпиской
               </Link>

@@ -1,1 +1,1 @@
-export { subscriptionsTableColumns } from "./subscription-table-columns";
+export { subscriptionsTableColumns } from './subscription-table-columns';

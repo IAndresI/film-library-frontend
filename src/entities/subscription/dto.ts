@@ -1,9 +1,9 @@
-import type { IUser } from "../user/dto";
+import type { IUser } from '../user/dto';
 
 export enum SubscriptionStatus {
-  ACTIVE = "active",
-  EXPIRED = "expired",
-  CANCELLED = "cancelled",
+  ACTIVE = 'active',
+  EXPIRED = 'expired',
+  CANCELLED = 'cancelled',
 }
 
 export interface ISubscription {

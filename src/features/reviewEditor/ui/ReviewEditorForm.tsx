@@ -1,32 +1,34 @@
-import * as React from "react";
-import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import type { IReview } from '@/entities/review/dto';
 
-import { useEditReview, useCreateReview, useDeleteReview } from "../lib/hooks";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as React from 'react';
+import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { StarFilledIcon, StarIcon } from '@radix-ui/react-icons';
+import { useForm } from 'react-hook-form';
+import { Rating } from 'react-simple-star-rating';
+import { z } from 'zod';
+
+import { queryClient } from '@/shared/api/query-client';
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
 import {
+  Form,
   FormControl,
-  FormItem,
   FormField,
+  FormItem,
   FormLabel,
   FormMessage,
-  Form,
-} from "@/shared/ui/form";
-import { Textarea } from "@/shared/ui/textarea";
-import { useEffect } from "react";
-import type { IReview } from "@/entities/review/dto";
-import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
-import { Rating } from "react-simple-star-rating";
-import { queryClient } from "@/shared/api/query-client";
+} from '@/shared/ui/form';
+import { Textarea } from '@/shared/ui/textarea';
+
+import { useCreateReview, useDeleteReview, useEditReview } from '../lib/hooks';
 
 const formSchema = z.object({
-  rating: z.number({ required_error: "Рейтинг обязательно" }).min(1, {
-    message: "Рейтинг должен быть не менее 1",
+  rating: z.number({ required_error: 'Рейтинг обязательно' }).min(1, {
+    message: 'Рейтинг должен быть не менее 1',
   }),
-  text: z.string({ required_error: "Текст обязательно" }).min(20, {
-    message: "Текст должен быть не менее 20 символов",
+  text: z.string({ required_error: 'Текст обязательно' }).min(20, {
+    message: 'Текст должен быть не менее 20 символов',
   }),
 });
 
@@ -60,10 +62,10 @@ export function ReviewEditorForm({
   });
   const { deleteReview, isLoading: isLoadingDelete } = useDeleteReview({
     onSuccess: () => {
-      queryClient.resetQueries({ queryKey: ["reviews", userId, filmId] });
+      queryClient.resetQueries({ queryKey: ['reviews', userId, filmId] });
       form.reset({
         rating: 0,
-        text: "",
+        text: '',
       });
       onDelete?.();
     },
@@ -93,7 +95,7 @@ export function ReviewEditorForm({
   return (
     <Form {...form}>
       <form
-        className={cn("grid gap-4", className)}
+        className={cn('grid gap-4', className)}
         {...props}
         onSubmit={form.handleSubmit(onSubmit)}
       >
@@ -149,7 +151,7 @@ export function ReviewEditorForm({
               variant="default"
               className="w-full"
             >
-              {review ? "Редактировать" : "Отправить"}
+              {review ? 'Редактировать' : 'Отправить'}
             </Button>
             {review && (
               <Button

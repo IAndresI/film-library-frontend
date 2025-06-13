@@ -1,2 +1,2 @@
-export { AdminActorsPage } from "./AdminActorsPage";
-export { AdminActorEditorPage } from "./AdminActorEditorPage";
+export { AdminActorsPage } from './AdminActorsPage';
+export { AdminActorEditorPage } from './AdminActorEditorPage';

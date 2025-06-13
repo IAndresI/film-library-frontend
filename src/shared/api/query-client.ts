@@ -1,5 +1,6 @@
-import { QueryClient } from "@tanstack/react-query";
-import { CustomApiError } from "../model/api-error.model";
+import { QueryClient } from '@tanstack/react-query';
+
+import { CustomApiError } from '../model/api-error.model';
 
 export const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,1 +1,1 @@
-export { useGetAllFilters } from "./useGetAllFilters";
+export { useGetAllFilters } from './useGetAllFilters';

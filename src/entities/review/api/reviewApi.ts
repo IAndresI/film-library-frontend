@@ -1,12 +1,14 @@
-import type { IReview } from "@/entities/review/dto";
-import { apiInstance } from "@/shared/api/base";
-import type { IPaginationResponse } from "@/shared/model/pagination-response.model";
-import { queryOptions } from "@tanstack/react-query";
+import type { IReview } from '@/entities/review/dto';
+import type { IPaginationResponse } from '@/shared/model/pagination-response.model';
 import type {
   ColumnFiltersState,
   PaginationState,
   SortingState,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
+
+import { queryOptions } from '@tanstack/react-query';
+
+import { apiInstance } from '@/shared/api/base';
 
 export const reviewApi = {
   getAllReviewsQueryOptions: ({
@@ -19,7 +21,7 @@ export const reviewApi = {
     pagination: PaginationState;
   }) => {
     return queryOptions({
-      queryKey: ["reviews", filters, sort, pagination],
+      queryKey: ['reviews', filters, sort, pagination],
       queryFn: apiInstance.get<IPaginationResponse<IReview>>(`/reviews`, {
         params: {
           filters,
@@ -35,7 +37,7 @@ export const reviewApi = {
     pagination: PaginationState;
   }) => {
     return queryOptions({
-      queryKey: ["reviews", data.filmId, data.pagination],
+      queryKey: ['reviews', data.filmId, data.pagination],
       queryFn: apiInstance.get<IPaginationResponse<IReview>>(
         `/reviews/film/${data.filmId}`,
         {
@@ -43,15 +45,15 @@ export const reviewApi = {
             pageIndex: data.pagination.pageIndex,
             pageSize: data.pagination.pageSize,
           },
-        },
+        }
       ),
     });
   },
   getUserFilmReviewQueryOptions: (data: { userId: number; filmId: number }) => {
     return queryOptions({
-      queryKey: ["reviews", data.userId, data.filmId],
+      queryKey: ['reviews', data.userId, data.filmId],
       queryFn: apiInstance.get<IReview>(
-        `/reviews/user/${data.userId}/film/${data.filmId}`,
+        `/reviews/user/${data.userId}/film/${data.filmId}`
       ),
     });
   },
@@ -67,7 +69,7 @@ export const reviewApi = {
     userId: number;
   }) => {
     return queryOptions({
-      queryKey: ["reviews", userId, filters, sort, pagination],
+      queryKey: ['reviews', userId, filters, sort, pagination],
       queryFn: apiInstance.get<IPaginationResponse<IReview>>(
         `/reviews/user/${userId}`,
         {
@@ -77,7 +79,7 @@ export const reviewApi = {
             pageIndex: pagination.pageIndex,
             pageSize: pagination.pageSize,
           },
-        },
+        }
       ),
     });
   },
@@ -91,7 +93,7 @@ export const reviewApi = {
     pagination: PaginationState;
   }) => {
     return queryOptions({
-      queryKey: ["reviews", "pending", filters, sort, pagination],
+      queryKey: ['reviews', 'pending', filters, sort, pagination],
       queryFn: apiInstance.get<IPaginationResponse<IReview>>(
         `/reviews/pending`,
         {
@@ -101,7 +103,7 @@ export const reviewApi = {
             pageIndex: pagination.pageIndex,
             pageSize: pagination.pageSize,
           },
-        },
+        }
       ),
     });
   },

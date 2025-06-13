@@ -1,21 +1,26 @@
-import { motion } from "framer-motion";
-import { useUser } from "@/app/providers";
-import { Separator } from "@/shared/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-import { UserDataEditorForm } from "@/features/userDataEditor/ui/UserDataEditorForm";
-import { SubscriptionStatus } from "@/entities/subscription/dto";
-import { formatDate } from "@/shared/lib/helpers";
-import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-import { Button } from "@/shared/ui/button";
-import { Link, useLocation } from "react-router-dom";
-import { DataTable } from "@/shared/components";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { orderApi } from "@/entities/order/api/orderApi";
-import type { PaginationState, SortingState } from "@tanstack/react-table";
-import { useState } from "react";
-import { getImageUrl } from "@/shared/lib/utils";
-import { userOrdersTableColumns } from "@/entities/order/ui/user-orders-table-columns";
+import type { PaginationState, SortingState } from '@tanstack/react-table';
+
+import { useState } from 'react';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
+
+import { useUser } from '@/app/providers';
+
+import { UserDataEditorForm } from '@/features/userDataEditor/ui/UserDataEditorForm';
+
+import { orderApi } from '@/entities/order/api/orderApi';
+import { userOrdersTableColumns } from '@/entities/order/ui/user-orders-table-columns';
+import { SubscriptionStatus } from '@/entities/subscription/dto';
+
+import { DataTable } from '@/shared/components';
+import { formatDate } from '@/shared/lib/helpers';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+import { Button } from '@/shared/ui/button';
+import { Separator } from '@/shared/ui/separator';
+import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 
 export const ProfilePage = () => {
   const user = useUser();
@@ -58,7 +63,7 @@ export const ProfilePage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home"}
+      key={'home'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
@@ -91,15 +96,27 @@ export const ProfilePage = () => {
               <p className="text-muted-foreground text-sm">{user.email}</p>
             </span>
           </div>
-          <Tabs value={location.pathname} className="w-full">
+          <Tabs
+            value={location.pathname}
+            className="w-full"
+          >
             <TabsList>
-              <TabsTrigger asChild value="/profile">
+              <TabsTrigger
+                asChild
+                value="/profile"
+              >
                 <Link to="/profile">Данные</Link>
               </TabsTrigger>
-              <TabsTrigger asChild value="/profile/subscription">
+              <TabsTrigger
+                asChild
+                value="/profile/subscription"
+              >
                 <Link to="/profile/subscription">Подписка</Link>
               </TabsTrigger>
-              <TabsTrigger asChild value="/profile/history">
+              <TabsTrigger
+                asChild
+                value="/profile/history"
+              >
                 <Link to="/profile/history">История оплат</Link>
               </TabsTrigger>
             </TabsList>
@@ -119,7 +136,7 @@ export const ProfilePage = () => {
                   </div>
                   <div>
                     <div className="text-muted-foreground text-sm">
-                      Дата оформления:{" "}
+                      Дата оформления:{' '}
                     </div>
                     {formatDate(user.subscription.startedAt)}
                   </div>
@@ -139,7 +156,12 @@ export const ProfilePage = () => {
                       {formatDate(user.subscription.expiresAt)}
                     </span>
                   </div>
-                  <Button size="lg" className="w-fit" asChild variant="rainbow">
+                  <Button
+                    size="lg"
+                    className="w-fit"
+                    asChild
+                    variant="rainbow"
+                  >
                     <Link to="/premium">Продлить подписку</Link>
                   </Button>
                 </div>
@@ -152,7 +174,12 @@ export const ProfilePage = () => {
                       {user.subscription.plan.name}
                     </span>
                   </div>
-                  <Button size="lg" className="w-fit" asChild variant="rainbow">
+                  <Button
+                    size="lg"
+                    className="w-fit"
+                    asChild
+                    variant="rainbow"
+                  >
                     <Link to="/premium">Оформить подписку</Link>
                   </Button>
                 </div>
@@ -160,11 +187,16 @@ export const ProfilePage = () => {
               {isNoSubscription && (
                 <div className="flex flex-col gap-2">
                   <div>
-                    Оформите{" "}
-                    <span className="rainbow-text font-semibold">подписку</span>{" "}
+                    Оформите{' '}
+                    <span className="rainbow-text font-semibold">подписку</span>{' '}
                     и получите безлимитный доступ к кино-новинкам!
                   </div>
-                  <Button size="lg" className="w-fit" asChild variant="rainbow">
+                  <Button
+                    size="lg"
+                    className="w-fit"
+                    asChild
+                    variant="rainbow"
+                  >
                     <Link to="/premium">Стать Premium</Link>
                   </Button>
                 </div>

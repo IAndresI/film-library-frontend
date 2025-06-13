@@ -1,6 +1,7 @@
-import { cn } from "../lib/utils";
-import { Button } from "./button";
-import { VideoPlayer } from "@/shared/components/VideoPlayer";
+import { VideoPlayer } from '@/shared/components/VideoPlayer';
+
+import { cn } from '../lib/utils';
+import { Button } from './button';
 
 export type IVideoInputProps = {
   value: File | null;
@@ -15,13 +16,13 @@ export const VideoInput = ({
   value,
   onChange,
   existingVideoUrl,
-  label = "видео",
-  accept = "video/*",
+  label = 'видео',
+  accept = 'video/*',
   className,
 }: IVideoInputProps) => {
   // Создаем источник для Vidstack согласно документации
   const videoSrc = value
-    ? ({ src: value, type: "video/object" } as const)
+    ? ({ src: value, type: 'video/object' } as const)
     : existingVideoUrl;
 
   const videoKey = value
@@ -32,12 +33,12 @@ export const VideoInput = ({
     <div className="space-y-4">
       <div
         className={cn(
-          "border-muted-foreground/25 hover:border-muted-foreground/50 relative flex min-h-[150px] cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors",
-          className,
+          'border-muted-foreground/25 hover:border-muted-foreground/50 relative flex min-h-[150px] cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors',
+          className
         )}
         onClick={() => {
-          const input = document.createElement("input");
-          input.type = "file";
+          const input = document.createElement('input');
+          input.type = 'file';
           input.accept = accept;
           input.onchange = (e) => {
             const file = (e.target as HTMLInputElement).files?.[0];
@@ -56,7 +57,7 @@ export const VideoInput = ({
             >
               <VideoPlayer
                 id={videoKey}
-                title={value?.name || "Видео"}
+                title={value?.name || 'Видео'}
                 key={videoKey}
                 src={videoSrc}
               />

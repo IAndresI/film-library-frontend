@@ -1,4 +1,4 @@
-import type { IFilmActor } from "../actor/dto";
+import type { IFilmActor } from '../actor/dto';
 
 export interface IGenre {
   icon: string;

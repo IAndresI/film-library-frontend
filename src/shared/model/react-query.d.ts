@@ -1,6 +1,6 @@
-import { CustomApiError } from "./api-error.model";
+import { CustomApiError } from './api-error.model';
 
-declare module "@tanstack/react-query" {
+declare module '@tanstack/react-query' {
   interface Register {
     defaultError: CustomApiError;
   }

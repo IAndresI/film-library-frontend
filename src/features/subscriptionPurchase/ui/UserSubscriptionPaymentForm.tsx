@@ -1,18 +1,22 @@
-import * as React from "react";
-import { cn } from "@/shared/lib/utils";
-import { useQuery } from "@tanstack/react-query";
-import { subscriptionApi } from "@/entities/subscription/api";
-import { useEffect, useState } from "react";
-import type { IPlan } from "@/entities/subscription/dto";
-import { Button } from "@/shared/ui/button";
+import type { IPlan } from '@/entities/subscription/dto';
+
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+
+import { subscriptionApi } from '@/entities/subscription/api';
+
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
 import {
   Select,
-  SelectItem,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import { useCreateSubscriptionPayment } from "../lib/hooks";
+} from '@/shared/ui/select';
+
+import { useCreateSubscriptionPayment } from '../lib/hooks';
 
 export function UserSubscriptionPaymentForm({
   className,
@@ -33,7 +37,10 @@ export function UserSubscriptionPaymentForm({
   }, [subscriptionPlans]);
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
+    <div
+      className={cn('grid gap-6', className)}
+      {...props}
+    >
       <div className="flex flex-col items-center gap-4">
         <h3 className="text-[30px] font-bold">За {selectedPlan?.price}₽</h3>
         <div className="mx-auto flex w-full max-w-[300px] flex-col items-center justify-center gap-4 px-5">
@@ -42,7 +49,7 @@ export function UserSubscriptionPaymentForm({
             value={selectedPlan?.id.toString()}
             onValueChange={(value) => {
               setSelectedPlan(
-                subscriptionPlans?.find((plan) => plan.id.toString() === value),
+                subscriptionPlans?.find((plan) => plan.id.toString() === value)
               );
             }}
           >
@@ -51,7 +58,10 @@ export function UserSubscriptionPaymentForm({
             </SelectTrigger>
             <SelectContent>
               {subscriptionPlans?.map((plan) => (
-                <SelectItem key={plan.id} value={plan.id.toString()}>
+                <SelectItem
+                  key={plan.id}
+                  value={plan.id.toString()}
+                >
                   {plan.name}
                 </SelectItem>
               ))}
@@ -61,7 +71,7 @@ export function UserSubscriptionPaymentForm({
             <Button
               className="w-full text-lg capitalize"
               size="lg"
-              variant={"rainbow"}
+              variant={'rainbow'}
               disabled={isLoading}
               onClick={() => {
                 createPayment({
@@ -69,7 +79,7 @@ export function UserSubscriptionPaymentForm({
                 });
               }}
             >
-              {isLoading ? "Создаём платеж..." : "Стать Premium"}
+              {isLoading ? 'Создаём платеж...' : 'Стать Premium'}
             </Button>
           )}
         </div>

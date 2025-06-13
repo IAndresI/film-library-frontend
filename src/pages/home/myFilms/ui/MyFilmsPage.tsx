@@ -1,35 +1,37 @@
-import { Separator } from "@/shared/ui/separator";
+import type { SortingState } from '@tanstack/react-table';
 
-import { FilmCard } from "@/entities/film/ui/FilmCard";
+import { useState } from 'react';
+import { Cross2Icon } from '@radix-ui/react-icons';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
-import { motion } from "framer-motion";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
-import { useDebounce } from "@/shared/lib/hooks/use-debounce";
-import { useGetAllFilters } from "@/features/filters/lib/hooks";
-import { MultiSelect } from "@/shared/ui/multi-select";
-import { Input } from "@/shared/ui/input";
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { Button } from "@/shared/ui/button";
-import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
-import type { SortingState } from "@tanstack/react-table";
-import { FILM_SORT_OPTIONS } from "@/entities/film/constants";
+import { useGetAllFilters } from '@/features/filters/lib/hooks';
+
+import { filmApi } from '@/entities/film/api/filmApi';
+import { FILM_SORT_OPTIONS } from '@/entities/film/constants';
+import { FilmCard } from '@/entities/film/ui/FilmCard';
+
+import { useDebounce } from '@/shared/lib/hooks/use-debounce';
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
+import { MultiSelect } from '@/shared/ui/multi-select';
 import {
   Select,
   SelectContent,
-  SelectValue,
-  SelectTrigger,
   SelectItem,
-} from "@/shared/ui/select";
-import { cn } from "@/shared/lib/utils";
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui/select';
+import { Separator } from '@/shared/ui/separator';
+import { SvgSpinner } from '@/shared/ui/svg/SvgSpinner';
 
 export const MyFilmsPage = () => {
   const { categoryId } = useParams();
   const [selectedActors, setSelectedActors] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce(search, 500);
   const [sort, setSort] = useState<SortingState>([
     FILM_SORT_OPTIONS[0].value[0],
@@ -46,9 +48,9 @@ export const MyFilmsPage = () => {
     isFetching,
   } = useInfiniteQuery({
     queryKey: [
-      "films",
-      "list",
-      "user",
+      'films',
+      'list',
+      'user',
       categoryId ? [categoryId] : selectedGenres,
       selectedActors,
       debouncedSearch,
@@ -88,7 +90,7 @@ export const MyFilmsPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home"}
+      key={'home'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
@@ -102,7 +104,7 @@ export const MyFilmsPage = () => {
                 onClick={() => {
                   setSelectedGenres([]);
                   setSelectedActors([]);
-                  setSearch("");
+                  setSearch('');
                 }}
                 className="h-8 px-2 lg:px-3"
               >
@@ -155,8 +157,8 @@ export const MyFilmsPage = () => {
             onValueChange={(value) => {
               setSort(
                 FILM_SORT_OPTIONS.find(
-                  (option) => option.value[0].id === value,
-                )!.value,
+                  (option) => option.value[0].id === value
+                )!.value
               );
             }}
           >
@@ -165,7 +167,10 @@ export const MyFilmsPage = () => {
             </SelectTrigger>
             <SelectContent>
               {FILM_SORT_OPTIONS.map((option) => (
-                <SelectItem key={option.value[0].id} value={option.value[0].id}>
+                <SelectItem
+                  key={option.value[0].id}
+                  value={option.value[0].id}
+                >
                   {option.label}
                 </SelectItem>
               ))}
@@ -182,8 +187,8 @@ export const MyFilmsPage = () => {
 
         <div
           className={cn(
-            "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500",
-            isFetching && !isFetchingNextPage && "opacity-35",
+            'grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500',
+            isFetching && !isFetchingNextPage && 'opacity-35'
           )}
         >
           {filmsData && filmsData.length > 0 ? (
@@ -212,7 +217,7 @@ export const MyFilmsPage = () => {
               {isFetchingNextPage ? (
                 <SvgSpinner className="h-4 w-4" />
               ) : (
-                "Показать ещё фильмов"
+                'Показать ещё фильмов'
               )}
             </Button>
           </div>

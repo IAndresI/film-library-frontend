@@ -1,41 +1,43 @@
-import { AuthLayout } from "../features/auth/ui/AuthLayout.tsx";
-import { AdminLayout } from "../pages/admin/ui/AdminLayout.tsx";
-import { createBrowserRouter } from "react-router-dom";
-import { AuthenticationPage } from "@/pages/authentication";
-import { AdminPage } from "@/pages/admin";
-import { HomePage } from "@/pages/home";
-import { HomeLayout } from "@/pages/home/ui/HomeLayout.tsx";
-import { WatchFilmPage } from "@/pages/watchFilm/ui/WatchFilmPage.tsx";
+import { createBrowserRouter } from 'react-router-dom';
+
+import { AdminPage } from '@/pages/admin';
+import { AuthenticationPage } from '@/pages/authentication';
+import { HomePage } from '@/pages/home';
+import { HomeLayout } from '@/pages/home/ui/HomeLayout.tsx';
+import { WatchFilmPage } from '@/pages/watchFilm/ui/WatchFilmPage.tsx';
+
+import { AuthLayout } from '../features/auth/ui/AuthLayout.tsx';
+import { AdminLayout } from '../pages/admin/ui/AdminLayout.tsx';
 
 export const router = createBrowserRouter([
   {
-    path: "authentication",
+    path: 'authentication',
     element: <AuthenticationPage />,
   },
   {
-    path: "*",
+    path: '*',
     element: <AuthLayout />,
     children: [
       {
-        path: "film/:id/watch",
+        path: 'film/:id/watch',
         element: <WatchFilmPage />,
       },
       {
         element: <AdminLayout />,
-        path: "admin/*",
+        path: 'admin/*',
         children: [
           {
-            path: "*",
+            path: '*',
             element: <AdminPage />,
           },
         ],
       },
       {
         element: <HomeLayout />,
-        path: "*",
+        path: '*',
         children: [
           {
-            path: "*",
+            path: '*',
             element: <HomePage />,
           },
         ],

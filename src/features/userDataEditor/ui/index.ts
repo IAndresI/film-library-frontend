@@ -1,1 +1,1 @@
-export { UserDataEditorForm } from "./UserDataEditorForm";
+export { UserDataEditorForm } from './UserDataEditorForm';

@@ -1,6 +1,9 @@
-import { MEDIA_URL } from "@/shared/config";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import type { ClassValue } from 'clsx';
+
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+import { MEDIA_URL } from '@/shared/config';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

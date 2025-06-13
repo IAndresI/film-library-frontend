@@ -1,1 +1,1 @@
-export { PremiumPage } from "./PremiumPage";
+export { PremiumPage } from './PremiumPage';

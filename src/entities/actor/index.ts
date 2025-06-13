@@ -1,2 +1,2 @@
-export { ActorCard } from "./ui";
-export { ActorSkeleton } from "./ui";
+export { ActorCard } from './ui';
+export { ActorSkeleton } from './ui';

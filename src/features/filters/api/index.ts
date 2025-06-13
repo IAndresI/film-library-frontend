@@ -1,1 +1,1 @@
-export { filtersApi } from "./reviewModerationApi";
+export { filtersApi } from './reviewModerationApi';

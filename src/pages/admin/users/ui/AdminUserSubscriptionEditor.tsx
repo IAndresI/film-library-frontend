@@ -1,38 +1,41 @@
-import { useUser } from "@/app/providers";
-import { subscriptionApi } from "@/entities/subscription/api/subscriptionApi";
-import { SubscriptionStatus } from "@/entities/subscription/dto";
-import type { IUser } from "@/entities/user/dto";
-import { queryClient } from "@/shared/api/query-client";
-import { formatDate } from "@/shared/lib/helpers";
-import { Button } from "@/shared/ui/button";
+import type { IUser } from '@/entities/user/dto';
+
+import React, { useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
+
+import { useUser } from '@/app/providers';
+
+import { subscriptionApi } from '@/entities/subscription/api/subscriptionApi';
+import { SubscriptionStatus } from '@/entities/subscription/dto';
+
+import { queryClient } from '@/shared/api/query-client';
+import { formatDate } from '@/shared/lib/helpers';
+import { Button } from '@/shared/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-
-import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
-import { toast } from "sonner";
+} from '@/shared/ui/select';
 
 const invalidateUserSubscriptionQueryOptions = (
   userId: number,
-  isCurrentUser: boolean,
+  isCurrentUser: boolean
 ) => {
-  queryClient.invalidateQueries({ queryKey: ["users"] });
-  queryClient.invalidateQueries({ queryKey: ["users", userId] });
-  queryClient.invalidateQueries({ queryKey: ["subscriptions"] });
+  queryClient.invalidateQueries({ queryKey: ['users'] });
+  queryClient.invalidateQueries({ queryKey: ['users', userId] });
+  queryClient.invalidateQueries({ queryKey: ['subscriptions'] });
   if (isCurrentUser) {
-    queryClient.invalidateQueries({ queryKey: ["user"] });
+    queryClient.invalidateQueries({ queryKey: ['user'] });
   }
 };
 
 export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
   const currentUser = useUser();
   const [selectedPlan, setSelectedPlan] = useState<number | undefined>(
-    undefined,
+    undefined
   );
   const isActiveSubscription =
     user?.subscription &&
@@ -50,12 +53,12 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
     onSuccess: (data) => {
       invalidateUserSubscriptionQueryOptions(
         data.id,
-        data.userId === currentUser.id,
+        data.userId === currentUser.id
       );
       toast.success(`Подписка пользователя "${user.name}" успешно отозвана`);
     },
     onError: (error) => {
-      toast.error("Не удалось отозвать подписку", {
+      toast.error('Не удалось отозвать подписку', {
         description: error.message,
       });
     },
@@ -67,14 +70,14 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
       onSuccess: (data) => {
         invalidateUserSubscriptionQueryOptions(
           data.id,
-          data.userId === currentUser.id,
+          data.userId === currentUser.id
         );
-        toast.success("Подпсика выдана", {
+        toast.success('Подпсика выдана', {
           description: `Пользователю "${user.name}" успешно выдана "${data.plan.name}"`,
         });
       },
       onError: (error) => {
-        toast.error("Не удалось выдать подписку", {
+        toast.error('Не удалось выдать подписку', {
           description: error.message,
         });
       },
@@ -94,7 +97,7 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
           </div>
           <div>
             <div className="text-muted-foreground text-sm">
-              Дата оформления:{" "}
+              Дата оформления:{' '}
             </div>
             {formatDate(user.subscription.startedAt)}
           </div>
@@ -117,7 +120,10 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
               </SelectTrigger>
               <SelectContent>
                 {subscriptionPlans?.map((plan) => (
-                  <SelectItem key={plan.id} value={plan.id.toString()}>
+                  <SelectItem
+                    key={plan.id}
+                    value={plan.id.toString()}
+                  >
                     {plan.name}
                   </SelectItem>
                 ))}

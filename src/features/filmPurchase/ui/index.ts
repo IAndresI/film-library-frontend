@@ -1,1 +1,1 @@
-export { UserFilmPaymentForm } from "./UserFilmPaymentForm";
+export { UserFilmPaymentForm } from './UserFilmPaymentForm';

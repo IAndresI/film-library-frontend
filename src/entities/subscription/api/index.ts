@@ -1,1 +1,1 @@
-export { subscriptionApi } from "./subscriptionApi";
+export { subscriptionApi } from './subscriptionApi';

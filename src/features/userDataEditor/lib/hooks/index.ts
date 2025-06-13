@@ -1,1 +1,1 @@
-export { useEditUserData } from "./useEditUserData";
+export { useEditUserData } from './useEditUserData';

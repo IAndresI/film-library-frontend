@@ -1,4 +1,7 @@
-import { Button } from "@/shared/ui/button";
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+
+import { Button } from '@/shared/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -7,10 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import { queryClient } from "../api/query-client";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+} from '@/shared/ui/dialog';
+
+import { queryClient } from '../api/query-client';
 
 export const DeleteModal = ({
   title,
@@ -20,7 +22,7 @@ export const DeleteModal = ({
   children,
   open,
   setOpen,
-  buttonText = "Удалить",
+  buttonText = 'Удалить',
   onSuccess,
 }: {
   title: string;
@@ -54,12 +56,18 @@ export const DeleteModal = ({
   });
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={setOpen || setInitialOpen}>
+    <Dialog
+      open={isModalOpen}
+      onOpenChange={setOpen || setInitialOpen}
+    >
       <DialogTrigger asChild>
         {children ? (
           children
         ) : (
-          <Button className="w-full justify-start" variant="ghost">
+          <Button
+            className="w-full justify-start"
+            variant="ghost"
+          >
             Удалить
           </Button>
         )}

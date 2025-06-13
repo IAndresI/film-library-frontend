@@ -1,12 +1,14 @@
-import type { IFilm } from "@/entities/film/dto";
-import { apiInstance } from "@/shared/api/base";
-import { queryOptions } from "@tanstack/react-query";
-import type { CancelToken } from "axios";
+import type { IFilm } from '@/entities/film/dto';
+import type { CancelToken } from 'axios';
+
+import { queryOptions } from '@tanstack/react-query';
+
+import { apiInstance } from '@/shared/api/base';
 
 export const favoriteFilmActionsApi = {
   getUserFavoriteFilmsIdsQueryOptions: ({ userId }: { userId: number }) => {
     return queryOptions({
-      queryKey: ["favorites-ids", userId],
+      queryKey: ['favorites-ids', userId],
       queryFn: apiInstance.get<number[]>(`/users/${userId}/favorites/ids`),
     });
   },
@@ -18,7 +20,7 @@ export const favoriteFilmActionsApi = {
     filmId: number;
   }) => {
     return queryOptions({
-      queryKey: ["favorites", userId, filmId],
+      queryKey: ['favorites', userId, filmId],
       queryFn: apiInstance.get<{
         isFavorite: boolean;
         filmId: number;
@@ -38,7 +40,7 @@ export const favoriteFilmActionsApi = {
     apiInstance.post<IFilm>(
       `/users/${userId}/favorites`,
       { filmId },
-      { cancelToken },
+      { cancelToken }
     ),
   removeUserFavorites: ({
     userId,

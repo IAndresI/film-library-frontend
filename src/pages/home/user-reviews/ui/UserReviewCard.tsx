@@ -1,13 +1,17 @@
-import type { IReview } from "@/entities/review/dto";
-import { StarFilledIcon } from "@radix-ui/react-icons";
-import { Link } from "react-router-dom";
-import { Button } from "../../../../shared/ui/button";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { reviewApi } from "@/entities/review/api/reviewApi";
-import { ReviewModal } from "./ReviewModal";
-import { getImageUrl } from "@/shared/lib/utils";
-import { Badge } from "@/shared/ui/badge";
+import type { IReview } from '@/entities/review/dto';
+
+import { StarFilledIcon } from '@radix-ui/react-icons';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+
+import { filmApi } from '@/entities/film/api/filmApi';
+import { reviewApi } from '@/entities/review/api/reviewApi';
+
+import { getImageUrl } from '@/shared/lib/utils';
+import { Badge } from '@/shared/ui/badge';
+
+import { Button } from '../../../../shared/ui/button';
+import { ReviewModal } from './ReviewModal';
 
 interface IUserReviewCardProps {
   review: IReview;
@@ -17,13 +21,13 @@ export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
   const queryClient = useQueryClient();
 
   const { data: film } = useQuery(
-    filmApi.getFilmByIdQueryOptions(review.film.id),
+    filmApi.getFilmByIdQueryOptions(review.film.id)
   );
   const { mutate: deleteReviewMutate, isPending: isDeletingReview } =
     useMutation({
       mutationFn: reviewApi.deleteReview,
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["reviews"] });
+        queryClient.invalidateQueries({ queryKey: ['reviews'] });
       },
     });
 
@@ -36,7 +40,10 @@ export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
           {review.rating}
         </div>
         {!review.isApproved && (
-          <Badge variant="outline" className="ml-2">
+          <Badge
+            variant="outline"
+            className="ml-2"
+          >
             Ожидает модерации
           </Badge>
         )}
@@ -49,11 +56,11 @@ export const UserReviewCard = ({ review }: IUserReviewCardProps) => {
           >
             <img
               src={getImageUrl(film?.image)}
-              alt={"film"}
+              alt={'film'}
               width={150}
               height={200}
               className={
-                "block aspect-[3/4] overflow-hidden object-cover transition-all hover:scale-105"
+                'block aspect-[3/4] overflow-hidden object-cover transition-all hover:scale-105'
               }
             />
           </Link>

@@ -1,40 +1,43 @@
-import { ScrollArea, ScrollBar } from "@/shared/ui/scroll-area";
-import { Separator } from "@/shared/ui/separator";
-
-import { motion } from "framer-motion";
-import { CustomBreadcrumbs } from "@/shared/components/CustomBreadcrumbs";
 import {
   BookmarkFilledIcon,
   BookmarkIcon,
   PlayIcon,
   StarFilledIcon,
-} from "@radix-ui/react-icons";
+} from '@radix-ui/react-icons';
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { Link, useParams } from 'react-router-dom';
+
+import { useUser } from '@/app/providers';
+
+import { useFavoritesActions } from '@/features/favoriteFilmActions/lib/hooks';
+import { UserFilmPaymentForm } from '@/features/filmPurchase/ui';
+import { ReviewEditorForm } from '@/features/reviewEditor/ui';
+
+import { ActorCard } from '@/entities/actor/ui/ActorCard';
+import { filmApi } from '@/entities/film/api/filmApi';
+import { getMediaUrl } from '@/entities/film/lib/helpers';
+import { reviewApi } from '@/entities/review/api/reviewApi';
+import { SubscriptionStatus } from '@/entities/subscription/dto';
+
+import { CustomBreadcrumbs } from '@/shared/components/CustomBreadcrumbs';
+import { VideoPlayer } from '@/shared/components/VideoPlayer';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+import { Badge } from '@/shared/ui/badge';
+import { Button } from '@/shared/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import { ActorCard } from "@/entities/actor/ui/ActorCard";
-import { Button } from "@/shared/ui/button";
-import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
-import { Badge } from "@/shared/ui/badge";
-import { reviewApi } from "@/entities/review/api/reviewApi";
-import { useUser } from "@/app/providers";
-import { getImageUrl } from "@/shared/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { ReviewEditorForm } from "@/features/reviewEditor/ui";
-import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-import { SvgFire } from "@/shared/ui/svg/SvgFire";
-import { SubscriptionStatus } from "@/entities/subscription/dto";
-import { useFavoritesActions } from "@/features/favoriteFilmActions/lib/hooks";
-import { UserFilmPaymentForm } from "@/features/filmPurchase/ui";
-import { VideoPlayer } from "@/shared/components/VideoPlayer";
-import { getMediaUrl } from "@/entities/film/lib/helpers";
+} from '@/shared/ui/dialog';
+import { ScrollArea, ScrollBar } from '@/shared/ui/scroll-area';
+import { Separator } from '@/shared/ui/separator';
+import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
+import { SvgFire } from '@/shared/ui/svg/SvgFire';
+import { SvgSpinner } from '@/shared/ui/svg/SvgSpinner';
 
 export const FilmPage = () => {
   const { id } = useParams();
@@ -54,7 +57,7 @@ export const FilmPage = () => {
         pageIndex: 0,
         pageSize: 10,
       },
-    }),
+    })
   );
 
   const { data: userReviewData } = useQuery({
@@ -79,7 +82,7 @@ export const FilmPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home"}
+      key={'home'}
     >
       {isFilmLoading && <SvgSpinner className="mx-auto h-10 w-10" />}
       {film && (
@@ -87,8 +90,8 @@ export const FilmPage = () => {
           <CustomBreadcrumbs
             className="mb-4"
             crumbs={[
-              { label: "Главная", link: "/" },
-              { label: "Фильмы", link: "/films" },
+              { label: 'Главная', link: '/' },
+              { label: 'Фильмы', link: '/films' },
               { label: film.name },
             ]}
           />
@@ -100,7 +103,7 @@ export const FilmPage = () => {
                   width={250}
                   height={330}
                   className={
-                    "aspect-[3/4] h-fit max-w-[330px] min-w-[330px] overflow-hidden rounded-md object-cover transition-all"
+                    'aspect-[3/4] h-fit max-w-[330px] min-w-[330px] overflow-hidden rounded-md object-cover transition-all'
                   }
                 />
                 <div>
@@ -129,19 +132,22 @@ export const FilmPage = () => {
                             to={
                               isSubsciptionActive
                                 ? `/film/${film.id}/watch`
-                                : "/premium"
+                                : '/premium'
                             }
                           >
                             <SvgCrown className="mr-2 min-h-[24px] min-w-[24px]" />
                             {isSubsciptionActive
-                              ? "Смотреть"
-                              : "Смотреть вместе с подпиской"}
+                              ? 'Смотреть'
+                              : 'Смотреть вместе с подпиской'}
                           </Link>
                         </Button>
                       )}
 
                       {!isFilmPurchased && !film.isPaid && (
-                        <Button asChild className="h-12 p-0 px-5">
+                        <Button
+                          asChild
+                          className="h-12 p-0 px-5"
+                        >
                           <Link to={`/film/${film.id}/watch`}>
                             <SvgFire className="mr-2 min-h-[24px] min-w-[24px]" />
                             Смотреть
@@ -172,7 +178,7 @@ export const FilmPage = () => {
                         <BookmarkFilledIcon className={`h-6 w-6`} />
                       ) : (
                         <BookmarkIcon className={`h-6 w-6`} />
-                      )}{" "}
+                      )}{' '}
                       Буду смотреть
                     </Button>
                   )}
@@ -187,9 +193,12 @@ export const FilmPage = () => {
                     </h1>
                   </div>
                   <div className="text-muted-foreground flex flex-wrap gap-1">
-                    {new Date(film.releaseDate || "").getFullYear()} |{" "}
+                    {new Date(film.releaseDate || '').getFullYear()} |{' '}
                     {film.genres.map((genre) => (
-                      <Link to={`/films/genres/${genre.id}`} key={genre.id}>
+                      <Link
+                        to={`/films/genres/${genre.id}`}
+                        key={genre.id}
+                      >
                         <Badge key={genre.id}>{genre.name}</Badge>
                       </Link>
                     ))}
@@ -198,7 +207,7 @@ export const FilmPage = () => {
                 </div>
                 <div className="flex gap-5">
                   <div className="flex items-center gap-1 text-5xl font-semibold">
-                    {film.rating || "-"}{" "}
+                    {film.rating || '-'}{' '}
                     <StarFilledIcon className="h-10 w-10 text-yellow-500" />
                   </div>
                   {film.trailerUrl && (
@@ -275,7 +284,10 @@ export const FilmPage = () => {
               {!isReviewsLoading && reviews?.data && reviews.data.length > 0 ? (
                 <div className="grid h-fit border-r">
                   {reviews.data.map((review, i, arr) => (
-                    <div className="grid gap-3" key={review.id}>
+                    <div
+                      className="grid gap-3"
+                      key={review.id}
+                    >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <Avatar className="size-10">
@@ -289,7 +301,7 @@ export const FilmPage = () => {
                           <div className="font-medium">{review.user.name}</div>
                         </div>
                         <div className="flex items-center gap-1 pr-5 font-semibold">
-                          <StarFilledIcon className="h-4 w-4 text-yellow-500" />{" "}
+                          <StarFilledIcon className="h-4 w-4 text-yellow-500" />{' '}
                           {review.rating}
                         </div>
                       </div>
@@ -297,7 +309,7 @@ export const FilmPage = () => {
                         {review.text}
                       </p>
                       <Separator
-                        className={i !== arr.length - 1 ? "my-4" : "mt-4"}
+                        className={i !== arr.length - 1 ? 'my-4' : 'mt-4'}
                       />
                     </div>
                   ))}
@@ -309,9 +321,12 @@ export const FilmPage = () => {
               )}
               <div className="px-5">
                 <h4 className="mb-4 text-xl font-medium">
-                  {userReviewData ? "Ваш обзор" : "Оставить обзор"}
+                  {userReviewData ? 'Ваш обзор' : 'Оставить обзор'}
                   {userReviewData && !userReviewData.isApproved && (
-                    <Badge variant="outline" className="ml-2">
+                    <Badge
+                      variant="outline"
+                      className="ml-2"
+                    >
                       Ожидает модерации
                     </Badge>
                   )}

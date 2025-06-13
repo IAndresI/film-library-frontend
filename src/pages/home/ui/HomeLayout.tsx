@@ -1,8 +1,10 @@
-import { Outlet } from "react-router-dom";
-import { HomeHeader } from "@/pages/home/ui/HomeHeader";
-import { motion } from "framer-motion";
-import { SidebarProvider } from "@/shared/ui/sidebar";
-import { HomeSidebar } from "@/pages/home/ui/HomeSidebar";
+import { motion } from 'framer-motion';
+import { Outlet } from 'react-router-dom';
+
+import { HomeHeader } from '@/pages/home/ui/HomeHeader';
+import { HomeSidebar } from '@/pages/home/ui/HomeSidebar';
+
+import { SidebarProvider } from '@/shared/ui/sidebar';
 
 export const HomeLayout = () => {
   return (
@@ -10,7 +12,7 @@ export const HomeLayout = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home_layout"}
+      key={'home_layout'}
     >
       <SidebarProvider>
         <HomeSidebar />

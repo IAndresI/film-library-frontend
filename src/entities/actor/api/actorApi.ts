@@ -1,12 +1,14 @@
-import { apiInstance } from "@/shared/api/base";
-import type { IActor, IActorWithFilms } from "@/entities/actor/dto";
-import { queryOptions } from "@tanstack/react-query";
-import type { IPaginationResponse } from "@/shared/model/pagination-response.model";
+import type { IActor, IActorWithFilms } from '@/entities/actor/dto';
+import type { IPaginationResponse } from '@/shared/model/pagination-response.model';
 import type {
   ColumnFiltersState,
   PaginationState,
   SortingState,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
+
+import { queryOptions } from '@tanstack/react-query';
+
+import { apiInstance } from '@/shared/api/base';
 
 export const actorApi = {
   getAllActorsQueryOptions: ({
@@ -21,8 +23,8 @@ export const actorApi = {
     pagination: PaginationState;
   }) => {
     return queryOptions({
-      queryKey: ["actors", search, genres, films, pagination],
-      queryFn: apiInstance.get<IPaginationResponse<IActor>>("/actors", {
+      queryKey: ['actors', search, genres, films, pagination],
+      queryFn: apiInstance.get<IPaginationResponse<IActor>>('/actors', {
         params: {
           search,
           genres,
@@ -43,9 +45,9 @@ export const actorApi = {
     pagination: PaginationState;
   }) => {
     return queryOptions({
-      queryKey: ["actors", "admin", filters, sort, pagination],
+      queryKey: ['actors', 'admin', filters, sort, pagination],
       queryFn: apiInstance.get<IPaginationResponse<IActor>>(
-        "/actors/admin/all",
+        '/actors/admin/all',
         {
           params: {
             filters,
@@ -53,19 +55,19 @@ export const actorApi = {
             pageIndex: pagination.pageIndex,
             pageSize: pagination.pageSize,
           },
-        },
+        }
       ),
     });
   },
   getActorQueryOptions: (id: number) => {
     return queryOptions({
-      queryKey: ["actors", id],
+      queryKey: ['actors', id],
       queryFn: apiInstance.get<IActorWithFilms>(`/actors/${id}`),
     });
   },
   getActorByIdAdminQueryOptions: (id: number) => {
     return queryOptions({
-      queryKey: ["actors", "admin", id],
+      queryKey: ['actors', 'admin', id],
       queryFn: apiInstance.get<IActor>(`/actors/admin/${id}`),
     });
   },

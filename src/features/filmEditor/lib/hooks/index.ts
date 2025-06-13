@@ -1,1 +1,1 @@
-export { useEditFilmData } from "./useEditFilmData";
+export { useEditFilmData } from './useEditFilmData';

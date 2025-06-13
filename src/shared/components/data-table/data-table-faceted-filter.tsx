@@ -1,10 +1,12 @@
-import * as React from "react";
-import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import type { Column, Table } from "@tanstack/react-table";
+import type { Column, Table } from '@tanstack/react-table';
 
-import { cn } from "@/shared/lib/utils";
-import { Badge } from "../../ui/badge";
-import { Button } from "../../ui/button";
+import * as React from 'react';
+import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons';
+
+import { cn } from '@/shared/lib/utils';
+
+import { Badge } from '../../ui/badge';
+import { Button } from '../../ui/button';
 import {
   Command,
   CommandEmpty,
@@ -13,9 +15,9 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "../../ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
-import { Separator } from "../../ui/separator";
+} from '../../ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
+import { Separator } from '../../ui/separator';
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -46,7 +48,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   const selectedValues = useMetaFilterName
     ? new Set(
         (table.getState().columnFilters.find((filter) => filter.id === filterId)
-          ?.value as string[]) || [],
+          ?.value as string[]) || []
       )
     : new Set(column?.getFilterValue() as string[]);
 
@@ -54,7 +56,7 @@ export function DataTableFacetedFilter<TData, TValue>({
     if (useMetaFilterName && filterId) {
       const columnFilters = table.getState().columnFilters;
       const existingFilters = columnFilters.filter(
-        (filter) => filter.id !== filterId,
+        (filter) => filter.id !== filterId
       );
       const newFilters = filterValues.length
         ? [...existingFilters, { id: filterId, value: filterValues }]
@@ -69,12 +71,19 @@ export function DataTableFacetedFilter<TData, TValue>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 border-dashed"
+        >
           <PlusCircledIcon className="mr-2 h-4 w-4" />
           {title}
           {selectedValues?.size > 0 && (
             <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Separator
+                orientation="vertical"
+                className="mx-2 h-4"
+              />
               <Badge
                 variant="secondary"
                 className="rounded-sm px-1 font-normal lg:hidden"
@@ -107,7 +116,10 @@ export function DataTableFacetedFilter<TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
+      <PopoverContent
+        className="w-[200px] p-0"
+        align="start"
+      >
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
@@ -130,13 +142,13 @@ export function DataTableFacetedFilter<TData, TValue>({
                   >
                     <div
                       className={cn(
-                        "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
+                        'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
                         isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible",
+                          ? 'bg-primary text-primary-foreground'
+                          : 'opacity-50 [&_svg]:invisible'
                       )}
                     >
-                      <CheckIcon className={cn("h-4 w-4")} />
+                      <CheckIcon className={cn('h-4 w-4')} />
                     </div>
                     {option.icon && (
                       <option.icon className="text-muted-foreground mr-2 h-4 w-4" />

@@ -1,4 +1,4 @@
-import { Button } from "./button";
+import { Button } from './button';
 
 export type IImageInputProps = {
   value: File | null;
@@ -16,9 +16,9 @@ export const ImageInput = ({
       <div
         className="border-muted-foreground/25 hover:border-muted-foreground/50 relative min-h-[150px] cursor-pointer rounded-lg border-2 border-dashed p-6 text-center transition-colors"
         onClick={() => {
-          const input = document.createElement("input");
-          input.type = "file";
-          input.accept = "image/*";
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/*';
           input.onchange = (e) => {
             const file = (e.target as HTMLInputElement).files?.[0];
             if (file) {
@@ -84,8 +84,8 @@ export const ImageInput = ({
           onClick={() => onChange(undefined)}
         >
           {existingImageUrl && !value
-            ? "Оставить без изображения"
-            : "Удалить изображение"}
+            ? 'Оставить без изображения'
+            : 'Удалить изображение'}
         </Button>
       )}
     </div>

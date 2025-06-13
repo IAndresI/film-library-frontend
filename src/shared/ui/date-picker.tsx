@@ -1,12 +1,13 @@
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import type { SelectSingleEventHandler } from 'react-day-picker';
 
-import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { Calendar } from "@/shared/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
-import type { SelectSingleEventHandler } from "react-day-picker";
-import { ru } from "date-fns/locale";
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
+import { CalendarIcon } from 'lucide-react';
+
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { Calendar } from '@/shared/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 
 interface IDatepickerProps {
   date: Date;
@@ -25,18 +26,21 @@ export const DatePicker = ({
     <Popover modal>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
-          className={cn(!date && "text-muted-foreground", buttonClassName)}
+          variant={'outline'}
+          className={cn(!date && 'text-muted-foreground', buttonClassName)}
         >
           <CalendarIcon />
           {date ? (
-            format(date, "PPP", { locale: ru })
+            format(date, 'PPP', { locale: ru })
           ) : (
-            <span>{placeholder || "Выберите дату"}</span>
+            <span>{placeholder || 'Выберите дату'}</span>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent
+        className="w-auto p-0"
+        align="start"
+      >
         <Calendar
           mode="single"
           selected={date}

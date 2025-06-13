@@ -1,23 +1,24 @@
-import { BookmarkFilledIcon, StarFilledIcon } from "@radix-ui/react-icons";
+import type { IFilm } from '@/entities/film/dto';
 
-import { cn, getImageUrl } from "@/shared/lib/utils";
+import { BookmarkFilledIcon, StarFilledIcon } from '@radix-ui/react-icons';
+import { BookmarkIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-import { Link } from "react-router-dom";
-import type { IFilm } from "@/entities/film/dto";
-import { BookmarkIcon } from "lucide-react";
-import { Button } from "@/shared/ui/button";
-import { useFavoritesActions } from "@/features/favoriteFilmActions/lib/hooks";
+import { useFavoritesActions } from '@/features/favoriteFilmActions/lib/hooks';
+
+import { cn, getImageUrl } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
 
 interface FilmCardProps extends React.HTMLAttributes<HTMLDivElement> {
   film: IFilm;
-  aspectRatio?: "portrait" | "square";
+  aspectRatio?: 'portrait' | 'square';
   width?: number;
   height?: number;
 }
 
 export function FilmCard({
   film,
-  aspectRatio = "portrait",
+  aspectRatio = 'portrait',
   width,
   height,
   className,
@@ -26,7 +27,10 @@ export function FilmCard({
   const { isInFavorite, toggleFavorite } = useFavoritesActions(film.id);
 
   return (
-    <div className={cn("h-full space-y-3", className)} {...props}>
+    <div
+      className={cn('h-full space-y-3', className)}
+      {...props}
+    >
       <div className="relative block overflow-hidden rounded-md">
         <Button
           className="absolute top-2 right-2 z-10 h-10 w-9 p-0 px-4"
@@ -45,10 +49,10 @@ export function FilmCard({
             width={width}
             height={height}
             className={cn(
-              "h-auto w-full object-cover transition-all hover:scale-105",
-              aspectRatio === "portrait"
-                ? "aspect-[3/4] max-h-[333px]"
-                : "aspect-square",
+              'h-auto w-full object-cover transition-all hover:scale-105',
+              aspectRatio === 'portrait'
+                ? 'aspect-[3/4] max-h-[333px]'
+                : 'aspect-square'
             )}
           />
         </Link>
@@ -71,14 +75,14 @@ export function FilmCard({
           </div>
 
           <p className="text-muted-foreground text-xs">
-            {new Date(film.releaseDate || "").getFullYear()},{" "}
+            {new Date(film.releaseDate || '').getFullYear()},{' '}
             <ul className="inline">
               {film.genres.map((genre, i, arr) => (
                 <Link
                   to={`/films/genres/${genre.id}`}
                   className="hover:text-primary transition"
                 >
-                  {genre.name} {i !== arr.length - 1 && ", "}
+                  {genre.name} {i !== arr.length - 1 && ', '}
                 </Link>
               ))}
             </ul>

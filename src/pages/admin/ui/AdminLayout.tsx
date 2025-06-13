@@ -1,16 +1,18 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import { AdminHeader } from "./AdminHeader";
-import { AdminSidebar } from "./AdminSidebar";
-import { motion } from "framer-motion";
-import { SidebarProvider } from "../../../shared/ui/sidebar";
-import { useUser } from "@/app/providers";
+import { motion } from 'framer-motion';
+import { Outlet, useNavigate } from 'react-router-dom';
+
+import { useUser } from '@/app/providers';
+
+import { SidebarProvider } from '../../../shared/ui/sidebar';
+import { AdminHeader } from './AdminHeader';
+import { AdminSidebar } from './AdminSidebar';
 
 export const AdminLayout = () => {
   const user = useUser();
   const navigate = useNavigate();
 
   if (!user || !user.isAdmin) {
-    navigate("/");
+    navigate('/');
   }
 
   return (
@@ -18,7 +20,7 @@ export const AdminLayout = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"admin_layout"}
+      key={'admin_layout'}
     >
       <SidebarProvider>
         <AdminSidebar />

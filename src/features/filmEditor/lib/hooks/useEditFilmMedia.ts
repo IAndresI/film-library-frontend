@@ -1,8 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
-import { filmEditorApi } from "../../api/filmEditorApi";
-import { queryClient } from "@/shared/api/query-client";
-import type { IFilm } from "@/entities/film/dto";
-import { toast } from "sonner";
+import type { IFilm } from '@/entities/film/dto';
+
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+
+import { queryClient } from '@/shared/api/query-client';
+
+import { filmEditorApi } from '../../api/filmEditorApi';
 
 export const useEditFilmMedia = (props?: {
   onSuccess?:
@@ -13,7 +16,7 @@ export const useEditFilmMedia = (props?: {
           trailerFile?: string | File;
           filmFile?: string | File;
         },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
@@ -27,8 +30,8 @@ export const useEditFilmMedia = (props?: {
   } = useMutation({
     mutationFn: filmEditorApi.editFilmMedia,
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: ["films"] });
-      queryClient.invalidateQueries({ queryKey: ["films", variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['films'] });
+      queryClient.invalidateQueries({ queryKey: ['films', variables.id] });
       toast.success(`Медиа файлы фильма "${data.name}" успешно обновлены`);
       onSuccess?.(data, variables, context);
     },

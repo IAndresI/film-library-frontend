@@ -1,5 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
-import { subscriptionPurchaseApi } from "../../api/subscriptionPurchaseApi";
+import { useMutation } from '@tanstack/react-query';
+
+import { subscriptionPurchaseApi } from '../../api/subscriptionPurchaseApi';
 
 export const useCreateSubscriptionPayment = (props?: {
   onSuccess?:
@@ -11,7 +12,7 @@ export const useCreateSubscriptionPayment = (props?: {
           orderId: string;
         },
         variables: { planId: number; redirectUrl?: string },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {

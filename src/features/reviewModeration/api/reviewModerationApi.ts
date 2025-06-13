@@ -1,5 +1,6 @@
-import type { IReview } from "@/entities/review/dto";
-import { apiInstance } from "@/shared/api/base";
+import type { IReview } from '@/entities/review/dto';
+
+import { apiInstance } from '@/shared/api/base';
 
 export const reviewModerationApi = {
   approveReview: ({ id }: { id: number }) =>

@@ -1,1 +1,1 @@
-export { useCreateSubscriptionPayment } from "./useCreateSubscriptionPayment";
+export { useCreateSubscriptionPayment } from './useCreateSubscriptionPayment';

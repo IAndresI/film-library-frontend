@@ -1,1 +1,1 @@
-export { ActorDataEditorForm } from "./ActorDataEditorForm";
+export { ActorDataEditorForm } from './ActorDataEditorForm';

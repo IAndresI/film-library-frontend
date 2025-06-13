@@ -1,6 +1,10 @@
-import { API_URL } from "@/shared/config";
-import axios, { CanceledError, type AxiosRequestConfig } from "axios";
-import { CustomApiError } from "../model/api-error.model";
+import type { AxiosRequestConfig } from 'axios';
+
+import axios, { CanceledError } from 'axios';
+
+import { API_URL } from '@/shared/config';
+
+import { CustomApiError } from '../model/api-error.model';
 
 const handleError = (error: unknown): never => {
   if (axios.isAxiosError(error) && error.response?.data) {
@@ -16,12 +20,12 @@ const handleError = (error: unknown): never => {
   if (error instanceof CanceledError) {
     throw new CustomApiError({
       code: 408,
-      message: "Запрос отменен",
+      message: 'Запрос отменен',
     });
   }
 
   throw new CustomApiError({
-    message: "Неизвестная ошибка",
+    message: 'Неизвестная ошибка',
     code: 500,
   });
 };
@@ -29,12 +33,12 @@ const handleError = (error: unknown): never => {
 export const $axios = axios.create({
   baseURL: API_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
 $axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -45,11 +49,11 @@ $axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
     }
 
     return handleError(error);
-  },
+  }
 );
 
 export const apiInstance = {

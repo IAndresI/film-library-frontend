@@ -1,9 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/shared/api/query-client";
+import type { IReview } from '@/entities/review/dto';
 
-import type { IReview } from "@/entities/review/dto";
-import { reviewEditorApi } from "../../api";
-import { toast } from "sonner";
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+
+import { queryClient } from '@/shared/api/query-client';
+
+import { reviewEditorApi } from '../../api';
 
 export const useEditReview = (props?: {
   onSuccess?:
@@ -14,7 +16,7 @@ export const useEditReview = (props?: {
           rating: number;
           text: string;
         },
-        context: unknown,
+        context: unknown
       ) => Promise<unknown> | unknown)
     | undefined;
 }) => {
@@ -28,8 +30,8 @@ export const useEditReview = (props?: {
   } = useMutation({
     mutationFn: reviewEditorApi.editReview,
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: ["reviews"] });
-      toast.success("Обзор успешно отредактирован");
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      toast.success('Обзор успешно отредактирован');
       onSuccess?.(data, variables, context);
     },
   });

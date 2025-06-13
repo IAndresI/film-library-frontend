@@ -1,58 +1,59 @@
-import * as React from "react";
-import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import type { IActor } from '@/entities/actor/dto';
 
-import { useEditActorData, useAddActor } from "../lib/hooks";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Input } from "@/shared/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as React from 'react';
+import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { formatDate } from 'date-fns';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { cn, getImageUrl } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { DatePicker } from '@/shared/ui/date-picker';
 import {
+  Form,
   FormControl,
-  FormItem,
   FormField,
+  FormItem,
   FormLabel,
   FormMessage,
-  Form,
-} from "@/shared/ui/form";
-import { DatePicker } from "@/shared/ui/date-picker";
-import { Textarea } from "@/shared/ui/textarea";
-import type { IActor } from "@/entities/actor/dto";
-import { ImageInput } from "@/shared/ui/image-input";
-import { Switch } from "@/shared/ui/switch";
-import { useEffect } from "react";
-import { formatDate } from "date-fns";
-import { getImageUrl } from "@/shared/lib/utils";
+} from '@/shared/ui/form';
+import { ImageInput } from '@/shared/ui/image-input';
+import { Input } from '@/shared/ui/input';
+import { Switch } from '@/shared/ui/switch';
+import { Textarea } from '@/shared/ui/textarea';
+
+import { useAddActor, useEditActorData } from '../lib/hooks';
 
 const formSchema = z.object({
-  name: z.string({ required_error: "Название фильма обязательно" }).min(2, {
-    message: "Название фильма должно быть не менее 2 символов",
+  name: z.string({ required_error: 'Название фильма обязательно' }).min(2, {
+    message: 'Название фильма должно быть не менее 2 символов',
   }),
-  description: z.string({ required_error: "Описание обязательно" }).min(20, {
-    message: "Описание должно быть не менее 20 символов",
+  description: z.string({ required_error: 'Описание обязательно' }).min(20, {
+    message: 'Описание должно быть не менее 20 символов',
   }),
   image: z
     .union([
-      z.instanceof(File, { message: "Выберите файл изображения" }),
-      z.string().url("Неверный формат URL изображения"),
+      z.instanceof(File, { message: 'Выберите файл изображения' }),
+      z.string().url('Неверный формат URL изображения'),
     ])
     .refine((value) => {
-      if (typeof value === "string") return true;
+      if (typeof value === 'string') return true;
       return value.size <= 5 * 1024 * 1024;
-    }, "Размер файла не должен превышать 5MB")
+    }, 'Размер файла не должен превышать 5MB')
     .refine((value) => {
-      if (typeof value === "string") return true;
+      if (typeof value === 'string') return true;
       return [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
-        "image/gif",
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
+        'image/gif',
       ].includes(value.type);
-    }, "Поддерживаются только форматы: JPEG, PNG, WebP, GIF")
+    }, 'Поддерживаются только форматы: JPEG, PNG, WebP, GIF')
     .optional(),
   birthday: z.date({
-    message: "Введите дату рождения актёра",
+    message: 'Введите дату рождения актёра',
   }),
   isVisible: z.boolean(),
 });
@@ -88,7 +89,7 @@ export function ActorDataEditorForm({
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     const baseData = {
       ...data,
-      birthday: formatDate(data.birthday, "yyyy-MM-dd"),
+      birthday: formatDate(data.birthday, 'yyyy-MM-dd'),
     };
 
     if (actor) {
@@ -101,7 +102,7 @@ export function ActorDataEditorForm({
   return (
     <Form {...form}>
       <form
-        className={cn("grid gap-6", className)}
+        className={cn('grid gap-6', className)}
         {...props}
         onSubmit={form.handleSubmit(onSubmit)}
       >
@@ -114,7 +115,10 @@ export function ActorDataEditorForm({
                 <FormItem>
                   <FormLabel>Имя актёра</FormLabel>
                   <FormControl>
-                    <Input placeholder="Введите имя актёра..." {...field} />
+                    <Input
+                      placeholder="Введите имя актёра..."
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -165,10 +169,10 @@ export function ActorDataEditorForm({
                   <FormLabel>Изображение</FormLabel>
                   <FormControl>
                     <ImageInput
-                      value={typeof value === "string" ? null : value || null}
+                      value={typeof value === 'string' ? null : value || null}
                       onChange={onChange}
                       existingImageUrl={
-                        typeof value === "string" ? value : undefined
+                        typeof value === 'string' ? value : undefined
                       }
                     />
                   </FormControl>
@@ -198,7 +202,7 @@ export function ActorDataEditorForm({
             type="submit"
             disabled={isLoading || isLoadingEdit || !form.formState.isDirty}
           >
-            {isLoading || isLoadingEdit ? "Сохраняем..." : "Сохранить"}
+            {isLoading || isLoadingEdit ? 'Сохраняем...' : 'Сохранить'}
           </Button>
         </div>
       </form>

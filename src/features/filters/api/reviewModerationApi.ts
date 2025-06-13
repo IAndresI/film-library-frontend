@@ -1,26 +1,28 @@
-import type { IFilter } from "@/features/filters/dto";
-import { apiInstance } from "@/shared/api/base";
-import { queryOptions } from "@tanstack/react-query";
+import type { IFilter } from '@/features/filters/dto';
+
+import { queryOptions } from '@tanstack/react-query';
+
+import { apiInstance } from '@/shared/api/base';
 
 export const filtersApi = {
   getAllFiltersQueryOptions: () => {
     return queryOptions({
-      queryKey: ["filters"],
+      queryKey: ['filters'],
       queryFn: apiInstance.get<{
         films: IFilter[];
         genres: IFilter[];
         actors: IFilter[];
-      }>("/filters/all"),
+      }>('/filters/all'),
     });
   },
   getAllFiltersAdminQueryOptions: () => {
     return queryOptions({
-      queryKey: ["filters", "admin"],
+      queryKey: ['filters', 'admin'],
       queryFn: apiInstance.get<{
         films: IFilter[];
         genres: IFilter[];
         actors: IFilter[];
-      }>("/filters/all/admin"),
+      }>('/filters/all/admin'),
     });
   },
 };

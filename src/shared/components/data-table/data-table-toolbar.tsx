@@ -1,77 +1,80 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
-import type { Table } from "@tanstack/react-table";
+import type { Table } from '@tanstack/react-table';
 
-import { Button } from "../../ui/button";
-import { Input } from "../../ui/input";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { DataTableViewOptions } from "./data-table-view-options";
-import { useDebounce } from "@/shared/lib/hooks/use-debounce";
-import { useEffect, useState } from "react";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { useQuery } from "@tanstack/react-query";
-import { userApi } from "@/entities/user/api/userApi";
-import { subscriptionApi } from "@/entities/subscription/api";
+import { useEffect, useState } from 'react';
+import { Cross2Icon } from '@radix-ui/react-icons';
+import { useQuery } from '@tanstack/react-query';
+
+import { filmApi } from '@/entities/film/api/filmApi';
+import { subscriptionApi } from '@/entities/subscription/api';
+import { userApi } from '@/entities/user/api/userApi';
+
+import { useDebounce } from '@/shared/lib/hooks/use-debounce';
+
+import { Button } from '../../ui/button';
+import { Input } from '../../ui/input';
+import { DataTableFacetedFilter } from './data-table-faceted-filter';
+import { DataTableViewOptions } from './data-table-view-options';
 
 const underModerationStatuses = [
   {
-    value: "false",
-    label: "Да",
+    value: 'false',
+    label: 'Да',
   },
   {
-    value: "true",
-    label: "Нет",
+    value: 'true',
+    label: 'Нет',
   },
 ];
 
 const visibilityStatuses = [
   {
-    value: "true",
-    label: "Да",
+    value: 'true',
+    label: 'Да',
   },
   {
-    value: "false",
-    label: "Нет",
+    value: 'false',
+    label: 'Нет',
   },
 ];
 
 const adminStatuses = [
   {
-    value: "true",
-    label: "Да",
+    value: 'true',
+    label: 'Да',
   },
   {
-    value: "false",
-    label: "Нет",
+    value: 'false',
+    label: 'Нет',
   },
 ];
 
 const subscriptionStatuses = [
   {
-    value: "active",
-    label: "Активна",
+    value: 'active',
+    label: 'Активна',
   },
   {
-    value: "expired",
-    label: "Истекла",
+    value: 'expired',
+    label: 'Истекла',
   },
   {
-    value: "cancelled",
-    label: "Отменена",
+    value: 'cancelled',
+    label: 'Отменена',
   },
 ];
 
 const orderStatuses = [
   {
-    value: "pending",
-    label: "Обрабатывается",
+    value: 'pending',
+    label: 'Обрабатывается',
   },
   {
-    value: "paid",
-    label: "Оплачен",
+    value: 'paid',
+    label: 'Оплачен',
   },
   {
-    value: "failed",
-    label: "Неудачный",
+    value: 'failed',
+    label: 'Неудачный',
   },
 ];
 
@@ -87,14 +90,14 @@ export function DataTableToolbar<TData>({
   searchField,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const [search, setValue] = useState("");
+  const [search, setValue] = useState('');
   const searchValue = useDebounce(search, 500);
 
   useEffect(() => {
     if (searchField) {
       const columnFilters = table.getState().columnFilters;
       const existingFilters = columnFilters.filter(
-        (filter) => filter.id !== searchField,
+        (filter) => filter.id !== searchField
       );
       const newFilters =
         searchValue.length > 0
@@ -111,15 +114,15 @@ export function DataTableToolbar<TData>({
     return tableColumns.find((col) => col.id === columnId);
   };
 
-  const isApprovedColumn = findColumn("isApproved");
-  const filmColumn = findColumn("filmId");
-  const userColumn = findColumn("userId");
-  const genreColumn = findColumn("genres");
-  const isAdminColumn = findColumn("isAdmin");
-  const isVisibleColumn = findColumn("isVisible");
-  const planColumn = findColumn("planId");
-  const subscriptionStatusColumn = findColumn("subscriptionStatus");
-  const orderStatusColumn = findColumn("orderStatus");
+  const isApprovedColumn = findColumn('isApproved');
+  const filmColumn = findColumn('filmId');
+  const userColumn = findColumn('userId');
+  const genreColumn = findColumn('genres');
+  const isAdminColumn = findColumn('isAdmin');
+  const isVisibleColumn = findColumn('isVisible');
+  const planColumn = findColumn('planId');
+  const subscriptionStatusColumn = findColumn('subscriptionStatus');
+  const orderStatusColumn = findColumn('orderStatus');
 
   const { data: genres } = useQuery({
     ...filmApi.getAllGenresQueryOptions(),
@@ -266,7 +269,7 @@ export function DataTableToolbar<TData>({
             variant="ghost"
             onClick={() => {
               table.resetColumnFilters();
-              setValue("");
+              setValue('');
             }}
             className="h-8 px-2 lg:px-3"
           >

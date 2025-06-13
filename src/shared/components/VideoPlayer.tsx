@@ -1,49 +1,52 @@
-import "@vidstack/react/player/styles/base.css";
+import '@vidstack/react/player/styles/base.css';
+
+import type { PlayerSrc } from '@vidstack/react';
+
 import {
+  Controls,
+  FullscreenButton,
   MediaPlayer,
   MediaProvider,
+  Menu,
+  MuteButton,
+  PIPButton,
+  PlayButton,
   Time,
   TimeSlider,
-  PlayButton,
-  VolumeSlider,
-  MuteButton,
-  useMediaState,
-  Menu,
-  FullscreenButton,
   useMediaRemote,
-  PIPButton,
-  type PlayerSrc,
-  Controls,
-} from "@vidstack/react";
+  useMediaState,
+  VolumeSlider,
+} from '@vidstack/react';
 import {
   FullscreenExitIcon,
   FullscreenIcon,
   PauseIcon,
-  PlayIcon,
-  SettingsIcon,
-  PictureInPictureIcon,
   PictureInPictureExitIcon,
+  PictureInPictureIcon,
+  PlayIcon,
   ReplayIcon,
-} from "@vidstack/react/icons";
+  SettingsIcon,
+} from '@vidstack/react/icons';
 import {
+  ArrowLeftIcon,
+  RotateCcw,
+  RotateCw,
   Volume,
   Volume1,
   Volume2,
   VolumeX,
-  RotateCcw,
-  RotateCw,
-  ArrowLeftIcon,
-} from "lucide-react";
-import { cn } from "../lib/utils";
-import { SvgSpinner } from "../ui/svg/SvgSpinner";
-import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+import { cn } from '../lib/utils';
+import { Button } from '../ui/button';
+import { SvgSpinner } from '../ui/svg/SvgSpinner';
 
 // Кастомное хранилище для Vidstack
 const createCustomStorage = (filmId: string) => ({
   // Общие настройки (громкость, muted и т.д.) - глобальные
   async getVolume() {
-    const settings = localStorage.getItem("player-settings");
+    const settings = localStorage.getItem('player-settings');
     if (settings) {
       const parsed = JSON.parse(settings);
       return parsed.volume ?? null;
@@ -53,14 +56,14 @@ const createCustomStorage = (filmId: string) => ({
 
   async setVolume(volume: number) {
     const settings = JSON.parse(
-      localStorage.getItem("player-settings") || "{}",
+      localStorage.getItem('player-settings') || '{}'
     );
     settings.volume = volume;
-    localStorage.setItem("player-settings", JSON.stringify(settings));
+    localStorage.setItem('player-settings', JSON.stringify(settings));
   },
 
   async getMuted() {
-    const settings = localStorage.getItem("player-settings");
+    const settings = localStorage.getItem('player-settings');
     if (settings) {
       const parsed = JSON.parse(settings);
       return parsed.muted ?? null;
@@ -70,14 +73,14 @@ const createCustomStorage = (filmId: string) => ({
 
   async setMuted(muted: boolean) {
     const settings = JSON.parse(
-      localStorage.getItem("player-settings") || "{}",
+      localStorage.getItem('player-settings') || '{}'
     );
     settings.muted = muted;
-    localStorage.setItem("player-settings", JSON.stringify(settings));
+    localStorage.setItem('player-settings', JSON.stringify(settings));
   },
 
   async getPlaybackRate() {
-    const settings = localStorage.getItem("player-settings");
+    const settings = localStorage.getItem('player-settings');
     if (settings) {
       const parsed = JSON.parse(settings);
       return parsed.playbackRate ?? null;
@@ -87,14 +90,14 @@ const createCustomStorage = (filmId: string) => ({
 
   async setPlaybackRate(rate: number) {
     const settings = JSON.parse(
-      localStorage.getItem("player-settings") || "{}",
+      localStorage.getItem('player-settings') || '{}'
     );
     settings.playbackRate = rate;
-    localStorage.setItem("player-settings", JSON.stringify(settings));
+    localStorage.setItem('player-settings', JSON.stringify(settings));
   },
 
   async getCaptions() {
-    const settings = localStorage.getItem("player-settings");
+    const settings = localStorage.getItem('player-settings');
     if (settings) {
       const parsed = JSON.parse(settings);
       return parsed.captions ?? null;
@@ -104,14 +107,14 @@ const createCustomStorage = (filmId: string) => ({
 
   async setCaptions(captions: boolean) {
     const settings = JSON.parse(
-      localStorage.getItem("player-settings") || "{}",
+      localStorage.getItem('player-settings') || '{}'
     );
     settings.captions = captions;
-    localStorage.setItem("player-settings", JSON.stringify(settings));
+    localStorage.setItem('player-settings', JSON.stringify(settings));
   },
 
   async getLang() {
-    const settings = localStorage.getItem("player-settings");
+    const settings = localStorage.getItem('player-settings');
     if (settings) {
       const parsed = JSON.parse(settings);
       return parsed.lang ?? null;
@@ -121,14 +124,14 @@ const createCustomStorage = (filmId: string) => ({
 
   async setLang(lang: string | null) {
     const settings = JSON.parse(
-      localStorage.getItem("player-settings") || "{}",
+      localStorage.getItem('player-settings') || '{}'
     );
     settings.lang = lang;
-    localStorage.setItem("player-settings", JSON.stringify(settings));
+    localStorage.setItem('player-settings', JSON.stringify(settings));
   },
 
   async getVideoQuality() {
-    const settings = localStorage.getItem("player-settings");
+    const settings = localStorage.getItem('player-settings');
     if (settings) {
       const parsed = JSON.parse(settings);
       return parsed.videoQuality ?? null;
@@ -138,14 +141,14 @@ const createCustomStorage = (filmId: string) => ({
 
   async setVideoQuality(quality: unknown) {
     const settings = JSON.parse(
-      localStorage.getItem("player-settings") || "{}",
+      localStorage.getItem('player-settings') || '{}'
     );
     settings.videoQuality = quality;
-    localStorage.setItem("player-settings", JSON.stringify(settings));
+    localStorage.setItem('player-settings', JSON.stringify(settings));
   },
 
   async getAudioGain() {
-    const settings = localStorage.getItem("player-settings");
+    const settings = localStorage.getItem('player-settings');
     if (settings) {
       const parsed = JSON.parse(settings);
       return parsed.audioGain ?? null;
@@ -155,10 +158,10 @@ const createCustomStorage = (filmId: string) => ({
 
   async setAudioGain(gain: number | null) {
     const settings = JSON.parse(
-      localStorage.getItem("player-settings") || "{}",
+      localStorage.getItem('player-settings') || '{}'
     );
     settings.audioGain = gain;
-    localStorage.setItem("player-settings", JSON.stringify(settings));
+    localStorage.setItem('player-settings', JSON.stringify(settings));
   },
 
   // Время просмотра - индивидуально для каждого фильма
@@ -218,12 +221,12 @@ export const VideoPlayer = ({
 let clickTimeout: NodeJS.Timeout | null = null;
 
 const VideoControls = ({ filmId }: { filmId?: string }) => {
-  const volume = useMediaState("volume");
-  const muted = useMediaState("muted");
-  const playbackRate = useMediaState("playbackRate");
-  const paused = useMediaState("paused");
-  const fullscreen = useMediaState("fullscreen");
-  const currentTime = useMediaState("currentTime");
+  const volume = useMediaState('volume');
+  const muted = useMediaState('muted');
+  const playbackRate = useMediaState('playbackRate');
+  const paused = useMediaState('paused');
+  const fullscreen = useMediaState('fullscreen');
+  const currentTime = useMediaState('currentTime');
   const remote = useMediaRemote();
 
   const speedOptions = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
@@ -296,7 +299,11 @@ const VideoControls = ({ filmId }: { filmId?: string }) => {
       </div>
 
       {filmId && (
-        <Button variant="ghost" asChild className="absolute top-5 left-5 z-50">
+        <Button
+          variant="ghost"
+          asChild
+          className="absolute top-5 left-5 z-50"
+        >
           <Link to={`/film/${filmId}`}>
             <ArrowLeftIcon className="h-4 w-4" />
             Назад
@@ -308,7 +315,7 @@ const VideoControls = ({ filmId }: { filmId?: string }) => {
       <button
         type="button"
         className={cn(
-          `group absolute inset-0 bottom-[68px] flex items-center justify-center`,
+          `group absolute inset-0 bottom-[68px] flex items-center justify-center`
         )}
         onClick={handleSingleClick}
         onDoubleClick={handleDoubleClick}
@@ -422,8 +429,8 @@ const VideoControls = ({ filmId }: { filmId?: string }) => {
                         onClick={() => handleSpeedChange(speed)}
                         className={`w-full cursor-pointer rounded px-3 py-2 text-left text-sm transition-colors hover:bg-white/10 ${
                           playbackRate === speed
-                            ? "bg-white/5 text-blue-400"
-                            : "text-white"
+                            ? 'bg-white/5 text-blue-400'
+                            : 'text-white'
                         }`}
                       >
                         {speed}x

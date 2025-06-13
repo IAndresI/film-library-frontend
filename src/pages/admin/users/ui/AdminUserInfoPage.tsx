@@ -1,31 +1,36 @@
-import { orderApi } from "@/entities/order/api/orderApi";
-import { ordersTableColumns } from "@/entities/order/ui/orders-table-columns";
-import { SubscriptionStatus } from "@/entities/subscription/dto";
-import { userApi } from "@/entities/user/api/userApi";
-import { UserDataEditorForm } from "@/features/userDataEditor/ui";
-import { DataTable, DeleteModal } from "@/shared/components";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { Separator } from "@/shared/ui/separator";
-import { SvgCrown } from "@/shared/ui/svg/SvgCrown";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-import { useQuery } from "@tanstack/react-query";
 import type {
   ColumnFiltersState,
   PaginationState,
   SortingState,
-} from "@tanstack/react-table";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { AdminUserSubscriptionEditor } from "./AdminUserSubscriptionEditor";
-import { getImageUrl } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { toast } from "sonner";
+} from '@tanstack/react-table';
+
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+
+import { UserDataEditorForm } from '@/features/userDataEditor/ui';
+
+import { orderApi } from '@/entities/order/api/orderApi';
+import { ordersTableColumns } from '@/entities/order/ui/orders-table-columns';
+import { SubscriptionStatus } from '@/entities/subscription/dto';
+import { userApi } from '@/entities/user/api/userApi';
+
+import { DataTable, DeleteModal } from '@/shared/components';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+import { Button } from '@/shared/ui/button';
+import { Separator } from '@/shared/ui/separator';
+import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
+
+import { AdminUserSubscriptionEditor } from './AdminUserSubscriptionEditor';
 
 export const AdminUserInfoPage = () => {
   const [activeTab, setActiveTab] = useState<
-    "data" | "subscription" | "history"
-  >("data");
+    'data' | 'subscription' | 'history'
+  >('data');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -63,7 +68,7 @@ export const AdminUserInfoPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"admin_film_editor"}
+      key={'admin_film_editor'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
@@ -78,10 +83,10 @@ export const AdminUserInfoPage = () => {
               description={`Вы уверены, что хотите удалить пользователя ${user?.name}?`}
               onDelete={() => userApi.deleteUser(user?.id)}
               onSuccess={() => {
-                navigate("/admin/users");
+                navigate('/admin/users');
                 toast.success(`Пользователь "${user.name}" успешно удален`);
               }}
-              queryKey={["users"]}
+              queryKey={['users']}
             >
               <Button>Удалить пользователя</Button>
             </DeleteModal>
@@ -115,7 +120,7 @@ export const AdminUserInfoPage = () => {
             <Tabs
               value={activeTab}
               onValueChange={(value) =>
-                setActiveTab(value as "data" | "subscription" | "history")
+                setActiveTab(value as 'data' | 'subscription' | 'history')
               }
               className="w-full"
             >

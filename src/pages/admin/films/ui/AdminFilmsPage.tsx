@@ -1,17 +1,19 @@
-import { filmsTableColumns } from "@/entities/film/ui/films-table-columns";
-import { DataTable } from "@/shared/components/data-table/data-table";
-import { Separator } from "@/shared/ui/separator";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState } from 'react';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import {
   type ColumnFiltersState,
   type PaginationState,
   type SortingState,
-} from "@tanstack/react-table";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { filmApi } from "@/entities/film/api/filmApi";
-import { Button } from "@/shared/ui/button";
-import { Link } from "react-router-dom";
+} from '@tanstack/react-table';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
+import { filmApi } from '@/entities/film/api/filmApi';
+import { filmsTableColumns } from '@/entities/film/ui/films-table-columns';
+
+import { DataTable } from '@/shared/components/data-table/data-table';
+import { Button } from '@/shared/ui/button';
+import { Separator } from '@/shared/ui/separator';
 
 export const AdminFilmsPage = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -38,7 +40,7 @@ export const AdminFilmsPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"admin_films"}
+      key={'admin_films'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">

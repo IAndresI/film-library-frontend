@@ -1,36 +1,39 @@
-import { Separator } from "@/shared/ui/separator";
+import type { SortingState } from '@tanstack/react-table';
 
-import { FilmCard } from "@/entities/film/ui/FilmCard";
+import { useState } from 'react';
+import { Cross2Icon } from '@radix-ui/react-icons';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 
-import { motion } from "framer-motion";
-import { Button } from "@/shared/ui/button";
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { userApi } from "@/entities/user/api/userApi";
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
-import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
-import { useUser } from "@/app/providers";
-import { MultiSelect } from "@/shared/ui/multi-select";
-import { useState } from "react";
-import { useGetAllFilters } from "@/features/filters/lib/hooks";
-import { Input } from "@/shared/ui/input";
-import { useDebounce } from "@/shared/lib/hooks/use-debounce";
-import type { SortingState } from "@tanstack/react-table";
-import { FILM_SORT_OPTIONS } from "@/entities/film/constants";
+import { useUser } from '@/app/providers';
+
+import { useGetAllFilters } from '@/features/filters/lib/hooks';
+
+import { FILM_SORT_OPTIONS } from '@/entities/film/constants';
+import { FilmCard } from '@/entities/film/ui/FilmCard';
+import { userApi } from '@/entities/user/api/userApi';
+
+import { useDebounce } from '@/shared/lib/hooks/use-debounce';
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
+import { MultiSelect } from '@/shared/ui/multi-select';
 import {
   Select,
-  SelectItem,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/ui/select";
-import { cn } from "@/shared/lib/utils";
+} from '@/shared/ui/select';
+import { Separator } from '@/shared/ui/separator';
+import { SvgSpinner } from '@/shared/ui/svg/SvgSpinner';
 
 export const UserFavoritesPage = () => {
   const user = useUser();
 
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedActors, setSelectedActors] = useState<string[]>([]);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
   const [sort, setSort] = useState<SortingState>([
     FILM_SORT_OPTIONS[0].value[0],
   ]);
@@ -45,7 +48,7 @@ export const UserFavoritesPage = () => {
     isFetching,
   } = useInfiniteQuery({
     queryKey: [
-      "favorites",
+      'favorites',
       user?.id,
       selectedGenres,
       selectedActors,
@@ -90,7 +93,7 @@ export const UserFavoritesPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.2 } }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      key={"home"}
+      key={'home'}
     >
       <div className="h-full px-4 py-6 lg:px-8">
         <div className="flex items-center justify-between">
@@ -105,7 +108,7 @@ export const UserFavoritesPage = () => {
               onClick={() => {
                 setSelectedGenres([]);
                 setSelectedActors([]);
-                setSearch("");
+                setSearch('');
               }}
               className="h-8 px-2 lg:px-3"
             >
@@ -154,8 +157,8 @@ export const UserFavoritesPage = () => {
             onValueChange={(value) => {
               setSort(
                 FILM_SORT_OPTIONS.find(
-                  (option) => option.value[0].id === value,
-                )!.value,
+                  (option) => option.value[0].id === value
+                )!.value
               );
             }}
           >
@@ -164,7 +167,10 @@ export const UserFavoritesPage = () => {
             </SelectTrigger>
             <SelectContent>
               {FILM_SORT_OPTIONS.map((option) => (
-                <SelectItem key={option.value[0].id} value={option.value[0].id}>
+                <SelectItem
+                  key={option.value[0].id}
+                  value={option.value[0].id}
+                >
                   {option.label}
                 </SelectItem>
               ))}
@@ -181,8 +187,8 @@ export const UserFavoritesPage = () => {
 
         <div
           className={cn(
-            "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500",
-            isFetching && !isFetchingNextPage && "opacity-35",
+            'grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] place-items-center gap-4 pb-4 transition-opacity duration-500',
+            isFetching && !isFetchingNextPage && 'opacity-35'
           )}
         >
           {favoritesData && favoritesData.length > 0 ? (
@@ -211,7 +217,7 @@ export const UserFavoritesPage = () => {
               {isFetchingNextPage ? (
                 <SvgSpinner className="h-4 w-4" />
               ) : (
-                "Показать ещё фильмов"
+                'Показать ещё фильмов'
               )}
             </Button>
           </div>

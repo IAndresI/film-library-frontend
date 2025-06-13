@@ -1,17 +1,18 @@
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import type { Row } from "@tanstack/react-table";
+import type { Row } from '@tanstack/react-table';
+import type { JSX } from 'react';
 
-import { Button } from "../../ui/button";
+import React from 'react';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { Link } from 'react-router-dom';
+
+import { Button } from '../../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
-import type { JSX } from "react";
-import React from "react";
-import { Link } from "react-router-dom";
+} from '../../ui/dropdown-menu';
 
 interface Task {
   id: string;
@@ -59,11 +60,15 @@ export function DataTableRowActions<TData>({
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent id={task.id} align="end" className="w-[160px]">
+      <DropdownMenuContent
+        id={task.id}
+        align="end"
+        className="w-[160px]"
+      >
         {allActions.map((action, i, arr) => {
           return (
             <React.Fragment key={`action_${i}_${row.id}`}>
-              {typeof action === "object" && "link" in action ? (
+              {typeof action === 'object' && 'link' in action ? (
                 <DropdownMenuItem asChild>
                   <Link
                     className="cursor-pointer rounded-md px-4"

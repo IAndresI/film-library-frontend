@@ -1,11 +1,15 @@
-import { useState } from "react";
+import type { IPagination } from '@/shared/model/pagination-response.model';
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  OnChangeFn,
+  PaginationState,
+  SortingState,
+  VisibilityState,
+} from '@tanstack/react-table';
+
+import { useState } from 'react';
 import {
-  type ColumnDef,
-  type ColumnFiltersState,
-  type OnChangeFn,
-  type PaginationState,
-  type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -14,7 +18,12 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
+
+import { DataTablePagination } from '@/shared/components/data-table/data-table-pagination';
+import { DataTableToolbar } from '@/shared/components/data-table/data-table-toolbar';
+import { cn } from '@/shared/lib/utils';
+import { SvgSpinner } from '@/shared/ui/svg/SvgSpinner';
 import {
   Table,
   TableBody,
@@ -22,12 +31,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/ui/table";
-import { DataTablePagination } from "@/shared/components/data-table/data-table-pagination";
-import { DataTableToolbar } from "@/shared/components/data-table/data-table-toolbar";
-import type { IPagination } from "@/shared/model/pagination-response.model";
-import { SvgSpinner } from "@/shared/ui/svg/SvgSpinner";
-import { cn } from "@/shared/lib/utils";
+} from '@/shared/ui/table';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -88,7 +92,10 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       {columnFilters && onColumnFiltersChange && (
-        <DataTableToolbar table={table} searchField={searchField} />
+        <DataTableToolbar
+          table={table}
+          searchField={searchField}
+        />
       )}
       <div className="rounded-md border">
         <Table>
@@ -97,12 +104,15 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -112,8 +122,8 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody
             className={cn(
-              "transition-opacity duration-500",
-              isFetching && !isLoading && "opacity-35",
+              'transition-opacity duration-500',
+              isFetching && !isLoading && 'opacity-35'
             )}
           >
             {isLoading ? (
@@ -129,13 +139,13 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
@@ -154,7 +164,10 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} pagination={pagination} />
+      <DataTablePagination
+        table={table}
+        pagination={pagination}
+      />
     </div>
   );
 }

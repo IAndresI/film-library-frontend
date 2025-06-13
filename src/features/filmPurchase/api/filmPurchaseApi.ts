@@ -1,4 +1,4 @@
-import { apiInstance } from "@/shared/api/base";
+import { apiInstance } from '@/shared/api/base';
 
 export const filmPurchaseApi = {
   createFilmPayment: (data: {
@@ -11,5 +11,5 @@ export const filmPurchaseApi = {
       message: string;
       paymentUrl: string;
       orderId: string;
-    }>("/payments/film/create", data),
+    }>('/payments/film/create', data),
 };

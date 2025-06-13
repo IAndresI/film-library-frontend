@@ -1,5 +1,6 @@
-import { apiInstance } from "@/shared/api/base";
-import type { IReview } from "@/entities/review/dto";
+import type { IReview } from '@/entities/review/dto';
+
+import { apiInstance } from '@/shared/api/base';
 
 export const reviewEditorApi = {
   createReview: (review: {

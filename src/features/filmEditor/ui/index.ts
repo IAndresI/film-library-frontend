@@ -1,1 +1,1 @@
-export { FilmDataEditorForm } from "./FilmDataEditorForm";
+export { FilmDataEditorForm } from './FilmDataEditorForm';

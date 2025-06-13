@@ -1,29 +1,36 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../../../shared/components/data-table/data-table-column-header";
-import { formatDate } from "@/shared/lib/helpers";
-import type { IUser } from "@/entities/user/dto";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import type { IPlan, ISubscription } from "../dto";
-import { SubscriptionStatus } from "@/shared/components/SubscriptionStatus";
-import { Link } from "react-router-dom";
-import { getImageUrl } from "@/shared/lib/utils";
+import type { IUser } from '@/entities/user/dto';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { IPlan, ISubscription } from '../dto';
+
+import { Link } from 'react-router-dom';
+
+import { SubscriptionStatus } from '@/shared/components/SubscriptionStatus';
+import { formatDate } from '@/shared/lib/helpers';
+import { getImageUrl } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+
+import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
 
 export const subscriptionsTableColumns: ColumnDef<ISubscription>[] = [
   {
-    accessorKey: "id",
+    accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader className="pl-3" column={column} title="ID" />
+      <DataTableColumnHeader
+        className="pl-3"
+        column={column}
+        title="ID"
+      />
     ),
-    cell: ({ row }) => <div className="px-3">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="px-3">{row.getValue('id')}</div>,
     enableSorting: false,
     enableHiding: false,
     meta: {
-      columnLabel: "ID",
+      columnLabel: 'ID',
     },
   },
   {
-    accessorKey: "user",
-    id: "userId",
+    accessorKey: 'user',
+    id: 'userId',
     header: ({ column, table }) => (
       <DataTableColumnHeader
         useMetaSortName={true}
@@ -50,14 +57,14 @@ export const subscriptionsTableColumns: ColumnDef<ISubscription>[] = [
       );
     },
     meta: {
-      columnLabel: "Пользователь",
-      filterField: "userId",
-      sortField: "userName",
+      columnLabel: 'Пользователь',
+      filterField: 'userId',
+      sortField: 'userName',
     },
   },
   {
-    accessorKey: "plan",
-    id: "planId",
+    accessorKey: 'plan',
+    id: 'planId',
     header: ({ column, table }) => (
       <DataTableColumnHeader
         useMetaSortName={true}
@@ -75,65 +82,74 @@ export const subscriptionsTableColumns: ColumnDef<ISubscription>[] = [
       );
     },
     meta: {
-      columnLabel: "План",
-      filterField: "planId",
-      sortField: "planName",
+      columnLabel: 'План',
+      filterField: 'planId',
+      sortField: 'planName',
     },
     enableSorting: false,
   },
 
   {
-    accessorKey: "startedAt",
+    accessorKey: 'startedAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Начало" />
+      <DataTableColumnHeader
+        column={column}
+        title="Начало"
+      />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {formatDate(row.getValue("startedAt"))}
+            {formatDate(row.getValue('startedAt'))}
           </span>
         </div>
       );
     },
     meta: {
-      columnLabel: "Начало",
+      columnLabel: 'Начало',
     },
   },
   {
-    accessorKey: "expiresAt",
+    accessorKey: 'expiresAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Конец" />
+      <DataTableColumnHeader
+        column={column}
+        title="Конец"
+      />
     ),
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {formatDate(row.getValue("expiresAt"))}
+            {formatDate(row.getValue('expiresAt'))}
           </span>
         </div>
       );
     },
     meta: {
-      columnLabel: "Конец",
+      columnLabel: 'Конец',
     },
   },
   {
-    accessorKey: "subscriptionStatus",
+    accessorKey: 'subscriptionStatus',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Статус" />
+      <DataTableColumnHeader
+        column={column}
+        title="Статус"
+      />
     ),
     cell: ({ row }) => {
       return (
         <SubscriptionStatus
           size="small"
-          status={row.getValue("subscriptionStatus")}
+          status={row.getValue('subscriptionStatus')}
         />
       );
     },
     enableSorting: false,
     meta: {
-      columnLabel: "Статус",
+      columnLabel: 'Статус',
     },
   },
   // {

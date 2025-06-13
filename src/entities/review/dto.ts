@@ -1,5 +1,5 @@
-import type { IFilm } from "../film/dto";
-import type { IUser } from "../user/dto";
+import type { IFilm } from '../film/dto';
+import type { IUser } from '../user/dto';
 
 export interface IReview {
   id: number;

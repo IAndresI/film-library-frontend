@@ -1,12 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import { favoriteFilmActionsApi } from "../../api/favoriteFilmActionsApi";
-import { useRemoveFromFavorites } from "./useRemoveFromFavorites";
-import { useAddToFavorites } from "./useAddToFavorites";
-import { useUser } from "@/app/providers";
-import { useEffect, useRef, useState } from "react";
-import axios, { type CancelTokenSource } from "axios";
-import { toast } from "sonner";
-import { queryClient } from "@/shared/api/query-client";
+import type { CancelTokenSource } from 'axios';
+
+import { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { toast } from 'sonner';
+
+import { useUser } from '@/app/providers';
+
+import { queryClient } from '@/shared/api/query-client';
+
+import { favoriteFilmActionsApi } from '../../api/favoriteFilmActionsApi';
+import { useAddToFavorites } from './useAddToFavorites';
+import { useRemoveFromFavorites } from './useRemoveFromFavorites';
 
 export const useFavoritesActions = (filmId: number) => {
   const mutationAbortControllerRef = useRef<CancelTokenSource | null>(null);
@@ -49,12 +54,12 @@ export const useFavoritesActions = (filmId: number) => {
       },
       onError: (error, variables) => {
         if (error.code !== 408) {
-          toast.error("Не удалось удалить из избранного");
+          toast.error('Не удалось удалить из избранного');
         }
 
         queryClient.setQueryData(
-          ["favorites-ids", variables.userId],
-          (oldData: number[]) => [...oldData, variables.filmId],
+          ['favorites-ids', variables.userId],
+          (oldData: number[]) => [...oldData, variables.filmId]
         );
         setIsInFavorite(true);
       },
@@ -77,11 +82,11 @@ export const useFavoritesActions = (filmId: number) => {
     },
     onError: (error, variables) => {
       if (error.code !== 408) {
-        toast.error("Не удалось добавить в избранное");
+        toast.error('Не удалось добавить в избранное');
       }
       queryClient.setQueryData(
-        ["favorites-ids", variables.userId],
-        (oldData: number[]) => oldData.filter((id) => id !== variables.filmId),
+        ['favorites-ids', variables.userId],
+        (oldData: number[]) => oldData.filter((id) => id !== variables.filmId)
       );
       setIsInFavorite(false);
     },
