@@ -133,6 +133,7 @@ export const WatchFilmPage = () => {
               <div className="flex h-[100svh] w-[100vw] overflow-hidden">
                 <div className="player">
                   <VideoPlayer
+                    filmId={film.id.toString()}
                     src={`${API_URL}${filmToken.streamUrl}`}
                     title={film.name}
                     id={film.id.toString()}

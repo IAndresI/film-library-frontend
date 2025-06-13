@@ -184,10 +184,12 @@ export const VideoPlayer = ({
   title,
   id,
   className,
+  filmId,
 }: {
   src: PlayerSrc;
   title: string;
   id: string;
+  filmId?: string;
   className?: string;
 }) => {
   const customStorage = createCustomStorage(id);
@@ -206,7 +208,7 @@ export const VideoPlayer = ({
         hideOnMouseLeave
       >
         <Controls.Group>
-          <VideoControls id={id} />
+          <VideoControls filmId={filmId} />
         </Controls.Group>
       </Controls.Root>
     </MediaPlayer>
@@ -215,7 +217,7 @@ export const VideoPlayer = ({
 
 let clickTimeout: NodeJS.Timeout | null = null;
 
-const VideoControls = ({ id }: { id: string }) => {
+const VideoControls = ({ filmId }: { filmId?: string }) => {
   const volume = useMediaState("volume");
   const muted = useMediaState("muted");
   const playbackRate = useMediaState("playbackRate");
@@ -293,12 +295,14 @@ const VideoControls = ({ id }: { id: string }) => {
         <SvgSpinner className="size-40" />
       </div>
 
-      <Button variant="ghost" asChild className="absolute top-5 left-5 z-50">
-        <Link to={`/film/${id}`}>
-          <ArrowLeftIcon className="h-4 w-4" />
-          Назад
-        </Link>
-      </Button>
+      {filmId && (
+        <Button variant="ghost" asChild className="absolute top-5 left-5 z-50">
+          <Link to={`/film/${filmId}`}>
+            <ArrowLeftIcon className="h-4 w-4" />
+            Назад
+          </Link>
+        </Button>
+      )}
 
       {/* Клик по видео для воспроизведения/паузы */}
       <button
