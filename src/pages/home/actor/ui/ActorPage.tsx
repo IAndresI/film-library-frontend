@@ -4,10 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 
+import { CustomBreadcrumbs } from '@/widgets/breadcrumbs/ui/CustomBreadcrumbs';
+
 import { actorApi } from '@/entities/actor/api/actor.api';
 import { FilmCard } from '@/entities/film/ui/FilmCard';
 
-import { CustomBreadcrumbs } from '@/shared/components/CustomBreadcrumbs';
 import { getImageUrl } from '@/shared/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 import { ScrollBar } from '@/shared/ui/scroll-area';

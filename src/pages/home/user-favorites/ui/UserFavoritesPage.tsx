@@ -7,9 +7,9 @@ import { motion } from 'framer-motion';
 
 import { FILM_SORT_OPTIONS } from '@/entities/film/constants';
 import { FilmCard } from '@/entities/film/ui/FilmCard';
-import { useGetAllFilters } from '@/entities/filters/lib/hooks';
-import { userApi } from '@/entities/user/api/user.api';
-import { useUser } from '@/entities/user/providers';
+import { useGetAllFilters } from '@/entities/filters';
+import { userApi } from '@/entities/user';
+import { useUser } from '@/entities/user/lib/hooks/use-user';
 
 import { useDebounce } from '@/shared/lib/hooks/use-debounce';
 import { cn } from '@/shared/lib/utils';

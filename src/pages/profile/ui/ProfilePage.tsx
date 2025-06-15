@@ -9,12 +9,12 @@ import { UserDataEditorForm } from '@/features/userDataEditor/ui/UserDataEditorF
 
 import { orderApi } from '@/entities/order/api/order.api';
 import { userOrdersTableColumns } from '@/entities/order/ui/user-orders-table-columns';
-import { SubscriptionStatus } from '@/entities/subscription/model';
-import { useUser } from '@/entities/user/providers';
+import { SubscriptionStatusType } from '@/entities/subscription';
+import { useUser } from '@/entities/user';
 
-import { DataTable } from '@/shared/components';
 import { formatDate } from '@/shared/lib/helpers';
 import { getImageUrl } from '@/shared/lib/utils';
+import { DataTable } from '@/shared/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
@@ -32,15 +32,15 @@ export const ProfilePage = () => {
 
   const isActiveSubscription =
     user.subscription &&
-    user.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
+    user.subscription.subscriptionStatus === SubscriptionStatusType.ACTIVE;
 
   const isExpiredSubscription =
     user.subscription &&
-    user.subscription.subscriptionStatus === SubscriptionStatus.EXPIRED;
+    user.subscription.subscriptionStatus === SubscriptionStatusType.EXPIRED;
 
   const isCancelledSubscription =
     user.subscription &&
-    user.subscription.subscriptionStatus === SubscriptionStatus.CANCELLED;
+    user.subscription.subscriptionStatus === SubscriptionStatusType.CANCELLED;
 
   const isNoSubscription = !user.subscription;
 

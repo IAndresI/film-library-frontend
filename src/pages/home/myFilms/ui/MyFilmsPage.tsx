@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { filmApi } from '@/entities/film/api/film.api';
 import { FILM_SORT_OPTIONS } from '@/entities/film/constants';
 import { FilmCard } from '@/entities/film/ui/FilmCard';
-import { useGetAllFilters } from '@/entities/filters/lib/hooks';
+import { useGetAllFilters } from '@/entities/filters';
 
 import { useDebounce } from '@/shared/lib/hooks/use-debounce';
 import { cn } from '@/shared/lib/utils';

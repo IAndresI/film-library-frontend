@@ -10,15 +10,17 @@ import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
+import { DeleteModal } from '@/widgets/deleteModal';
+
 import { UserDataEditorForm } from '@/features/userDataEditor/ui';
 
 import { orderApi } from '@/entities/order/api/order.api';
 import { ordersTableColumns } from '@/entities/order/ui/orders-table-columns';
-import { SubscriptionStatus } from '@/entities/subscription/model';
+import { SubscriptionStatusType } from '@/entities/subscription';
 import { userApi } from '@/entities/user/api/user.api';
 
-import { DataTable, DeleteModal } from '@/shared/components';
 import { getImageUrl } from '@/shared/lib/utils';
+import { DataTable } from '@/shared/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
@@ -48,7 +50,7 @@ export const AdminUserInfoPage = () => {
 
   const isActiveSubscription =
     user?.subscription &&
-    user?.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
+    user?.subscription.subscriptionStatus === SubscriptionStatusType.ACTIVE;
 
   const params = {
     filters: columnFilters,

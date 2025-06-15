@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { subscriptionsTableColumns } from '@/entities/subscription';
 import { subscriptionApi } from '@/entities/subscription/api';
 
-import { DataTable } from '@/shared/components/data-table/data-table';
+import { DataTable } from '@/shared/ui';
 import { Separator } from '@/shared/ui/separator';
 
 export const AdminSubscriptionsPage = () => {

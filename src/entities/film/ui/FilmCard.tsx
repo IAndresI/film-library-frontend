@@ -4,7 +4,7 @@ import { BookmarkFilledIcon, StarFilledIcon } from '@radix-ui/react-icons';
 import { BookmarkIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { useFavoritesActions } from '@/features/favoriteFilmActions/lib/hooks';
+import { useFavoritesActions } from '@/features/favoriteFilmActions/hooks/useFavoritesActions';
 
 import { cn, getImageUrl } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';

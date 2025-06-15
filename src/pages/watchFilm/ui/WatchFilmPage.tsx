@@ -6,10 +6,10 @@ import { Link, useParams } from 'react-router-dom';
 import { UserFilmPaymentForm } from '@/features/filmPurchase/ui';
 
 import { filmApi } from '@/entities/film/api/film.api';
-import { SubscriptionStatus } from '@/entities/subscription/model';
-import { useUser } from '@/entities/user/providers';
+import { VideoPlayer } from '@/entities/film/ui/VideoPlayer';
+import { SubscriptionStatusType } from '@/entities/subscription';
+import { useUser } from '@/entities/user';
 
-import { VideoPlayer } from '@/shared/components/VideoPlayer';
 import { API_BASE_URL } from '@/shared/config';
 import { Button } from '@/shared/ui/button';
 import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
@@ -90,9 +90,10 @@ export const WatchFilmPage = () => {
   const isSubsciptionInActive =
     !user.subscription ||
     (user.subscription &&
-      user.subscription.subscriptionStatus === SubscriptionStatus.CANCELLED) ||
+      user.subscription.subscriptionStatus ===
+        SubscriptionStatusType.CANCELLED) ||
     (user.subscription &&
-      user.subscription.subscriptionStatus === SubscriptionStatus.EXPIRED);
+      user.subscription.subscriptionStatus === SubscriptionStatusType.EXPIRED);
 
   const isFilmPurchased = film.isPurchased;
 

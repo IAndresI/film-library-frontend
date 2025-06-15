@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
-import { useUser } from '@/entities/user/providers';
+import { ModeToggle } from '@/widgets/modeToggle';
 
-import { ModeToggle } from '@/shared/components/ModeToggle';
+import { useUser } from '@/entities/user';
+
+import { Button } from '@/shared/ui/button';
 import { SidebarTrigger } from '@/shared/ui/sidebar';
-
-import { Button } from '../../../shared/ui/button';
 
 export const AdminHeader = () => {
   const user = useUser();

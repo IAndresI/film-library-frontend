@@ -21,7 +21,7 @@ import {
 } from '@/shared/ui/form';
 import { Textarea } from '@/shared/ui/textarea';
 
-import { useCreateReview, useDeleteReview, useEditReview } from '../lib/hooks';
+import { useCreateReview, useDeleteReview, useEditReview } from '../hooks';
 
 const formSchema = z.object({
   rating: z.number({ required_error: 'Рейтинг обязательно' }).min(1, {

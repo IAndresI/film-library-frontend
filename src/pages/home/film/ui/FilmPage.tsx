@@ -8,19 +8,20 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
 
-import { useFavoritesActions } from '@/features/favoriteFilmActions/lib/hooks';
+import { CustomBreadcrumbs } from '@/widgets/breadcrumbs/ui/CustomBreadcrumbs';
+
+import { useFavoritesActions } from '@/features/favoriteFilmActions';
 import { UserFilmPaymentForm } from '@/features/filmPurchase/ui';
 import { ReviewEditorForm } from '@/features/reviewEditor/ui';
 
 import { ActorCard } from '@/entities/actor/ui/ActorCard';
 import { filmApi } from '@/entities/film/api/film.api';
 import { getMediaUrl } from '@/entities/film/lib/helpers';
+import { VideoPlayer } from '@/entities/film/ui/VideoPlayer';
 import { reviewApi } from '@/entities/review/api/review.api';
-import { SubscriptionStatus } from '@/entities/subscription/model';
-import { useUser } from '@/entities/user/providers';
+import { SubscriptionStatusType } from '@/entities/subscription';
+import { useUser } from '@/entities/user';
 
-import { CustomBreadcrumbs } from '@/shared/components/CustomBreadcrumbs';
-import { VideoPlayer } from '@/shared/components/VideoPlayer';
 import { getImageUrl } from '@/shared/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 import { Badge } from '@/shared/ui/badge';
@@ -71,7 +72,7 @@ export const FilmPage = () => {
 
   const isSubsciptionActive =
     user.subscription &&
-    user.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
+    user.subscription.subscriptionStatus === SubscriptionStatusType.ACTIVE;
 
   const isFilmPurchased = film?.isPurchased;
 

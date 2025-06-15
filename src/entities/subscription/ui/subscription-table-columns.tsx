@@ -4,12 +4,12 @@ import type { IPlan, ISubscription } from '../model';
 
 import { Link } from 'react-router-dom';
 
-import { SubscriptionStatus } from '@/shared/components/SubscriptionStatus';
+import { SubscriptionStatus } from '@/entities/subscription/ui/SubscriptionStatus';
+
 import { formatDate } from '@/shared/lib/helpers';
 import { getImageUrl } from '@/shared/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
-
-import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
+import { DataTableColumnHeader } from '@/shared/ui/data-table/data-table-column-header';
 
 export const subscriptionsTableColumns: ColumnDef<ISubscription>[] = [
   {

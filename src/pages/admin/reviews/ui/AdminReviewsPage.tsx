@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { reviewApi } from '@/entities/review/api/review.api';
 import { reviewsTableColumns } from '@/entities/review/ui/reviews-table-columns';
 
-import { DataTable } from '@/shared/components/data-table/data-table';
+import { DataTable } from '@/shared/ui';
 import { Separator } from '@/shared/ui/separator';
 
 export const AdminReviewsPage = ({

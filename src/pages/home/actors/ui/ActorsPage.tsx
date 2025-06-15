@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 import { actorApi } from '@/entities/actor/api/actor.api';
 import { ActorCard } from '@/entities/actor/ui/ActorCard';
-import { useGetAllFilters } from '@/entities/filters/lib/hooks';
+import { useGetAllFilters } from '@/entities/filters';
 
 import { useDebounce } from '@/shared/lib/hooks/use-debounce';
 import { cn } from '@/shared/lib/utils';

@@ -6,7 +6,7 @@ import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Otp } from '@/shared/ui/otp-input';
 
-import { useSendOTP, useVerifyOTP } from '../lib/hooks';
+import { useSendOTP, useVerifyOTP } from '../hooks';
 
 const getInitialOtpData = () => {
   const otpData = localStorage.getItem('otpData');

@@ -1,1 +1,1 @@
-export { type ISubscription } from '../model';
+export { type ISubscription, SubscriptionStatusType } from '../model';

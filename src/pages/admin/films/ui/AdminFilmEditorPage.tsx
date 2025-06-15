@@ -3,13 +3,14 @@ import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
+import { DeleteModal } from '@/widgets/deleteModal';
+
 import { FilmDataEditorForm } from '@/features/filmEditor/ui';
 import { FilmMediaEditorForm } from '@/features/filmEditor/ui/FilmMediaEditorForm';
 
 import { filmApi } from '@/entities/film/api/film.api';
-import { useGetAllFilters } from '@/entities/filters/lib/hooks';
+import { useGetAllFilters } from '@/entities/filters';
 
-import { DeleteModal } from '@/shared/components';
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';

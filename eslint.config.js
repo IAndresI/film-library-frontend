@@ -1,4 +1,6 @@
 import js from '@eslint/js';
+import typescriptParser from '@typescript-eslint/parser';
+import boundaries from 'eslint-plugin-boundaries';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
@@ -12,10 +14,12 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parser: typescriptParser,
     },
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      boundaries,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -23,6 +27,13 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+        },
+      },
     },
   }
 );

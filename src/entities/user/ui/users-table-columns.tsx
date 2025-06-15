@@ -4,15 +4,15 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
-import { SubscriptionStatus } from '@/entities/subscription/model';
+import { DeleteModal } from '@/widgets/deleteModal';
 
-import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
-import { DeleteModal } from '@/shared/components/DeleteModal';
+import { SubscriptionStatusType } from '@/entities/subscription/@x/user';
+
 import { formatDate } from '@/shared/lib/helpers';
 import { getImageUrl } from '@/shared/lib/utils';
+import { DataTableColumnHeader, DataTableRowActions } from '@/shared/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 
-import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
 import { userApi } from '../api/user.api';
 
 export const usersTableColumns: ColumnDef<IUser>[] = [
@@ -125,13 +125,15 @@ export const usersTableColumns: ColumnDef<IUser>[] = [
       return (
         <div>
           {subscription &&
-            subscription.subscriptionStatus === SubscriptionStatus.EXPIRED &&
+            subscription.subscriptionStatus ===
+              SubscriptionStatusType.EXPIRED &&
             'Истекла'}
           {subscription &&
-            subscription.subscriptionStatus === SubscriptionStatus.ACTIVE &&
+            subscription.subscriptionStatus === SubscriptionStatusType.ACTIVE &&
             'Активна'}
           {subscription &&
-            subscription.subscriptionStatus === SubscriptionStatus.CANCELLED &&
+            subscription.subscriptionStatus ===
+              SubscriptionStatusType.CANCELLED &&
             'Отменена'}
           {!subscription && 'Нет подписки'}
         </div>

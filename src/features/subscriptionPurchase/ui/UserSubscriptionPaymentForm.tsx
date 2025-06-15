@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 
-import { useCreateSubscriptionPayment } from '../lib/hooks';
+import { useCreateSubscriptionPayment } from '../hooks/useCreateSubscriptionPayment';
 
 export function UserSubscriptionPaymentForm({
   className,

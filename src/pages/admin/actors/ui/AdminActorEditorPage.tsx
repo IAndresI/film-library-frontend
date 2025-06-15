@@ -3,11 +3,12 @@ import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
+import { DeleteModal } from '@/widgets/deleteModal';
+
 import { ActorDataEditorForm } from '@/features/actorEditor/ui/ActorDataEditorForm';
 
 import { actorApi } from '@/entities/actor/api/actor.api';
 
-import { DeleteModal } from '@/shared/components';
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
 

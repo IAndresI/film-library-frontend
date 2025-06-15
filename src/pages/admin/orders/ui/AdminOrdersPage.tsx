@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { orderApi } from '@/entities/order/api/order.api';
 import { ordersTableColumns } from '@/entities/order/ui/orders-table-columns';
 
-import { DataTable } from '@/shared/components/data-table/data-table';
+import { DataTable } from '@/shared/ui';
 import { Separator } from '@/shared/ui/separator';
 
 export const AdminOrdersPage = () => {

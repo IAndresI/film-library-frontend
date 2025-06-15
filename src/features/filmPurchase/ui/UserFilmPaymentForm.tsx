@@ -6,7 +6,7 @@ import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { SvgPayment } from '@/shared/ui/svg/SvgPayment';
 
-import { useCreateFilmPayment } from '../lib/hooks';
+import { useCreateFilmPayment } from '../hooks/useCreateFilmPayment';
 
 export function UserFilmPaymentForm({
   className,

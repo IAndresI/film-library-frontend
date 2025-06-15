@@ -1,0 +1,1 @@
+export { WatchFilmPage } from './WatchFilmPage';

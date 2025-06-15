@@ -1,3 +1,1 @@
-export { ReviewModal } from './ui';
-export { UserReviewCard } from './ui';
-export { UserReviewsPage } from './ui';
+export { ReviewModal, UserReviewCard, UserReviewsPage } from './ui';

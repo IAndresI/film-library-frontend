@@ -1,4 +1,4 @@
-import type { IFilm } from '@/entities/film/model';
+import type { IFilm } from '@/entities/film/@x/user';
 import type { IPaginationResponse } from '@/shared/model/pagination-response.model';
 import type {
   ColumnFiltersState,

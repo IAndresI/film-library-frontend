@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 import { FilmDataEditorForm } from '@/features/filmEditor/ui';
 
-import { useGetAllFilters } from '@/entities/filters/lib/hooks';
+import { useGetAllFilters } from '@/entities/filters';
 
 import { Separator } from '@/shared/ui/separator';
 

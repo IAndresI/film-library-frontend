@@ -22,7 +22,7 @@ import {
 } from '@/shared/ui/form';
 import { VideoInput } from '@/shared/ui/video-input';
 
-import { useEditFilmMedia } from '../lib/hooks/useEditFilmMedia';
+import { useEditFilmMedia } from '../hooks/useEditFilmMedia';
 
 const formSchema = z.object({
   video: z

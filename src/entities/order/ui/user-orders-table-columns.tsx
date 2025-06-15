@@ -3,11 +3,11 @@ import type { IOrder } from '../model';
 
 import { Link } from 'react-router-dom';
 
-import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
-import { OrderStatus } from '@/shared/components/OrderStatus';
-import { formatDate } from '@/shared/lib/helpers';
+import { OrderStatus } from '@/entities/order/ui/OrderStatus';
 
-import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
+import { formatDate } from '@/shared/lib/helpers';
+import { DataTableColumnHeader } from '@/shared/ui';
+import { DataTableRowActions } from '@/shared/ui/data-table/data-table-row-actions';
 
 export const userOrdersTableColumns: ColumnDef<IOrder>[] = [
   {

@@ -7,12 +7,13 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 
+import { ModeToggle } from '@/widgets/modeToggle';
+
 import { authApi } from '@/features/auth/api';
 
-import { SubscriptionStatus } from '@/entities/subscription/model';
-import { useUser } from '@/entities/user/providers';
+import { SubscriptionStatusType } from '@/entities/subscription';
+import { useUser } from '@/entities/user';
 
-import { ModeToggle } from '@/shared/components/ModeToggle';
 import {
   Drawer,
   DrawerContent,
@@ -113,9 +114,10 @@ export const HomeHeader = () => {
         <ModeToggle />
 
         {(!user.subscription ||
-          user.subscription.subscriptionStatus === SubscriptionStatus.EXPIRED ||
           user.subscription.subscriptionStatus ===
-            SubscriptionStatus.CANCELLED) && (
+            SubscriptionStatusType.EXPIRED ||
+          user.subscription.subscriptionStatus ===
+            SubscriptionStatusType.CANCELLED) && (
           <Button
             asChild
             variant="rainbow"
@@ -132,7 +134,7 @@ export const HomeHeader = () => {
             {user.name}
             {user.subscription &&
               user.subscription.subscriptionStatus ===
-                SubscriptionStatus.ACTIVE && (
+                SubscriptionStatusType.ACTIVE && (
                 <div className="absolute bottom-1/2 -left-[15px] -rotate-45">
                   <SvgCrown
                     className="h-5 w-5"

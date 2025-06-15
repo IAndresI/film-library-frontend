@@ -1,4 +1,11 @@
-export { HomePage } from './ui';
-export { HomeSidebar } from './ui';
-export { HomeHeader } from './ui';
-export { HomeLayout } from './ui';
+export { HomePage, HomeSidebar, HomeHeader, HomeLayout } from './ui';
+export { ReviewModal, UserReviewCard, UserReviewsPage } from './user-reviews';
+export { PremiumPage } from './premium';
+export { FilmPage } from './film';
+export { ActorPage } from './actor';
+export { ActorsPage } from './actors';
+export { FilmsPage } from './films';
+export { HomeMainPage } from './home';
+export { MyFilmsPage } from './myFilms';
+export { SearchPage } from './search';
+export { UserFavoritesPage } from './user-favorites';

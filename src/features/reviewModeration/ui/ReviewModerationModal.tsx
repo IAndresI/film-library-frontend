@@ -10,8 +10,8 @@ import {
   DialogTrigger,
 } from '@/shared/ui/dialog';
 
-import { useApproveReview } from '../lib/hooks/useApproveReview';
-import { useRejectReview } from '../lib/hooks/useRejectReview';
+import { useApproveReview } from '../hooks/useApproveReview';
+import { useRejectReview } from '../hooks/useRejectReview';
 
 export const ReviewModerationModal = ({
   id,

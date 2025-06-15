@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { filmApi } from '@/entities/film/api/film.api';
 import { filmsTableColumns } from '@/entities/film/ui/films-table-columns';
 
-import { DataTable } from '@/shared/components/data-table/data-table';
+import { DataTable } from '@/shared/ui';
 import { Button } from '@/shared/ui/button';
 import { Separator } from '@/shared/ui/separator';
 

@@ -5,7 +5,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { authApi } from '@/features/auth/api';
 
-import { UserContext } from '@/entities/user/providers';
+import { UserContext } from '@/entities/user';
 
 import { SvgLogo } from '@/shared/ui/svg/SvgLogo';
 

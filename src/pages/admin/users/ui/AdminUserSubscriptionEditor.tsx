@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
+import { SubscriptionStatusType } from '@/entities/subscription';
 import { subscriptionApi } from '@/entities/subscription/api/subscription.api';
-import { SubscriptionStatus } from '@/entities/subscription/model';
-import { useUser } from '@/entities/user/providers';
+import { useUser } from '@/entities/user';
 
 import { queryClient } from '@/shared/api/query-client';
 import { formatDate } from '@/shared/lib/helpers';
@@ -38,7 +38,7 @@ export const AdminUserSubscriptionEditor = ({ user }: { user: IUser }) => {
   );
   const isActiveSubscription =
     user?.subscription &&
-    user?.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
+    user?.subscription.subscriptionStatus === SubscriptionStatusType.ACTIVE;
 
   const { data: subscriptionPlans } = useQuery({
     ...subscriptionApi.getAllSubscriptionPlansQueryOptions(),

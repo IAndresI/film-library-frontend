@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { useUser } from '@/entities/user/providers';
+import { useUser } from '@/entities/user';
 
 import { queryClient } from '@/shared/api/query-client';
 import { cn, getImageUrl } from '@/shared/lib/utils';
@@ -22,7 +22,7 @@ import { ImageInput } from '@/shared/ui/image-input';
 import { Input } from '@/shared/ui/input';
 import { Switch } from '@/shared/ui/switch';
 
-import { useEditUserData } from '../lib/hooks';
+import { useEditUserData } from '../hooks/useEditUserData';
 
 const formSchema = z.object({
   name: z.string({ required_error: 'Имя обязательно' }).min(3, {

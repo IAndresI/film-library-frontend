@@ -1,4 +1,4 @@
-import { VideoPlayer } from '@/shared/components/VideoPlayer';
+import { VideoPlayer } from '@/entities/film/ui/VideoPlayer';
 
 import { cn } from '../lib/utils';
 import { Button } from './button';

@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 
 import { UserSubscriptionPaymentForm } from '@/features/subscriptionPurchase/ui';
 
-import { SubscriptionStatus } from '@/entities/subscription/model';
-import { useUser } from '@/entities/user/providers';
+import { SubscriptionStatusType } from '@/entities/subscription';
+import { useUser } from '@/entities/user';
 
 import { SvgCrown } from '@/shared/ui/svg/SvgCrown';
 
@@ -12,7 +12,7 @@ export const PremiumPage = () => {
 
   const haveSubscription =
     user.subscription &&
-    user.subscription.subscriptionStatus === SubscriptionStatus.ACTIVE;
+    user.subscription.subscriptionStatus === SubscriptionStatusType.ACTIVE;
 
   return (
     <motion.section

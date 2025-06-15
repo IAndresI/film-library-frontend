@@ -3,13 +3,13 @@ import type { IOrder } from '../model';
 
 import { Link } from 'react-router-dom';
 
-import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
-import { OrderStatus } from '@/shared/components/OrderStatus';
+import { OrderStatus } from '@/entities/order/ui/OrderStatus';
+
 import { formatDate } from '@/shared/lib/helpers';
 import { getImageUrl } from '@/shared/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
-
-import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
+import { DataTableColumnHeader } from '@/shared/ui/data-table/data-table-column-header';
+import { DataTableRowActions } from '@/shared/ui/data-table/data-table-row-actions';
 
 export const ordersTableColumns: ColumnDef<IOrder>[] = [
   {

@@ -5,15 +5,16 @@ import type { ColumnDef } from '@tanstack/react-table';
 
 import { Link } from 'react-router-dom';
 
+import { DeleteModal } from '@/widgets/deleteModal';
+
 import { ReviewModerationModal } from '@/features/reviewModeration/ui/ReviewModerationModal';
 
-import { DataTableRowActions } from '@/shared/components/data-table/data-table-row-actions';
-import { DeleteModal } from '@/shared/components/DeleteModal';
 import { formatDate } from '@/shared/lib/helpers';
 import { getImageUrl } from '@/shared/lib/utils';
+import { DataTableColumnHeader } from '@/shared/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+import { DataTableRowActions } from '@/shared/ui/data-table/data-table-row-actions';
 
-import { DataTableColumnHeader } from '../../../shared/components/data-table/data-table-column-header';
 import { reviewApi } from '../api/review.api';
 
 export const reviewsTableColumns: ColumnDef<IReview>[] = [

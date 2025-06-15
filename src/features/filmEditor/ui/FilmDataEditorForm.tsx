@@ -33,8 +33,8 @@ import {
 import { Switch } from '@/shared/ui/switch';
 import { Textarea } from '@/shared/ui/textarea';
 
-import { useEditFilmData } from '../lib/hooks';
-import { useAddFilm } from '../lib/hooks/useAddFilm';
+import { useAddFilm } from '../hooks/useAddFilm';
+import { useEditFilmData } from '../hooks/useEditFilmData';
 
 const formSchema = z
   .object({

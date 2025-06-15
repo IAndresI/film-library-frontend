@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 import { reviewApi } from '@/entities/review/api/review.api';
 import { REVIEW_SORT_OPTIONS } from '@/entities/review/constants';
-import { useUser } from '@/entities/user/providers';
+import { useUser } from '@/entities/user';
 
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
